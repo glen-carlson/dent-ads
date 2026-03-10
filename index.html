@@ -185,6 +185,26 @@ footer{padding:28px 0;text-align:center;font-size:0.6rem;color:var(--text3);}
 .insight-answer{max-height:0;overflow:hidden;transition:max-height 0.3s ease;}
 .insight-item.open .insight-answer{max-height:2000px;}
 .insight-answer-inner{padding:0 20px 20px 48px;font-size:0.76rem;font-family:'JetBrains Mono',monospace;line-height:1.75;color:var(--text2);white-space:pre-wrap;}
+
+/* ── SLIDER ── */
+.slider-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:16px;padding:4px 0;scrollbar-width:none;-ms-overflow-style:none;}
+.slider-track::-webkit-scrollbar{display:none;}
+.slider-card{min-width:100%;scroll-snap-align:start;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:28px;flex-shrink:0;}
+
+/* ── CREATIVE DROPDOWN ── */
+.creative-btn{padding:4px 10px;border-radius:4px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:0.65rem;font-weight:600;color:var(--blue);transition:all 0.15s;}
+.creative-btn:hover{background:var(--blue);color:white;}
+.creative-panel{display:none;grid-column:1/-1;background:var(--elevated);border-radius:8px;padding:20px;margin:8px 0;border:1px solid var(--border);}
+.creative-panel.open{display:block;}
+.creative-panel h4{font-size:0.72rem;font-weight:700;color:var(--text);margin:0 0 8px;text-transform:uppercase;letter-spacing:0.06em;}
+.creative-panel .section-divider{height:1px;background:var(--border);margin:16px 0;}
+.creative-panel .copy-text{font-size:0.72rem;color:var(--text2);line-height:1.65;white-space:pre-wrap;}
+.creative-panel .transcript-text{font-size:0.72rem;color:var(--text2);line-height:1.65;font-style:italic;background:var(--surface);padding:14px;border-radius:6px;border-left:3px solid var(--blue);}
+
+.creative-btn{padding:4px 10px;border-radius:4px;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:0.62rem;font-weight:600;color:var(--blue);transition:all 0.15s;}
+.creative-btn:hover{background:var(--blue);color:white;}
+.creative-panel{display:none;background:var(--elevated);border-radius:8px;padding:24px;margin:4px 0;border:1px solid var(--border);}
+.creative-panel.open{display:block;}
 </style>
 </head>
 <body>
@@ -197,9 +217,8 @@ footer{padding:28px 0;text-align:center;font-size:0.6rem;color:var(--text3);}
       <button class="nav-btn active" onclick="showPage('overview')">Overview</button>
       <button class="nav-btn" onclick="showPage('funnel')">Funnel</button>
       <button class="nav-btn" onclick="showPage('concepts')">Concepts</button>
-      <button class="nav-btn" onclick="showPage('recommendations')">Recommendations</button>
-      <button class="nav-btn" onclick="showPage('fritz')">Fritz Log</button>
-      <button class="nav-btn" onclick="showPage('insights')">Ask Skippy</button>
+      <button class="nav-btn" onclick="showPage('recommendations')">Insights</button>
+      <button class="nav-btn" onclick="showPage('fritz')">Thesis</button>
       <button class="nav-btn" onclick="showPage('spend')">Spend & CPL</button>
       <button class="nav-btn" onclick="showPage('ads')">All Ads</button>
       <button class="nav-btn" onclick="showPage('trends')">Trends</button>
@@ -221,8 +240,8 @@ footer{padding:28px 0;text-align:center;font-size:0.6rem;color:var(--text3);}
   <div class="section">
     <div class="card-grid cols-4">
       <div class="card">
-        <div class="hero">£18,841</div>
-        <div class="hero-label">Total Spend</div>
+        <div class="hero">£8,209</div>
+        <div class="hero-label">Spend (GBP only)</div>
         <div style="font-size:0.72rem;color:var(--text2);margin-top:6px;">All regions <span class="delta down-good">↓20%</span></div>
       </div>
       <div class="card">
@@ -231,8 +250,8 @@ footer{padding:28px 0;text-align:center;font-size:0.6rem;color:var(--text3);}
         <div style="font-size:0.72rem;color:var(--text2);margin-top:6px;">1,469 leads <span class="delta down">↓17%</span></div>
       </div>
       <div class="card">
-        <div class="hero">£43.21</div>
-        <div class="hero-label">Blended CPMQL</div>
+        <div class="hero">£15.70</div>
+        <div class="hero-label">EMEA CPMQL</div>
         <div style="font-size:0.72rem;color:var(--text2);margin-top:6px;">Cost per qualified lead</div>
       </div>
       <div class="card">
@@ -310,88 +329,85 @@ footer{padding:28px 0;text-align:center;font-size:0.6rem;color:var(--text3);}
 <!-- PAGE: FUNNEL -->
 <!-- ════════════════════════════════════════════════════════════════════════ -->
 <div class="page" id="page-funnel">
-  <div class="page-title">Funnel Performance</div>
-  <div class="page-subtitle">Glen vs Dan · All regions · 8 weeks</div>
+  <div class="page-title">Funnel</div>
+  <div class="page-subtitle">Last 7 days · Click a region to view its funnel</div>
 
-  <!-- Insights FIRST -->
   <div class="section">
-    <div class="section-label">Insights</div>
-    <div class="insight-grid">
-      <div class="card" style="border-left:3px solid var(--glen);"><h3>Glen APAC: Small but Mighty</h3><div class="big-num" style="color:var(--glen);">51% MQL Rate</div><p>212 MQLs from 411 leads over 8 weeks. A$71 per MQL last week. When Glen was the only APAC presence (January), it had the best funnel economics in the business.</p></div>
-      <div class="card" style="border-left:3px solid var(--red);"><h3>Dan APAC: Volume, No Quality</h3><div class="big-num" style="color:var(--red);">1.5% MQL Rate</div><p>2,739 leads but only 42 MQLs. A$9,452/week producing 8 MQLs. Landing page converts fine (25%), but leads don't qualify. The audience targeting isn't right for APAC.</p></div>
-      <div class="card" style="border-left:3px solid var(--dan);"><h3>Dan EMEA: The Engine</h3><div class="big-num" style="color:var(--green);">60% MQL Rate</div><p>3,399 MQLs, 262 meetings, 46-66% weekly MQL rate. Dan's content resonates in EMEA. This is where the investment should stay.</p></div>
-      <div class="card" style="border-left:3px solid var(--amber);"><h3>Budget Allocation</h3><div class="big-num" style="color:var(--amber);">85% → Dan APAC</div><p>If the APAC ratio flipped to 50/50, MQL output would improve dramatically. Glen's A$1,625 produced 23 MQLs. Dan's A$9,452 produced 8.</p></div>
+    <div style="display:flex;gap:6px;margin-bottom:28px;">
+      <button class="nav-btn active" onclick="showFunnel('blended',this)">Blended</button>
+      <button class="nav-btn" onclick="showFunnel('emea',this)">EMEA</button>
+      <button class="nav-btn" onclick="showFunnel('apac',this)">APAC</button>
+      <button class="nav-btn" onclick="showFunnel('ams',this)">AMS</button>
     </div>
-    <div class="callout"><h3>The Uncomfortable Number</h3><p>Dan's APAC cost per MQL is <strong>17× higher than Glen's</strong>. The blended APAC CPMQL of A$357 is almost entirely Dan. Without Dan APAC, APAC would be the most efficient region.</p></div>
-  </div>
-
-  <!-- APAC -->
-  <div class="section">
-    <div class="section-label">APAC — Glen vs Dan</div>
-    <div class="section-desc">Glen dominated APAC until Feb 3. Dan scaled from A$55/week to A$9,452. Volume exploded, MQL conversion collapsed.</div>
-    <div class="table-wrap">
-    <table class="data">
-      <thead><tr><th class="left">Week</th><th class="left">Presenter</th><th>Spend</th><th>Clicks</th><th>LPV</th><th>Leads</th><th>LPV→Lead</th><th>MQLs</th><th>MQL Rate</th><th>Meetings</th></tr></thead>
-      <tbody>
-        <tr><td class="left">Jan 13</td><td class="left presenter-glen">Glen</td><td>A$3,870</td><td>357</td><td>289</td><td>72</td><td class="good">24.9%</td><td>50</td><td class="good">69%</td><td>10</td></tr>
-        <tr><td class="left">Jan 20</td><td class="left presenter-glen">Glen</td><td>A$2,604</td><td>307</td><td>284</td><td>94</td><td class="good">33.1%</td><td>56</td><td class="good">60%</td><td>6</td></tr>
-        <tr><td class="left">Jan 27</td><td class="left presenter-glen">Glen</td><td>A$2,123</td><td>236</td><td>214</td><td>56</td><td class="good">26.2%</td><td>44</td><td class="good">79%</td><td>4</td></tr>
-        <tr class="divider-row"><td colspan="10">← Dan scales into APAC →</td></tr>
-        <tr><td class="left">Feb 3</td><td class="left presenter-glen">Glen</td><td>A$1,217</td><td>127</td><td>103</td><td>21</td><td class="ok">20.4%</td><td>14</td><td class="good">67%</td><td>2</td></tr>
-        <tr><td class="left"></td><td class="left presenter-dan">Dan</td><td>A$1,114</td><td>299</td><td>280</td><td>84</td><td class="good">30.0%</td><td>3</td><td class="bad">4%</td><td>0</td></tr>
-        <tr><td class="left">Feb 10</td><td class="left presenter-glen">Glen</td><td>A$179</td><td>19</td><td>12</td><td>2</td><td class="ok">16.7%</td><td>1</td><td class="ok">50%</td><td>0</td></tr>
-        <tr><td class="left"></td><td class="left presenter-dan">Dan</td><td>A$6,211</td><td>1,695</td><td>1,546</td><td>510</td><td class="good">33.0%</td><td>14</td><td class="bad">3%</td><td>3</td></tr>
-        <tr><td class="left">Feb 17</td><td class="left presenter-glen">Glen</td><td>A$694</td><td>74</td><td>55</td><td>14</td><td class="good">25.5%</td><td>11</td><td class="good">79%</td><td>0</td></tr>
-        <tr><td class="left"></td><td class="left presenter-dan">Dan</td><td>A$4,482</td><td>993</td><td>906</td><td>237</td><td class="ok">26.2%</td><td>10</td><td class="bad">4%</td><td>17</td></tr>
-        <tr><td class="left">Feb 24</td><td class="left presenter-glen">Glen</td><td>A$1,778</td><td>126</td><td>100</td><td>29</td><td class="good">29.0%</td><td>13</td><td class="good">45%</td><td>3</td></tr>
-        <tr><td class="left"></td><td class="left presenter-dan">Dan</td><td>A$7,079</td><td>1,705</td><td>1,532</td><td>389</td><td class="ok">25.4%</td><td>7</td><td class="bad">2%</td><td>0</td></tr>
-        <tr><td class="left">Mar 3</td><td class="left presenter-glen">Glen</td><td>A$1,625</td><td>198</td><td>154</td><td>45</td><td class="good">29.2%</td><td>23</td><td class="good">51%</td><td>0</td></tr>
-        <tr><td class="left"></td><td class="left presenter-dan">Dan</td><td>A$9,452</td><td>2,505</td><td>2,106</td><td>519</td><td class="ok">24.6%</td><td>8</td><td class="bad">2%</td><td>26</td></tr>
-      </tbody>
-    </table>
+    <div class="funnel-view" id="funnel-blended" style="display:block;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
+        <div class="card" style="padding:28px;text-align:center;">
+          <svg viewBox="0 0 560 520" style="width:100%;max-width:560px;height:auto;"><text x="280.0" y="24" text-anchor="middle" font-size="10" font-weight="600" fill="#888" font-family="Plus Jakarta Sans,sans-serif" text-transform="uppercase" letter-spacing="0.05em">Impressions</text><rect x="40" y="30" width="480" height="34" rx="6" fill="#555" opacity="0.85"/><text x="280.0" y="52" text-anchor="middle" font-size="14" font-weight="700" fill="white" font-family="JetBrains Mono,monospace">1,194,823</text><path d="M40,64 L520,64 L457,108 L103,108 Z" fill="#555" opacity="0.04"/><text x="280.0" y="102" text-anchor="middle" font-size="10" font-weight="600" fill="#888" font-family="Plus Jakarta Sans,sans-serif" text-transform="uppercase" letter-spacing="0.05em">Clicks</text><rect x="103" y="108" width="354" height="34" rx="6" fill="#555" opacity="0.77"/><text x="280.0" y="130" text-anchor="middle" font-size="14" font-weight="700" fill="white" font-family="JetBrains Mono,monospace">11,582</text><text x="467.0507462916622" y="130" text-anchor="start" font-size="11" font-weight="600" fill="#555" font-family="JetBrains Mono,monospace">1.0%</text><path d="M103,142 L457,142 L447,186 L113,186 Z" fill="#555" opacity="0.04"/><text x="280.0" y="180" text-anchor="middle" font-size="10" font-weight="600" fill="#888" font-family="Plus Jakarta Sans,sans-serif" text-transform="uppercase" letter-spacing="0.05em">Landing Page Views</text><rect x="113" y="186" width="334" height="34" rx="6" fill="#555" opacity="0.69"/><text x="280.0" y="208" text-anchor="middle" font-size="14" font-weight="700" fill="white" font-family="JetBrains Mono,monospace">5,474</text><text x="456.8763304859822" y="208" text-anchor="start" font-size="11" font-weight="600" fill="#555" font-family="JetBrains Mono,monospace">47.3%</text><path d="M113,220 L447,220 L429,264 L131,264 Z" fill="#555" opacity="0.04"/><text x="280.0" y="258" text-anchor="middle" font-size="10" font-weight="600" fill="#888" font-family="Plus Jakarta Sans,sans-serif" text-transform="uppercase" letter-spacing="0.05em">Leads</text><rect x="131" y="264" width="298" height="34" rx="6" fill="#555" opacity="0.61"/><text x="280.0" y="286" text-anchor="middle" font-size="14" font-weight="700" fill="white" font-family="JetBrains Mono,monospace">1,469</text><text x="439.02257642326634" y="286" text-anchor="start" font-size="11" font-weight="600" fill="#555" font-family="JetBrains Mono,monospace">26.8%</text><path d="M131,298 L429,298 L411,342 L149,342 Z" fill="#555" opacity="0.04"/><text x="280.0" y="336" text-anchor="middle" font-size="10" font-weight="600" fill="#888" font-family="Plus Jakarta Sans,sans-serif" text-transform="uppercase" letter-spacing="0.05em">MQLs</text><rect x="149" y="342" width="263" height="34" rx="6" fill="#555" opacity="0.53"/><text x="280.0" y="364" text-anchor="middle" font-size="14" font-weight="700" fill="white" font-family="JetBrains Mono,monospace">401</text><text x="421.41816752489103" y="364" text-anchor="start" font-size="11" font-weight="600" fill="#555" font-family="JetBrains Mono,monospace">27.3%</text><path d="M149,376 L411,376 L392,420 L168,420 Z" fill="#555" opacity="0.04"/><text x="280.0" y="414" text-anchor="middle" font-size="10" font-weight="600" fill="#888" font-family="Plus Jakarta Sans,sans-serif" text-transform="uppercase" letter-spacing="0.05em">Meetings</text><rect x="168" y="420" width="225" height="34" rx="6" fill="#555" opacity="0.45"/><text x="280.0" y="442" text-anchor="middle" font-size="14" font-weight="700" fill="white" font-family="JetBrains Mono,monospace">98</text><text x="402.3912660730307" y="442" text-anchor="start" font-size="11" font-weight="600" fill="#555" font-family="JetBrains Mono,monospace">24.4%</text></svg>
+        </div>
+        <div>
+          <div class="card-grid cols-2" style="margin-bottom:14px;">
+            <div class="card"><div class="stat-val">0.97%</div><div class="stat-lbl">Click Rate</div></div>
+            <div class="card"><div class="stat-val">47.3%</div><div class="stat-lbl">Click → LPV</div></div>
+            <div class="card"><div class="stat-val">26.8%</div><div class="stat-lbl">LPV → Lead</div></div>
+            <div class="card"><div class="stat-val" style="color:#555;">27.3%</div><div class="stat-lbl">Lead → MQL</div></div>
+            <div class="card"><div class="stat-val">24%</div><div class="stat-lbl">MQL → Meeting</div></div>
+            <div class="card"><div class="stat-val">1,194,823</div><div class="stat-lbl">Impressions</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="funnel-view" id="funnel-emea" style="display:none;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
+        <div class="card" style="padding:28px;text-align:center;">
+          <svg viewBox="0 0 560 520" style="width:100%;max-width:560px;height:auto;"><text x="280.0" y="24" text-anchor="middle" font-size="10" font-weight="600" fill="#888" font-family="Plus Jakarta Sans,sans-serif" text-transform="uppercase" letter-spacing="0.05em">Impressions</text><rect x="40" y="30" width="480" height="34" rx="6" fill="#0d7c4a" opacity="0.85"/><text x="280.0" y="52" text-anchor="middle" font-size="14" font-weight="700" fill="white" font-family="JetBrains Mono,monospace">413,033</text><path d="M40,64 L520,64 L457,108 L103,108 Z" fill="#0d7c4a" opacity="0.04"/><text x="280.0" y="102" text-anchor="middle" font-size="10" font-weight="600" fill="#888" font-family="Plus Jakarta Sans,sans-serif" text-transform="uppercase" letter-spacing="0.05em">Clicks</text><rect x="103" y="108" width="354" height="34" rx="6" fill="#0d7c4a" opacity="0.77"/><text x="280.0" y="130" text-anchor="middle" font-size="14" font-weight="700" fill="white" font-family="JetBrains Mono,monospace">5,680</text><text x="467.0196782817638" y="130" text-anchor="start" font-size="11" font-weight="600" fill="#0d7c4a" font-family="JetBrains Mono,monospace">1.4%</text><path d="M103,142 L457,142 L446,186 L114,186 Z" fill="#0d7c4a" opacity="0.04"/><text x="280.0" y="180" text-anchor="middle" font-size="10" font-weight="600" fill="#888" font-family="Plus Jakarta Sans,sans-serif" text-transform="uppercase" letter-spacing="0.05em">Landing Page Views</text><rect x="114" y="186" width="332" height="34" rx="6" fill="#0d7c4a" opacity="0.69"/><text x="280.0" y="208" text-anchor="middle" font-size="14" font-weight="700" fill="white" font-family="JetBrains Mono,monospace">2,652</text><text x="455.8318593186582" y="208" text-anchor="start" font-size="11" font-weight="600" fill="#0d7c4a" font-family="JetBrains Mono,monospace">46.7%</text><path d="M114,220 L446,220 L426,264 L134,264 Z" fill="#0d7c4a" opacity="0.04"/><text x="280.0" y="258" text-anchor="middle" font-size="10" font-weight="600" fill="#888" font-family="Plus Jakarta Sans,sans-serif" text-transform="uppercase" letter-spacing="0.05em">Leads</text><rect x="134" y="264" width="292" height="34" rx="6" fill="#0d7c4a" opacity="0.61"/><text x="280.0" y="286" text-anchor="middle" font-size="14" font-weight="700" fill="white" font-family="JetBrains Mono,monospace">688</text><text x="436.02261669735674" y="286" text-anchor="start" font-size="11" font-weight="600" fill="#0d7c4a" font-family="JetBrains Mono,monospace">25.9%</text><path d="M134,298 L426,298 L416,342 L144,342 Z" fill="#0d7c4a" opacity="0.04"/><text x="280.0" y="336" text-anchor="middle" font-size="10" font-weight="600" fill="#888" font-family="Plus Jakarta Sans,sans-serif" text-transform="uppercase" letter-spacing="0.05em">MQLs</text><rect x="144" y="342" width="271" height="34" rx="6" fill="#0d7c4a" opacity="0.53"/><text x="280.0" y="364" text-anchor="middle" font-size="14" font-weight="700" fill="white" font-family="JetBrains Mono,monospace">341</text><text x="425.73115691866144" y="364" text-anchor="start" font-size="11" font-weight="600" fill="#0d7c4a" font-family="JetBrains Mono,monospace">49.6%</text><path d="M144,376 L416,376 L393,420 L167,420 Z" fill="#0d7c4a" opacity="0.04"/><text x="280.0" y="414" text-anchor="middle" font-size="10" font-weight="600" fill="#888" font-family="Plus Jakarta Sans,sans-serif" text-transform="uppercase" letter-spacing="0.05em">Meetings</text><rect x="167" y="420" width="225" height="34" rx="6" fill="#0d7c4a" opacity="0.45"/><text x="280.0" y="442" text-anchor="middle" font-size="14" font-weight="700" fill="white" font-family="JetBrains Mono,monospace">70</text><text x="402.6317620058099" y="442" text-anchor="start" font-size="11" font-weight="600" fill="#0d7c4a" font-family="JetBrains Mono,monospace">20.5%</text></svg>
+        </div>
+        <div>
+          <div class="card-grid cols-2" style="margin-bottom:14px;">
+            <div class="card"><div class="stat-val">1.38%</div><div class="stat-lbl">Click Rate</div></div>
+            <div class="card"><div class="stat-val">46.7%</div><div class="stat-lbl">Click → LPV</div></div>
+            <div class="card"><div class="stat-val">25.9%</div><div class="stat-lbl">LPV → Lead</div></div>
+            <div class="card"><div class="stat-val" style="color:#0d7c4a;">49.6%</div><div class="stat-lbl">Lead → MQL</div></div>
+            <div class="card"><div class="stat-val">21%</div><div class="stat-lbl">MQL → Meeting</div></div>
+            <div class="card"><div class="stat-val">413,033</div><div class="stat-lbl">Impressions</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="funnel-view" id="funnel-apac" style="display:none;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
+        <div class="card" style="padding:28px;text-align:center;">
+          <svg viewBox="0 0 560 520" style="width:100%;max-width:560px;height:auto;"><text x="280.0" y="24" text-anchor="middle" font-size="10" font-weight="600" fill="#888" font-family="Plus Jakarta Sans,sans-serif" text-transform="uppercase" letter-spacing="0.05em">Impressions</text><rect x="40" y="30" width="480" height="34" rx="6" fill="#3366cc" opacity="0.85"/><text x="280.0" y="52" text-anchor="middle" font-size="14" font-weight="700" fill="white" font-family="JetBrains Mono,monospace">272,027</text><path d="M40,64 L520,64 L457,108 L103,108 Z" fill="#3366cc" opacity="0.04"/><text x="280.0" y="102" text-anchor="middle" font-size="10" font-weight="600" fill="#888" font-family="Plus Jakarta Sans,sans-serif" text-transform="uppercase" letter-spacing="0.05em">Clicks</text><rect x="103" y="108" width="355" height="34" rx="6" fill="#3366cc" opacity="0.77"/><text x="280.0" y="130" text-anchor="middle" font-size="14" font-weight="700" fill="white" font-family="JetBrains Mono,monospace">4,432</text><text x="467.4925171977029" y="130" text-anchor="start" font-size="11" font-weight="600" fill="#3366cc" font-family="JetBrains Mono,monospace">1.6%</text><path d="M103,142 L457,142 L447,186 L113,186 Z" fill="#3366cc" opacity="0.04"/><text x="280.0" y="180" text-anchor="middle" font-size="10" font-weight="600" fill="#888" font-family="Plus Jakarta Sans,sans-serif" text-transform="uppercase" letter-spacing="0.05em">Landing Page Views</text><rect x="113" y="186" width="334" height="34" rx="6" fill="#3366cc" opacity="0.69"/><text x="280.0" y="208" text-anchor="middle" font-size="14" font-weight="700" fill="white" font-family="JetBrains Mono,monospace">2,209</text><text x="456.92358974779654" y="208" text-anchor="start" font-size="11" font-weight="600" fill="#3366cc" font-family="JetBrains Mono,monospace">49.8%</text><path d="M113,220 L447,220 L427,264 L133,264 Z" fill="#3366cc" opacity="0.04"/><text x="280.0" y="258" text-anchor="middle" font-size="10" font-weight="600" fill="#888" font-family="Plus Jakarta Sans,sans-serif" text-transform="uppercase" letter-spacing="0.05em">Leads</text><rect x="133" y="264" width="293" height="34" rx="6" fill="#3366cc" opacity="0.61"/><text x="280.0" y="286" text-anchor="middle" font-size="14" font-weight="700" fill="white" font-family="JetBrains Mono,monospace">576</text><text x="436.5337082432683" y="286" text-anchor="start" font-size="11" font-weight="600" fill="#3366cc" font-family="JetBrains Mono,monospace">26.1%</text><path d="M133,298 L427,298 L374,342 L186,342 Z" fill="#3366cc" opacity="0.04"/><text x="280.0" y="336" text-anchor="middle" font-size="10" font-weight="600" fill="#888" font-family="Plus Jakarta Sans,sans-serif" text-transform="uppercase" letter-spacing="0.05em">MQLs</text><rect x="186" y="342" width="188" height="34" rx="6" fill="#3366cc" opacity="0.53"/><text x="280.0" y="364" text-anchor="middle" font-size="14" font-weight="700" fill="white" font-family="JetBrains Mono,monospace">17</text><text x="383.885691449306" y="364" text-anchor="start" font-size="11" font-weight="600" fill="#3366cc" font-family="JetBrains Mono,monospace">3.0%</text><path d="M186,376 L374,376 L380,420 L180,420 Z" fill="#3366cc" opacity="0.04"/><text x="280.0" y="414" text-anchor="middle" font-size="10" font-weight="600" fill="#888" font-family="Plus Jakarta Sans,sans-serif" text-transform="uppercase" letter-spacing="0.05em">Meetings</text><rect x="180" y="420" width="200" height="34" rx="6" fill="#3366cc" opacity="0.45"/><text x="280.0" y="442" text-anchor="middle" font-size="14" font-weight="700" fill="white" font-family="JetBrains Mono,monospace">26</text><text x="390.0420333037" y="442" text-anchor="start" font-size="11" font-weight="600" fill="#3366cc" font-family="JetBrains Mono,monospace">152.9%</text></svg>
+        </div>
+        <div>
+          <div class="card-grid cols-2" style="margin-bottom:14px;">
+            <div class="card"><div class="stat-val">1.63%</div><div class="stat-lbl">Click Rate</div></div>
+            <div class="card"><div class="stat-val">49.8%</div><div class="stat-lbl">Click → LPV</div></div>
+            <div class="card"><div class="stat-val">26.1%</div><div class="stat-lbl">LPV → Lead</div></div>
+            <div class="card"><div class="stat-val" style="color:#3366cc;">3.0%</div><div class="stat-lbl">Lead → MQL</div></div>
+            <div class="card"><div class="stat-val">153%</div><div class="stat-lbl">MQL → Meeting</div></div>
+            <div class="card"><div class="stat-val">272,027</div><div class="stat-lbl">Impressions</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="funnel-view" id="funnel-ams" style="display:none;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start;">
+        <div class="card" style="padding:28px;text-align:center;">
+          <svg viewBox="0 0 560 520" style="width:100%;max-width:560px;height:auto;"><text x="280.0" y="24" text-anchor="middle" font-size="10" font-weight="600" fill="#888" font-family="Plus Jakarta Sans,sans-serif" text-transform="uppercase" letter-spacing="0.05em">Impressions</text><rect x="40" y="30" width="480" height="34" rx="6" fill="#cc6633" opacity="0.85"/><text x="280.0" y="52" text-anchor="middle" font-size="14" font-weight="700" fill="white" font-family="JetBrains Mono,monospace">509,763</text><path d="M40,64 L520,64 L435,108 L125,108 Z" fill="#cc6633" opacity="0.04"/><text x="280.0" y="102" text-anchor="middle" font-size="10" font-weight="600" fill="#888" font-family="Plus Jakarta Sans,sans-serif" text-transform="uppercase" letter-spacing="0.05em">Clicks</text><rect x="125" y="108" width="311" height="34" rx="6" fill="#cc6633" opacity="0.77"/><text x="280.0" y="130" text-anchor="middle" font-size="14" font-weight="700" fill="white" font-family="JetBrains Mono,monospace">1,470</text><text x="445.4507586142165" y="130" text-anchor="start" font-size="11" font-weight="600" fill="#cc6633" font-family="JetBrains Mono,monospace">0.3%</text><path d="M125,142 L435,142 L423,186 L137,186 Z" fill="#cc6633" opacity="0.04"/><text x="280.0" y="180" text-anchor="middle" font-size="10" font-weight="600" fill="#888" font-family="Plus Jakarta Sans,sans-serif" text-transform="uppercase" letter-spacing="0.05em">Landing Page Views</text><rect x="137" y="186" width="286" height="34" rx="6" fill="#cc6633" opacity="0.69"/><text x="280.0" y="208" text-anchor="middle" font-size="14" font-weight="700" fill="white" font-family="JetBrains Mono,monospace">613</text><text x="432.81894608277156" y="208" text-anchor="start" font-size="11" font-weight="600" fill="#cc6633" font-family="JetBrains Mono,monospace">41.7%</text><path d="M137,220 L423,220 L407,264 L153,264 Z" fill="#cc6633" opacity="0.04"/><text x="280.0" y="258" text-anchor="middle" font-size="10" font-weight="600" fill="#888" font-family="Plus Jakarta Sans,sans-serif" text-transform="uppercase" letter-spacing="0.05em">Leads</text><rect x="153" y="264" width="254" height="34" rx="6" fill="#cc6633" opacity="0.61"/><text x="280.0" y="286" text-anchor="middle" font-size="14" font-weight="700" fill="white" font-family="JetBrains Mono,monospace">205</text><text x="417.029321110272" y="286" text-anchor="start" font-size="11" font-weight="600" fill="#cc6633" font-family="JetBrains Mono,monospace">33.4%</text><path d="M153,298 L407,298 L385,342 L175,342 Z" fill="#cc6633" opacity="0.04"/><text x="280.0" y="336" text-anchor="middle" font-size="10" font-weight="600" fill="#888" font-family="Plus Jakarta Sans,sans-serif" text-transform="uppercase" letter-spacing="0.05em">MQLs</text><rect x="175" y="342" width="209" height="34" rx="6" fill="#cc6633" opacity="0.53"/><text x="280.0" y="364" text-anchor="middle" font-size="14" font-weight="700" fill="white" font-family="JetBrains Mono,monospace">43</text><text x="394.7110235333182" y="364" text-anchor="start" font-size="11" font-weight="600" fill="#cc6633" font-family="JetBrains Mono,monospace">21.0%</text><path d="M175,376 L385,376 L346,420 L214,420 Z" fill="#cc6633" opacity="0.04"/><text x="280.0" y="414" text-anchor="middle" font-size="10" font-weight="600" fill="#888" font-family="Plus Jakarta Sans,sans-serif" text-transform="uppercase" letter-spacing="0.05em">Meetings</text><rect x="214" y="420" width="132" height="34" rx="6" fill="#cc6633" opacity="0.45"/><text x="280.0" y="442" text-anchor="middle" font-size="14" font-weight="700" fill="white" font-family="JetBrains Mono,monospace">2</text><text x="355.88350706332807" y="442" text-anchor="start" font-size="11" font-weight="600" fill="#cc6633" font-family="JetBrains Mono,monospace">4.7%</text></svg>
+        </div>
+        <div>
+          <div class="card-grid cols-2" style="margin-bottom:14px;">
+            <div class="card"><div class="stat-val">0.29%</div><div class="stat-lbl">Click Rate</div></div>
+            <div class="card"><div class="stat-val">41.7%</div><div class="stat-lbl">Click → LPV</div></div>
+            <div class="card"><div class="stat-val">33.4%</div><div class="stat-lbl">LPV → Lead</div></div>
+            <div class="card"><div class="stat-val" style="color:#cc6633;">21.0%</div><div class="stat-lbl">Lead → MQL</div></div>
+            <div class="card"><div class="stat-val">5%</div><div class="stat-lbl">MQL → Meeting</div></div>
+            <div class="card"><div class="stat-val">509,763</div><div class="stat-lbl">Impressions</div></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
-  <!-- EMEA -->
-  <div class="section">
-    <div class="section-label">EMEA — Dan Dominated</div>
-    <div class="section-desc">Dan's MQL rate in EMEA is healthy — 46-66% over 8 weeks. This is his market. 3,399 MQLs, 262 meetings.</div>
-    <div class="table-wrap">
-    <table class="data">
-      <thead><tr><th class="left">Week</th><th class="left">Presenter</th><th>Spend</th><th>LPV</th><th>Leads</th><th>LPV→Lead</th><th>MQLs</th><th>MQL Rate</th><th>Meetings</th></tr></thead>
-      <tbody>
-        <tr><td class="left">Jan 13</td><td class="left presenter-dan">Dan</td><td>£5,663</td><td>2,060</td><td>625</td><td class="good">30.3%</td><td>345</td><td class="good">55%</td><td>31</td></tr>
-        <tr><td class="left">Jan 20</td><td class="left presenter-dan">Dan</td><td>£5,905</td><td>1,859</td><td>575</td><td class="good">30.9%</td><td>364</td><td class="good">63%</td><td>29</td></tr>
-        <tr><td class="left">Jan 27</td><td class="left presenter-dan">Dan</td><td>£10,123</td><td>3,092</td><td>885</td><td class="good">28.6%</td><td>587</td><td class="good">66%</td><td>17</td></tr>
-        <tr><td class="left">Feb 3</td><td class="left presenter-dan">Dan</td><td>£7,466</td><td>2,636</td><td>707</td><td class="ok">26.8%</td><td>459</td><td class="good">65%</td><td>24</td></tr>
-        <tr><td class="left">Feb 10</td><td class="left presenter-dan">Dan</td><td>£11,851</td><td>3,923</td><td>996</td><td class="ok">25.4%</td><td>656</td><td class="good">66%</td><td>16</td></tr>
-        <tr><td class="left">Feb 17</td><td class="left presenter-dan">Dan</td><td>£6,103</td><td>2,146</td><td>522</td><td class="ok">24.3%</td><td>289</td><td class="good">55%</td><td>63</td></tr>
-        <tr><td class="left">Feb 24</td><td class="left presenter-dan">Dan</td><td>£7,998</td><td>2,855</td><td>663</td><td class="ok">23.2%</td><td>375</td><td class="good">57%</td><td>18</td></tr>
-        <tr><td class="left">Mar 3</td><td class="left presenter-dan">Dan</td><td>£6,283</td><td>2,541</td><td>700</td><td class="good">27.5%</td><td>324</td><td class="ok">46%</td><td>64</td></tr>
-      </tbody>
-    </table>
-    </div>
-    <div style="font-size:0.72rem;color:var(--text3);margin-top:8px;">Glen EMEA: £485 total over 8 weeks, 9 leads, 18 MQLs, 9 meetings — too small to trend.</div>
-  </div>
-
-  <!-- AMS -->
-  <div class="section">
-    <div class="section-label">AMS — Dan + Topher</div>
-    <div class="table-wrap">
-    <table class="data">
-      <thead><tr><th class="left">Week</th><th>Spend</th><th>LPV</th><th>Leads</th><th>LPV→Lead</th><th>MQLs</th><th>MQL Rate</th><th>Meetings</th></tr></thead>
-      <tbody>
-        <tr><td class="left">Feb 3</td><td>£826</td><td>339</td><td>113</td><td class="good">33.3%</td><td>3</td><td class="bad">3%</td><td>0</td></tr>
-        <tr><td class="left">Feb 10</td><td>£4,546</td><td>1,724</td><td>610</td><td class="good">35.4%</td><td>19</td><td class="bad">3%</td><td>1</td></tr>
-        <tr><td class="left">Feb 17</td><td>£608</td><td>265</td><td>91</td><td class="good">34.3%</td><td>9</td><td class="bad">10%</td><td>22</td></tr>
-        <tr><td class="left">Feb 24</td><td>£724</td><td>255</td><td>5</td><td class="bad">2.0%</td><td>2</td><td class="ok">40%</td><td>0</td></tr>
-        <tr><td class="left">Mar 3</td><td>£834</td><td>352</td><td>102</td><td class="good">29.0%</td><td>0</td><td class="bad">0%</td><td>1</td></tr>
-      </tbody>
-    </table>
-    </div>
-  </div>
-
-
 </div>
 
 <!-- ════════════════════════════════════════════════════════════════════════ -->
@@ -431,64 +447,197 @@ footer{padding:28px 0;text-align:center;font-size:0.6rem;color:var(--text3);}
 <!-- PAGE: RECOMMENDATIONS -->
 <!-- ════════════════════════════════════════════════════════════════════════ -->
 <div class="page" id="page-recommendations">
-  <div class="page-title">Recommendations</div>
-  <div class="page-subtitle">MQL-optimised decision framework · EMEA</div>
+  <div class="page-title">Insights</div>
+  <div class="page-subtitle">10 data-driven insights · Sorted by severity</div>
 
-  <!-- Thesis -->
-  <div class="section">
-    <div class="section-label">Decision Framework — Fritz's Rules vs MQL-Optimised</div>
-    <div class="card-grid cols-2">
-      <div class="card">
-        <h3>When to Pause</h3>
-        <p style="margin-bottom:14px;">Shift from cost-per-lead to cost-per-qualified-lead.</p>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:8px;">
-          <div style="padding:12px 16px;background:var(--red-light);border-radius:8px 0 0 0;"><div style="font-size:0.6rem;color:var(--red);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Fritz today</div><div style="font-size:0.76rem;color:var(--text2);line-height:1.7;">Pause when <strong>CPL > £13</strong><br>Kill at <strong>£10-25 spend</strong>, zero leads<br>Flag at <strong>2× average CPL</strong></div></div>
-          <div style="padding:12px 16px;background:var(--green-light);border-radius:0 8px 0 0;"><div style="font-size:0.6rem;color:var(--green);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">MQL-optimised</div><div style="font-size:0.76rem;color:var(--text2);line-height:1.7;">Pause when <strong>CPMQL > £40 for 7 days</strong><br>Kill at <strong>£25 spend</strong>, zero MQLs<br>Flag at <strong>2× average CPMQL</strong></div></div>
-          <div style="padding:12px 16px;background:oklch(97% 0.01 25);border-radius:0 0 0 8px;border-top:1px solid var(--border);"><div style="font-size:0.72rem;color:var(--text2);">Measures: <strong>cheapest leads</strong></div></div>
-          <div style="padding:12px 16px;background:oklch(97% 0.01 150);border-radius:0 0 8px 0;border-top:1px solid var(--border);"><div style="font-size:0.72rem;color:var(--text2);">Measures: <strong>cheapest qualified leads</strong></div></div>
+  <div class="section" style="display:flex;flex-direction:column;gap:14px;">
+
+    <!-- RED 1 -->
+    <div class="card" style="border-left:3px solid var(--red);">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--red);">Critical</div>
+        <span class="badge red">1 / 10</span>
+      </div>
+      <h3 style="font-size:0.92rem;font-weight:800;margin:10px 0 0;">Fritz Paused 4 Top MQL Performers</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;">
+        <div style="background:var(--green-light);border-radius:8px;padding:12px;text-align:center;">
+          <div style="font-size:1.4rem;font-weight:800;color:var(--green);">73%</div>
+          <div style="font-size:0.6rem;color:var(--text3);font-weight:600;">Paused ads MQL rate</div>
+        </div>
+        <div style="background:var(--red-light);border-radius:8px;padding:12px;text-align:center;">
+          <div style="font-size:1.4rem;font-weight:800;color:var(--red);">55%</div>
+          <div style="font-size:0.6rem;color:var(--text3);font-weight:600;">Active ads MQL rate</div>
         </div>
       </div>
-      <div class="card">
-        <h3>When to Scale</h3>
-        <p style="margin-bottom:14px;">Scale what generates meetings, not what generates form fills.</p>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:8px;">
-          <div style="padding:12px 16px;background:var(--red-light);border-radius:8px 0 0 0;"><div style="font-size:0.6rem;color:var(--red);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Fritz today</div><div style="font-size:0.76rem;color:var(--text2);line-height:1.7;">Scale ads with <strong>low CPL</strong><br>Rotate creative <strong>every 2-4 weeks</strong><br>Meetings: <strong>not tracked</strong></div></div>
-          <div style="padding:12px 16px;background:var(--green-light);border-radius:0 8px 0 0;"><div style="font-size:0.6rem;color:var(--green);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">MQL-optimised</div><div style="font-size:0.76rem;color:var(--text2);line-height:1.7;">Scale when <strong>CPMQL < £15 + MQL rate > 40%</strong><br>Rotate when <strong>MQL rate drops below 30%</strong><br>Target: <strong>cost per meeting < £100</strong></div></div>
-          <div style="padding:12px 16px;background:oklch(97% 0.01 25);border-radius:0 0 0 8px;border-top:1px solid var(--border);"><div style="font-size:0.72rem;color:var(--text2);">Optimises for: <strong>lead volume</strong></div></div>
-          <div style="padding:12px 16px;background:oklch(97% 0.01 150);border-radius:0 0 8px 0;border-top:1px solid var(--border);"><div style="font-size:0.72rem;color:var(--text2);">Optimises for: <strong>booked meetings</strong></div></div>
+      <div style="margin-top:10px;display:flex;flex-direction:column;gap:4px;">
+        <div style="display:flex;justify-content:space-between;padding:6px 10px;background:var(--elevated);border-radius:5px;"><span style="font-size:0.7rem;font-weight:600;">NarrowPath — Opportunity Yes</span><span class="mono" style="font-size:0.7rem;color:var(--green);font-weight:700;">74% · £16.73</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 10px;background:var(--elevated);border-radius:5px;"><span style="font-size:0.7rem;font-weight:600;">Assets Audit — bookacall</span><span class="mono" style="font-size:0.7rem;color:var(--green);font-weight:700;">167% · £11.36</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 10px;background:var(--elevated);border-radius:5px;"><span style="font-size:0.7rem;font-weight:600;">Topher Discovery</span><span class="mono" style="font-size:0.7rem;color:var(--green);font-weight:700;">89% · £23.81</span></div>
+        <div style="display:flex;justify-content:space-between;padding:6px 10px;background:var(--elevated);border-radius:5px;"><span style="font-size:0.7rem;font-weight:600;">Glen Discovery — bookacall</span><span class="mono" style="font-size:0.7rem;color:var(--green);font-weight:700;">180% · £21.24</span></div>
+      </div>
+      <div style="margin-top:10px;padding:8px 12px;background:var(--red-light);border-radius:6px;font-size:0.7rem;color:var(--red);font-weight:600;">→ Reactivate all four. Combined: 82 MQLs, 9 meetings, avg £18.23 CPMQL.</div>
+    </div>
+
+    <!-- RED 2 -->
+    <div class="card" style="border-left:3px solid var(--red);">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--red);">Critical</div>
+        <span class="badge red">2 / 10</span>
+      </div>
+      <h3 style="font-size:0.92rem;font-weight:800;margin:10px 0 0;">APAC: 576 Leads, Only 17 MQLs</h3>
+      <div style="display:flex;align-items:end;gap:4px;margin-top:14px;height:90px;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:end;">
+          <div style="width:100%;background:#3366cc;border-radius:4px 4px 0 0;height:80px;opacity:0.7;"></div>
+          <div style="font-size:0.62rem;color:var(--text3);margin-top:4px;font-weight:600;">576 Leads</div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:end;">
+          <div style="width:100%;background:var(--red);border-radius:4px 4px 0 0;height:2px;opacity:0.8;"></div>
+          <div style="font-size:0.62rem;color:var(--red);margin-top:4px;font-weight:700;">17 MQLs (3%)</div>
         </div>
       </div>
+      <div style="margin-top:10px;padding:8px 12px;background:var(--red-light);border-radius:6px;font-size:0.7rem;color:var(--red);font-weight:600;">→ Investigate: is the qualification process running for APAC leads?</div>
     </div>
-  </div>
 
-  <!-- Specific Recs -->
-  <div class="section">
-    <div class="section-label">Specific Actions</div>
-
-    <div class="rec-item" style="border-left:3px solid var(--green);"><div class="rec-type reactivate">Reactivate</div><div class="rec-ad">95% Tax — Brand Research · £7.62 CPMQL · 86% MQL rate</div><div class="rec-metrics"><div><div class="rec-val" style="color:var(--green);">£7.62</div><div class="rec-lbl">CPMQL</div></div><div><div class="rec-val">86%</div><div class="rec-lbl">MQL Rate</div></div><div><div class="rec-val">6</div><div class="rec-lbl">MQLs</div></div></div></div>
-
-    <div class="rec-item" style="border-left:3px solid var(--green);"><div class="rec-type reactivate">Reactivate</div><div class="rec-ad">UnfinishedBridges — Busy Effective · £9.88 CPMQL · 84% MQL rate · 1 meeting</div><div class="rec-metrics"><div><div class="rec-val" style="color:var(--green);">£9.88</div><div class="rec-lbl">CPMQL</div></div><div><div class="rec-val">84%</div><div class="rec-lbl">MQL Rate</div></div><div><div class="rec-val">16</div><div class="rec-lbl">MQLs</div></div></div></div>
-
-    <div class="rec-item" style="border-left:3px solid var(--green);"><div class="rec-type reactivate">Reactivate</div><div class="rec-ad">Assets Audit — bookacall · £11.36 CPMQL · 167% MQL rate · 3 meetings</div><div class="rec-metrics"><div><div class="rec-val" style="color:var(--green);">£11.36</div><div class="rec-lbl">CPMQL</div></div><div><div class="rec-val">167%</div><div class="rec-lbl">MQL Rate</div></div><div><div class="rec-val">10</div><div class="rec-lbl">MQLs</div></div></div></div>
-
-    <div class="rec-item" style="border-left:3px solid var(--green);"><div class="rec-type reactivate">Reactivate</div><div class="rec-ad">Assets Doing the Work · £12.23 CPMQL · 86% MQL rate</div><div class="rec-metrics"><div><div class="rec-val" style="color:var(--green);">£12.23</div><div class="rec-lbl">CPMQL</div></div><div><div class="rec-val">86%</div><div class="rec-lbl">MQL Rate</div></div><div><div class="rec-val">6</div><div class="rec-lbl">MQLs</div></div></div></div>
-
-    <div class="rec-item" style="border-left:3px solid var(--green);"><div class="rec-type reactivate">Reactivate</div><div class="rec-ad">NarrowPath — Opportunity Yes · £16.73 CPMQL · 74% MQL rate · 2 meetings</div><div class="rec-metrics"><div><div class="rec-val" style="color:var(--green);">£16.73</div><div class="rec-lbl">CPMQL</div></div><div><div class="rec-val">74%</div><div class="rec-lbl">MQL Rate</div></div><div><div class="rec-val">55</div><div class="rec-lbl">MQLs</div></div></div></div>
-
-    <div class="rec-item" style="border-left:3px solid var(--red);"><div class="rec-type pause">Watch</div><div class="rec-ad">LBP 1 — Better Time · £29.27 CPMQL · 34% MQL rate · 0 meetings — cheap leads, low quality</div><div class="rec-metrics"><div><div class="rec-val" style="color:var(--red);">£29.27</div><div class="rec-lbl">CPMQL</div></div><div><div class="rec-val bad">34%</div><div class="rec-lbl">MQL Rate</div></div><div><div class="rec-val">32</div><div class="rec-lbl">MQLs</div></div></div></div>
-
-    <div class="rec-item" style="border-left:3px solid var(--red);"><div class="rec-type pause">Watch</div><div class="rec-ad">LBP 1 — Freedom Sacrifice · £48.04 CPMQL · 18% MQL rate</div><div class="rec-metrics"><div><div class="rec-val" style="color:var(--red);">£48.04</div><div class="rec-lbl">CPMQL</div></div><div><div class="rec-val bad">18%</div><div class="rec-lbl">MQL Rate</div></div><div><div class="rec-val">6</div><div class="rec-lbl">MQLs</div></div></div></div>
-
-    <div class="rec-item" style="border-left:3px solid var(--amber);"><div class="rec-type watch">Investigate</div><div class="rec-ad">NarrowPath — high volume (239 MQLs) but £65.61 CPMQL. 20% MQL rate drags efficiency.</div><div class="rec-metrics"><div><div class="rec-val" style="color:var(--amber);">£65.61</div><div class="rec-lbl">CPMQL</div></div><div><div class="rec-val">20%</div><div class="rec-lbl">MQL Rate</div></div><div><div class="rec-val">239</div><div class="rec-lbl">MQLs</div></div></div></div>
-  </div>
-
-  <!-- Opportunity -->
-  <div class="section">
-    <div class="section-label">Opportunity Cost</div>
-    <div class="card-grid cols-2">
-      <div class="card"><h3>Current EMEA CPMQL</h3><div class="big-num" style="color:var(--amber);">£18.86</div><p>1,450 MQLs from £27,344 spend (7d active)</p></div>
-      <div class="card"><h3>Top-20 CPMQL Achievable</h3><div class="big-num" style="color:var(--green);">£13.06</div><p>Same spend → 2,094 MQLs · <strong>+644 more MQLs per week</strong></p></div>
+    <!-- RED 3 -->
+    <div class="card" style="border-left:3px solid var(--red);">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--red);">Critical</div>
+        <span class="badge red">3 / 10</span>
+      </div>
+      <h3 style="font-size:0.92rem;font-weight:800;margin:10px 0 0;">AMS MQLs Down 55% This Week</h3>
+      <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center;margin-top:14px;">
+        <div style="text-align:center;padding:12px;background:var(--elevated);border-radius:8px;">
+          <div style="font-size:1.6rem;font-weight:800;">96</div>
+          <div style="font-size:0.58rem;color:var(--text3);font-weight:600;">LAST WEEK</div>
+        </div>
+        <div style="font-size:1.3rem;color:var(--red);font-weight:800;">→</div>
+        <div style="text-align:center;padding:12px;background:var(--red-light);border-radius:8px;">
+          <div style="font-size:1.6rem;font-weight:800;color:var(--red);">43</div>
+          <div style="font-size:0.58rem;color:var(--text3);font-weight:600;">THIS WEEK</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;padding:8px 12px;background:var(--red-light);border-radius:6px;font-size:0.7rem;color:var(--red);font-weight:600;">→ Confirm with Fritz: intentional reduction or accidental?</div>
     </div>
+
+    <!-- AMBER 1 -->
+    <div class="card" style="border-left:3px solid var(--amber);">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--amber);">Watch</div>
+        <span class="badge amber">4 / 10</span>
+      </div>
+      <h3 style="font-size:0.92rem;font-weight:800;margin:10px 0 0;">EMEA MQL Rate: 4-Week Decline</h3>
+      <div style="display:flex;align-items:end;gap:8px;margin-top:14px;height:80px;">
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:end;"><div style="font-size:0.68rem;font-weight:700;color:var(--green);margin-bottom:3px;">67%</div><div style="width:100%;background:var(--green);border-radius:3px 3px 0 0;height:54px;opacity:0.7;"></div><div style="font-size:0.55rem;color:var(--text3);margin-top:3px;">Feb 11</div></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:end;"><div style="font-size:0.68rem;font-weight:700;color:var(--green);margin-bottom:3px;">71%</div><div style="width:100%;background:var(--green);border-radius:3px 3px 0 0;height:57px;opacity:0.7;"></div><div style="font-size:0.55rem;color:var(--text3);margin-top:3px;">Feb 18</div></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:end;"><div style="font-size:0.68rem;font-weight:700;color:var(--amber);margin-bottom:3px;">59%</div><div style="width:100%;background:var(--amber);border-radius:3px 3px 0 0;height:47px;opacity:0.7;"></div><div style="font-size:0.55rem;color:var(--text3);margin-top:3px;">Feb 25</div></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:end;"><div style="font-size:0.68rem;font-weight:700;color:var(--amber);margin-bottom:3px;">56%</div><div style="width:100%;background:var(--amber);border-radius:3px 3px 0 0;height:45px;opacity:0.7;"></div><div style="font-size:0.55rem;color:var(--text3);margin-top:3px;">Mar 4</div></div>
+      </div>
+      <div style="margin-top:10px;padding:8px 12px;background:var(--amber-light);border-radius:6px;font-size:0.7rem;color:var(--amber);font-weight:600;">→ Not critical yet. If it drops below 45% next week, investigate creative fatigue.</div>
+    </div>
+
+    <!-- AMBER 2 -->
+    <div class="card" style="border-left:3px solid var(--amber);">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--amber);">Watch</div>
+        <span class="badge amber">5 / 10</span>
+      </div>
+      <h3 style="font-size:0.92rem;font-weight:800;margin:10px 0 0;">LBP Campaigns: Volume Trap</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;">
+        <div style="background:var(--green-light);border-radius:8px;padding:12px;text-align:center;">
+          <div style="font-size:0.55rem;color:var(--green);font-weight:700;text-transform:uppercase;">CPL (looks great)</div>
+          <div style="font-size:1.5rem;font-weight:800;color:var(--green);margin:4px 0;">£8-10</div>
+        </div>
+        <div style="background:var(--red-light);border-radius:8px;padding:12px;text-align:center;">
+          <div style="font-size:0.55rem;color:var(--red);font-weight:700;text-transform:uppercase;">CPMQL (reality)</div>
+          <div style="font-size:1.5rem;font-weight:800;color:var(--red);margin:4px 0;">~£76</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;padding:8px 12px;background:var(--amber-light);border-radius:6px;font-size:0.7rem;color:var(--amber);font-weight:600;">→ One more week. If MQL rate stays below 25%, pause and reallocate.</div>
+    </div>
+
+    <!-- AMBER 3 -->
+    <div class="card" style="border-left:3px solid var(--amber);">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--amber);">Watch</div>
+        <span class="badge amber">6 / 10</span>
+      </div>
+      <h3 style="font-size:0.92rem;font-weight:800;margin:10px 0 0;">67 Ads Burning Cash With Zero MQLs</h3>
+      <div style="margin-top:14px;text-align:center;">
+        <div style="font-size:2.5rem;font-weight:800;color:var(--amber);">£13,642</div>
+        <div style="font-size:0.7rem;color:var(--text2);margin-top:4px;">Spent across 67 ads with zero qualified leads (60 days)</div>
+      </div>
+      <div style="margin-top:10px;padding:8px 12px;background:var(--amber-light);border-radius:6px;font-size:0.7rem;color:var(--amber);font-weight:600;">→ Audit the 67. Kill anything that isn't intentional brand awareness.</div>
+    </div>
+
+    <!-- GREEN 1 -->
+    <div class="card" style="border-left:3px solid var(--green);">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--green);">Opportunity</div>
+        <span class="badge green">7 / 10</span>
+      </div>
+      <h3 style="font-size:0.92rem;font-weight:800;margin:10px 0 0;">Environment Dictates: Scale This</h3>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:14px;">
+        <div style="text-align:center;padding:10px 6px;background:var(--green-light);border-radius:6px;"><div style="font-size:1.1rem;font-weight:800;color:var(--green);">114</div><div style="font-size:0.55rem;color:var(--text3);font-weight:600;">MQLs</div></div>
+        <div style="text-align:center;padding:10px 6px;background:var(--green-light);border-radius:6px;"><div style="font-size:1.1rem;font-weight:800;color:var(--green);">14</div><div style="font-size:0.55rem;color:var(--text3);font-weight:600;">Meetings</div></div>
+        <div style="text-align:center;padding:10px 6px;background:var(--green-light);border-radius:6px;"><div style="font-size:1.1rem;font-weight:800;color:var(--green);">£16.55</div><div style="font-size:0.55rem;color:var(--text3);font-weight:600;">CPMQL</div></div>
+        <div style="text-align:center;padding:10px 6px;background:var(--green-light);border-radius:6px;"><div style="font-size:1.1rem;font-weight:800;color:var(--green);">53%</div><div style="font-size:0.55rem;color:var(--text3);font-weight:600;">MQL Rate</div></div>
+      </div>
+      <div style="margin-top:10px;padding:8px 12px;background:var(--green-light);border-radius:6px;font-size:0.7rem;color:var(--green);font-weight:600;">→ Increase budget. Best active concept in EMEA.</div>
+    </div>
+
+    <!-- GREEN 2 -->
+    <div class="card" style="border-left:3px solid var(--green);">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--green);">Opportunity</div>
+        <span class="badge green">8 / 10</span>
+      </div>
+      <h3 style="font-size:0.92rem;font-weight:800;margin:10px 0 0;">bookacall: Highest Quality in Portfolio</h3>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:14px;">
+        <div style="text-align:center;padding:10px 6px;background:var(--green-light);border-radius:6px;"><div style="font-size:1.1rem;font-weight:800;color:var(--green);">88%</div><div style="font-size:0.55rem;color:var(--text3);font-weight:600;">MQL Rate</div></div>
+        <div style="text-align:center;padding:10px 6px;background:var(--green-light);border-radius:6px;"><div style="font-size:1.1rem;font-weight:800;color:var(--green);">72</div><div style="font-size:0.55rem;color:var(--text3);font-weight:600;">Meetings</div></div>
+        <div style="text-align:center;padding:10px 6px;background:var(--amber-light);border-radius:6px;"><div style="font-size:0.8rem;font-weight:800;color:var(--amber);">Mostly Paused</div><div style="font-size:0.55rem;color:var(--text3);font-weight:600;">Status</div></div>
+      </div>
+      <div style="margin-top:10px;padding:8px 12px;background:var(--green-light);border-radius:6px;font-size:0.7rem;color:var(--green);font-weight:600;">→ Reactivate paused bookacall variants. BOF gold mine.</div>
+    </div>
+
+    <!-- GREEN 3 -->
+    <div class="card" style="border-left:3px solid var(--green);">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--green);">Healthy</div>
+        <span class="badge green">9 / 10</span>
+      </div>
+      <h3 style="font-size:0.92rem;font-weight:800;margin:10px 0 0;">EMEA Engine is Healthy</h3>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:14px;">
+        <div style="text-align:center;padding:12px 6px;background:var(--green-light);border-radius:6px;"><div style="font-size:1.2rem;font-weight:800;color:var(--green);">£15.70</div><div style="font-size:0.55rem;color:var(--text3);font-weight:600;">CPMQL</div></div>
+        <div style="text-align:center;padding:12px 6px;background:var(--green-light);border-radius:6px;"><div style="font-size:1.2rem;font-weight:800;color:var(--green);">388</div><div style="font-size:0.55rem;color:var(--text3);font-weight:600;">MQLs/week</div></div>
+        <div style="text-align:center;padding:12px 6px;background:var(--green-light);border-radius:6px;"><div style="font-size:1.2rem;font-weight:800;color:var(--green);">70</div><div style="font-size:0.55rem;color:var(--text3);font-weight:600;">Meetings</div></div>
+      </div>
+      <div style="margin-top:10px;padding:8px 12px;background:var(--green-light);border-radius:6px;font-size:0.7rem;color:var(--green);font-weight:600;">→ Maintain. Watch the MQL rate trend but don't over-optimise.</div>
+    </div>
+
+    <!-- GREEN 4 -->
+    <div class="card" style="border-left:3px solid var(--green);">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--green);">Opportunity</div>
+        <span class="badge green">10 / 10</span>
+      </div>
+      <h3 style="font-size:0.92rem;font-weight:800;margin:10px 0 0;">+423 EMEA MQLs/Week From Same Budget</h3>
+      <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;margin-top:14px;">
+        <div style="text-align:center;padding:14px;background:var(--elevated);border-radius:8px;">
+          <div style="font-size:0.55rem;color:var(--text3);font-weight:700;text-transform:uppercase;">Current</div>
+          <div style="font-size:1.6rem;font-weight:800;margin:4px 0;">388</div>
+          <div style="font-size:0.6rem;color:var(--text3);">MQLs/week</div>
+        </div>
+        <div style="font-size:1.3rem;color:var(--green);font-weight:800;">→</div>
+        <div style="text-align:center;padding:14px;background:var(--green-light);border-radius:8px;">
+          <div style="font-size:0.55rem;color:var(--green);font-weight:700;text-transform:uppercase;">Optimised</div>
+          <div style="font-size:1.6rem;font-weight:800;color:var(--green);margin:4px 0;">811</div>
+          <div style="font-size:0.6rem;color:var(--green);">MQLs/week</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;padding:8px 12px;background:var(--green-light);border-radius:6px;font-size:0.7rem;color:var(--green);font-weight:600;">→ Reallocate from bottom-50% CPMQL ads to top-20. No extra budget.</div>
+    </div>
+
   </div>
 </div>
 
@@ -496,23 +645,229 @@ footer{padding:28px 0;text-align:center;font-size:0.6rem;color:var(--text3);}
 <!-- PAGE: FRITZ LOG -->
 <!-- ════════════════════════════════════════════════════════════════════════ -->
 <div class="page" id="page-fritz">
-  <div class="page-title">Fritz Activity Log</div>
-  <div class="page-subtitle">Recent pauses scored against MQL data · EMEA · March</div>
+  <div class="page-title">Thesis</div>
+  <div class="page-subtitle">Two operating models compared · Fritz's observed rules vs MQL-optimised best practice</div>
 
   <div class="section">
-    <div class="section-desc">Each pause decision scored: did the paused ad have good MQL metrics? <span style="color:var(--red);font-weight:600;">Wrong call</span> = paused an MQL-efficient ad. <span style="color:var(--green);font-weight:600;">Right call</span> = paused a low-quality ad.</div>
+    <div class="card-grid cols-2">
 
-    <div class="rec-item"><div style="font-size:0.7rem;color:var(--text3);font-family:'JetBrains Mono',monospace;font-weight:600;width:60px;">Mar 9</div><div class="rec-ad">NarrowPath — Opportunity Yes · 55 MQLs · 74% rate · 2 meetings</div><div class="fritz-verdict wrong">Wrong — £16.73 CPMQL</div></div>
-    <div class="rec-item"><div style="font-size:0.7rem;color:var(--text3);font-family:'JetBrains Mono',monospace;font-weight:600;width:60px;">Mar 9</div><div class="rec-ad">Assets Audit — bookacall · 10 MQLs · 167% rate · 3 meetings</div><div class="fritz-verdict wrong">Wrong — £11.36 CPMQL</div></div>
-    <div class="rec-item"><div style="font-size:0.7rem;color:var(--text3);font-family:'JetBrains Mono',monospace;font-weight:600;width:60px;">Mar 9</div><div class="rec-ad">Topher Discovery · 8 MQLs · 89% rate · 4 meetings</div><div class="fritz-verdict wrong">Wrong — £23.81 CPMQL</div></div>
-    <div class="rec-item"><div style="font-size:0.7rem;color:var(--text3);font-family:'JetBrains Mono',monospace;font-weight:600;width:60px;">Mar 9</div><div class="rec-ad">Glen Discovery — bookacall · 9 MQLs · 180% rate · 3 meetings</div><div class="fritz-verdict wrong">Wrong — £21.24 CPMQL</div></div>
-    <div class="rec-item"><div style="font-size:0.7rem;color:var(--text3);font-family:'JetBrains Mono',monospace;font-weight:600;width:60px;">Mar 2</div><div class="rec-ad">MountainofValue — Manual Delivery · 13 MQLs · good rate</div><div class="fritz-verdict neutral">Debatable — concept rotation</div></div>
-    <div class="rec-item"><div style="font-size:0.7rem;color:var(--text3);font-family:'JetBrains Mono',monospace;font-weight:600;width:60px;">Feb 27</div><div class="rec-ad">Founder Led Growth · 20 MQLs · 67% rate · 1 meeting</div><div class="fritz-verdict wrong">Wrong — £17.59 CPMQL</div></div>
-    <div class="rec-item"><div style="font-size:0.7rem;color:var(--text3);font-family:'JetBrains Mono',monospace;font-weight:600;width:60px;">Feb 24</div><div class="rec-ad">NarrowPath ChatGPT · 81 leads · 20% MQL rate</div><div class="fritz-verdict right">Right — high volume, low quality</div></div>
-    <div class="rec-item"><div style="font-size:0.7rem;color:var(--text3);font-family:'JetBrains Mono',monospace;font-weight:600;width:60px;">Feb 24</div><div class="rec-ad">Selling Time For Money · 56 leads · 51% MQL rate · 10 meetings</div><div class="fritz-verdict wrong">Wrong — £23.66 CPMQL</div></div>
+      <!-- Fritz's Rules -->
+      <div class="card" style="border-top:3px solid var(--green);">
+        <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--green);margin-bottom:14px;">Fritz's Operating Model (Observed)</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="padding:10px 14px;background:var(--green-light);border-radius:6px;">
+            <div style="font-size:0.72rem;font-weight:700;color:var(--text);">Optimise for Cost Per Lead</div>
+            <div style="font-size:0.68rem;color:var(--text2);margin-top:3px;">Primary KPI is CPL. Ads paused when CPL exceeds ~£13 (EMEA), ~A$39 (APAC).</div>
+            <div style="margin-top:8px;padding:8px 10px;background:var(--red-light);border-radius:4px;font-size:0.65rem;color:var(--red);line-height:1.55;">
+              <strong>Question:</strong> LBP campaigns are showing £8 CPL — but when we look at which leads actually qualify, only 15-19% become MQLs. That's ~£76 per qualified lead. Meanwhile you paused ads at £16-25 CPL that had 74-89% MQL rates. How do you weigh lead cost against lead quality when deciding what to pause?
+            </div>
+          </div>
+          <div style="padding:10px 14px;background:var(--green-light);border-radius:6px;">
+            <div style="font-size:0.72rem;font-weight:700;color:var(--text);">Calendar-Based Rotation</div>
+            <div style="font-size:0.68rem;color:var(--text2);margin-top:3px;">Rotate creatives every 2-4 weeks regardless of performance. Kills winners for freshness.</div>
+            <div style="margin-top:8px;padding:8px 10px;background:var(--red-light);border-radius:4px;font-size:0.65rem;color:var(--red);line-height:1.55;">
+              <strong>Question:</strong> NarrowPath Opportunity Yes had a 74% MQL rate and £16.73 CPMQL when you paused it. What was the signal that told you it was time to rotate? Was there a frequency spike, a CTR drop, or something else — or is it a time-based cycle? And if it's time-based, how do you decide the right cycle length?
+            </div>
+          </div>
+          <div style="padding:10px 14px;background:var(--green-light);border-radius:6px;">
+            <div style="font-size:0.72rem;font-weight:700;color:var(--text);">Flood & Cull</div>
+            <div style="font-size:0.68rem;color:var(--text2);margin-top:3px;">Launch many variants simultaneously. Kill zero-lead ads at £10-25 spend. Keep what survives.</div>
+            <div style="margin-top:8px;padding:8px 10px;background:var(--amber-light);border-radius:4px;font-size:0.65rem;color:var(--amber);line-height:1.55;">
+              <strong>Question:</strong> When you launch a batch of new ads, what's the kill threshold? If an ad has spent £15 with zero leads you'd pause it — but what about an ad with 5 leads and zero MQLs at £50 spend? At what point does lead quality factor into the cull decision, not just lead volume?
+            </div>
+          </div>
+          <div style="padding:10px 14px;background:var(--green-light);border-radius:6px;">
+            <div style="font-size:0.72rem;font-weight:700;color:var(--text);">Frequency Not Tracked</div>
+            <div style="font-size:0.68rem;color:var(--text2);margin-top:3px;">No evidence of frequency or CTR decay as pause triggers. Decisions appear CPL-only.</div>
+            <div style="margin-top:8px;padding:8px 10px;background:var(--red-light);border-radius:4px;font-size:0.65rem;color:var(--red);line-height:1.55;">
+              <strong>Question:</strong> Do you track frequency as a leading indicator? When you see an ad's frequency climbing above 2 or 3, does that change your decision on whether to pause or scale it? Or is CPL the main thing you're watching day to day?
+            </div>
+          </div>
+          <div style="padding:10px 14px;background:var(--green-light);border-radius:6px;">
+            <div style="font-size:0.72rem;font-weight:700;color:var(--text);">Meetings Not Tracked</div>
+            <div style="font-size:0.68rem;color:var(--text2);margin-top:3px;">No evidence that meeting bookings influence ad decisions. Volume of leads is the proxy for success.</div>
+            <div style="margin-top:8px;padding:8px 10px;background:var(--red-light);border-radius:4px;font-size:0.65rem;color:var(--red);line-height:1.55;">
+              <strong>Question:</strong> Selling Time For Money was generating 10 meeting bookings per week when it was paused. Do you look at meeting data when deciding what to keep running, or is it mainly leads and CPL? If an ad has a high CPL but is generating meetings at £80 each, would that change the decision?
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MQL-Optimised Rules -->
+      <div class="card" style="border-top:3px solid var(--blue);">
+        <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--blue);margin-bottom:14px;">MQL-Optimised Model (Best Practice)</div>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="padding:10px 14px;background:oklch(94% 0.03 250);border-radius:6px;">
+            <div style="font-size:0.72rem;font-weight:700;color:var(--text);">Optimise for Cost Per Qualified Lead</div>
+            <div style="font-size:0.68rem;color:var(--text2);margin-top:3px;">Primary KPI is CPMQL. Pause when CPMQL > £40 for 7 days. CPL is a secondary indicator only.</div>
+          </div>
+          <div style="padding:10px 14px;background:oklch(94% 0.03 250);border-radius:6px;">
+            <div style="font-size:0.72rem;font-weight:700;color:var(--text);">Performance-Based Rotation</div>
+            <div style="font-size:0.68rem;color:var(--text2);margin-top:3px;">Rotate when MQL rate drops below 30% for 5 consecutive days. Winners run until they fatigue — not on a calendar.</div>
+          </div>
+          <div style="padding:10px 14px;background:oklch(94% 0.03 250);border-radius:6px;">
+            <div style="font-size:0.72rem;font-weight:700;color:var(--text);">Test & Scale</div>
+            <div style="font-size:0.68rem;color:var(--text2);margin-top:3px;">Scale when CPMQL < £15 AND MQL rate > 40%. Kill at £25 spend with zero MQLs — not zero leads.</div>
+          </div>
+          <div style="padding:10px 14px;background:oklch(94% 0.03 250);border-radius:6px;">
+            <div style="font-size:0.72rem;font-weight:700;color:var(--text);">Fatigue = Frequency + MQL Decline</div>
+            <div style="font-size:0.68rem;color:var(--text2);margin-top:3px;">Rotate when frequency > 3.0 AND MQL rate drops 25%+ from its 7-day peak. Both must be true. One number to watch, one trend to confirm.</div>
+          </div>
+          <div style="padding:10px 14px;background:oklch(94% 0.03 250);border-radius:6px;">
+            <div style="font-size:0.72rem;font-weight:700;color:var(--text);">Meetings as Ultimate KPI</div>
+            <div style="font-size:0.68rem;color:var(--text2);margin-top:3px;">Cost per meeting booked < £100. An ad that generates meetings at £80 each is worth more than one generating leads at £5 each.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
-</div>
 
+  <!-- Fritz Activity Scored -->
+  <div class="section">
+    <div class="section-label">Fritz's Pause Decisions — Scored Against Best Practice</div>
+    <div class="section-desc">48 pause decisions since Mar 1, matched to MQL performance data. Top 8 shown.</div>
+
+    <div style="display:flex;flex-direction:column;gap:6px;">
+
+      <div class="card" style="border-left:3px solid var(--red);padding:14px 18px;">
+        <div style="display:grid;grid-template-columns:60px 1fr auto;gap:14px;align-items:center;">
+          <div class="mono" style="font-size:0.68rem;color:var(--text3);font-weight:600;">03-02</div>
+          <div>
+            <div style="font-size:0.76rem;font-weight:600;">Daniel — TOF Environment Dictates Performance</div>
+            <div style="font-size:0.65rem;color:var(--text2);margin-top:2px;">58 MQLs · 50% MQL rate · £18 CPMQL · 9 meetings</div>
+          </div>
+          <div style="text-align:right;">
+            <span class="badge red">Wrong Call</span>
+            <div style="font-size:0.6rem;color:var(--text3);margin-top:4px;">9 meetings at £18 each</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="border-left:3px solid var(--red);padding:14px 18px;">
+        <div style="display:grid;grid-template-columns:60px 1fr auto;gap:14px;align-items:center;">
+          <div class="mono" style="font-size:0.68rem;color:var(--text3);font-weight:600;">03-06</div>
+          <div>
+            <div style="font-size:0.76rem;font-weight:600;">Topher — BOF workshop</div>
+            <div style="font-size:0.65rem;color:var(--text2);margin-top:2px;">22 MQLs · 71% MQL rate · £30 CPMQL · 4 meetings</div>
+          </div>
+          <div style="text-align:right;">
+            <span class="badge red">Wrong Call</span>
+            <div style="font-size:0.6rem;color:var(--text3);margin-top:4px;">4 meetings at £30 each</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="border-left:3px solid var(--red);padding:14px 18px;">
+        <div style="display:grid;grid-template-columns:60px 1fr auto;gap:14px;align-items:center;">
+          <div class="mono" style="font-size:0.68rem;color:var(--text3);font-weight:600;">03-02</div>
+          <div>
+            <div style="font-size:0.76rem;font-weight:600;">Dan — BOF MountainofValue</div>
+            <div style="font-size:0.65rem;color:var(--text2);margin-top:2px;">24 MQLs · 50% MQL rate · £17 CPMQL · 2 meetings</div>
+          </div>
+          <div style="text-align:right;">
+            <span class="badge red">Wrong Call</span>
+            <div style="font-size:0.6rem;color:var(--text3);margin-top:4px;">50% MQL rate, £17 CPMQL</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="border-left:3px solid var(--red);padding:14px 18px;">
+        <div style="display:grid;grid-template-columns:60px 1fr auto;gap:14px;align-items:center;">
+          <div class="mono" style="font-size:0.68rem;color:var(--text3);font-weight:600;">03-09</div>
+          <div>
+            <div style="font-size:0.76rem;font-weight:600;">Founder — TOF bookacall</div>
+            <div style="font-size:0.65rem;color:var(--text2);margin-top:2px;">7 MQLs · 64% MQL rate · £17 CPMQL · 6 meetings</div>
+          </div>
+          <div style="text-align:right;">
+            <span class="badge red">Wrong Call</span>
+            <div style="font-size:0.6rem;color:var(--text3);margin-top:4px;">6 meetings at £17 each</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="border-left:3px solid var(--red);padding:14px 18px;">
+        <div style="display:grid;grid-template-columns:60px 1fr auto;gap:14px;align-items:center;">
+          <div class="mono" style="font-size:0.68rem;color:var(--text3);font-weight:600;">03-09</div>
+          <div>
+            <div style="font-size:0.76rem;font-weight:600;">Topher — TOF adispez</div>
+            <div style="font-size:0.65rem;color:var(--text2);margin-top:2px;">8 MQLs · 89% MQL rate · £24 CPMQL · 4 meetings</div>
+          </div>
+          <div style="text-align:right;">
+            <span class="badge red">Wrong Call</span>
+            <div style="font-size:0.6rem;color:var(--text3);margin-top:4px;">4 meetings at £24 each</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="border-left:3px solid var(--red);padding:14px 18px;">
+        <div style="display:grid;grid-template-columns:60px 1fr auto;gap:14px;align-items:center;">
+          <div class="mono" style="font-size:0.68rem;color:var(--text3);font-weight:600;">03-09</div>
+          <div>
+            <div style="font-size:0.76rem;font-weight:600;">Daniel — BOF bookacall</div>
+            <div style="font-size:0.65rem;color:var(--text2);margin-top:2px;">10 MQLs · 167% MQL rate · £11 CPMQL · 3 meetings</div>
+          </div>
+          <div style="text-align:right;">
+            <span class="badge red">Wrong Call</span>
+            <div style="font-size:0.6rem;color:var(--text3);margin-top:4px;">3 meetings at £11 each</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="border-left:3px solid var(--amber);padding:14px 18px;">
+        <div style="display:grid;grid-template-columns:60px 1fr auto;gap:14px;align-items:center;">
+          <div class="mono" style="font-size:0.68rem;color:var(--text3);font-weight:600;">03-02</div>
+          <div>
+            <div style="font-size:0.76rem;font-weight:600;">Daniel — BOF Environment Dictates Performance</div>
+            <div style="font-size:0.65rem;color:var(--text2);margin-top:2px;">3 MQLs · 27% MQL rate · £25 CPMQL · 0 meetings</div>
+          </div>
+          <div style="text-align:right;">
+            <span class="badge amber">Debatable</span>
+            <div style="font-size:0.6rem;color:var(--text3);margin-top:4px;">Borderline — 27% rate, worth monitoring</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="border-left:3px solid var(--green);padding:14px 18px;">
+        <div style="display:grid;grid-template-columns:60px 1fr auto;gap:14px;align-items:center;">
+          <div class="mono" style="font-size:0.68rem;color:var(--text3);font-weight:600;">03-02</div>
+          <div>
+            <div style="font-size:0.76rem;font-weight:600;">Dan — TOF NarrowPath</div>
+            <div style="font-size:0.65rem;color:var(--text2);margin-top:2px;">9 MQLs · 3% MQL rate · A$547 CPMQL · 8 meetings</div>
+          </div>
+          <div style="text-align:right;">
+            <span class="badge green">Right Call</span>
+            <div style="font-size:0.6rem;color:var(--text3);margin-top:4px;">3% MQL rate, A$547 CPMQL — genuinely poor</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div style="margin-top:24px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+      <div style="text-align:center;padding:20px;background:var(--red-light);border-radius:10px;">
+        <div style="font-size:2.2rem;font-weight:800;color:var(--red);">38</div>
+        <div style="font-size:0.65rem;color:var(--red);font-weight:700;text-transform:uppercase;">Wrong Calls</div>
+        <div style="font-size:0.55rem;color:var(--text3);margin-top:4px;">of 48 scored</div>
+      </div>
+      <div style="text-align:center;padding:20px;background:var(--amber-light);border-radius:10px;">
+        <div style="font-size:2.2rem;font-weight:800;color:var(--amber);">5</div>
+        <div style="font-size:0.65rem;color:var(--amber);font-weight:700;text-transform:uppercase;">Debatable</div>
+      </div>
+      <div style="text-align:center;padding:20px;background:var(--green-light);border-radius:10px;">
+        <div style="font-size:2.2rem;font-weight:800;color:var(--green);">5</div>
+        <div style="font-size:0.65rem;color:var(--green);font-weight:700;text-transform:uppercase;">Right Calls</div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px;border-left:3px solid var(--red);padding:18px;">
+      <div style="font-size:0.82rem;font-weight:700;margin-bottom:6px;">The Pattern</div>
+      <div style="font-size:0.76rem;color:var(--text2);line-height:1.7;">38 of 48 pause decisions in the last 10 days are wrong against the MQL-optimised ruleset. Fritz is pausing ads with 50-167% MQL rates and £11-30 CPMQL because their CPL exceeds his threshold. The ads generating the most meetings per pound are the ones getting killed first.</div>
+    </div>
+
+  </div></div>
+</div>
 
 <!-- ════════════════════════════════════════════════════════════════════════ -->
 <!-- PAGE: SPEND & CPL -->
@@ -597,9 +952,41 @@ footer{padding:28px 0;text-align:center;font-size:0.6rem;color:var(--text3);}
   <div class="section">
     <div class="section-label">EMEA — 247 ads</div>
     <div class="table-wrap"><table class="data">
-    <thead><tr><th class="left">Ad</th><th>Spend</th><th>Leads</th><th>CPL</th><th>MQLs</th><th>MQL Rate</th><th>CPMQL</th><th>Mtgs</th><th>CTR</th></tr></thead>
+    <thead><tr><th class="left">Ad</th><th>Spend</th><th>Leads</th><th>CPL</th><th>MQLs</th><th>MQL Rate</th><th>CPMQL</th><th>Mtgs</th><th>CTR</th><th>Creative</th></tr></thead>
     <tbody>
-    <tr><td class="left concept-name" title="Dan_Workshop_EN_EMEA_PAC_Video_TOF_MountainofValue_Founder-Panic_Shiny Object Syndrome_30012026">MountainofValue_Founder-Panic_Shiny Object Sy</td><td>£16,572</td><td>1587</td><td>£10.44</td><td style="font-weight:700;">1031</td><td class="good">65.0%</td><td class="good">£16.07</td><td>0</td><td>1.56%</td></tr>
+    <tr><td class="left concept-name" title="Dan_Workshop_EN_EMEA_PAC_Video_TOF_MountainofValue_Founder-Panic_Shiny Object Syndrome_30012026">MountainofValue_Founder-Panic_Shiny Object Sy</td><td>£16,572</td><td>1587</td><td>£10.44</td><td style="font-weight:700;">1031</td><td class="good">65.0%</td><td class="good">£16.07</td><td>0</td><td>1.56%</td><td><button class="creative-btn" onclick="toggleCreative('mov5')">View Creative</button></td></tr>
+<tr class="creative-row"><td colspan="11" style="padding:0;border:none;">
+<div class="creative-panel" id="creative-mov5">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+    <div style="font-size:0.82rem;font-weight:800;color:var(--blue);">🎬 MountainofValue — Founder-Panic (Hook 5)</div>
+    <div style="font-size:0.62rem;color:var(--text3);">Source: Google Sheets + Drive + Whisper transcription</div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+    <div>
+      <div style="font-size:0.62rem;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px;">📝 Ad Copy</div>
+      <div style="margin-bottom:8px;padding:10px 14px;background:var(--surface);border-radius:6px;">
+        <div style="font-size:0.58rem;color:var(--text3);font-weight:700;text-transform:uppercase;">Headline</div>
+        <div style="font-size:0.76rem;font-weight:600;margin-top:2px;">FREE 60+min Workshop</div>
+      </div>
+      <div style="margin-bottom:8px;padding:10px 14px;background:var(--surface);border-radius:6px;">
+        <div style="font-size:0.58rem;color:var(--text3);font-weight:700;text-transform:uppercase;">Description</div>
+        <div style="font-size:0.76rem;font-weight:600;margin-top:2px;">2026 Growth Playbook</div>
+      </div>
+      <div style="padding:10px 14px;background:var(--surface);border-radius:6px;">
+        <div style="font-size:0.58rem;color:var(--text3);font-weight:700;text-transform:uppercase;margin-bottom:6px;">Body Copy</div>
+        <div style="font-size:0.7rem;color:var(--text2);line-height:1.65;">There&#x27;s a specific kind of panic that only successful founders understand:<br><br>When the numbers are up, but so is the pressure.<br><br>Because your business might be growing, but only when you&#x27;re in the middle of everything.<br><br>Whether that&#x27;s sales, delivery, or decisions.<br><br>You need to be &#x27;on&#x27; all that time.<br><br>That&#x27;s stressful.<br><br>And the moment you try to step back, momentum drops.<br><br>The solution?<br><br>To extract what you already know - your frameworks, methods, and IP - and turn them into products and systems that drive growth without demanding more of your time.<br><br>I&#x27;m breaking this down in a free, live workshop this January.<br><br>Spaces are limited and we cap registrations.<br>Hit the link and secure your seat now.</div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:0.62rem;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:12px;">🎙️ Video Transcript</div>
+      <div style="padding:14px;background:var(--surface);border-radius:6px;border-left:3px solid var(--blue);">
+        <div style="font-size:0.58rem;color:var(--text3);font-weight:600;margin-bottom:8px;">📁 Mountain Of Value [Hook 5] 9x16.mp4 · Transcribed via Whisper</div>
+        <div style="font-size:0.72rem;color:var(--text2);line-height:1.75;font-style:italic;">I believe you&#x27;re standing on a mountain of value but sometimes you&#x27;re too close to your own mountain. When you&#x27;re standing on that mountain you can&#x27;t see it for what it is. In 2026 and beyond you cannot scale your business through hard work. Technology does so much when it comes to the power of leverage but in order to get the value out of that technology like AI and social media and all of that you have to start with something called your intellectual property. You&#x27;ve got to be able to formalize what is it about your last five years that makes you special, unique, relatable and then once you&#x27;ve got that intellectual property then everything lights up. You can scale with AI, you can scale with social media, all of that relies upon you having some formalized intellectual property. Now the more we zoom in and have a look at what made your last five years interesting and valuable the more we can actually leverage the technology. I know it sounds counterintuitive but to look forward we have to start by looking back. I&#x27;m running a workshop and in this workshop we are going to challenge you and inspire you to do something cool.</div>
+      </div>
+    </div>
+  </div>
+</div>
+</td></tr>
     <tr><td class="left concept-name" title="Dan_Workshop_EN_EMEA_PAC_Video_TOF_RawFootage_hookone-bananas_6102025">RawFootage_hookone-bananas_6102025</td><td>£8,017</td><td>808</td><td>£9.92</td><td style="font-weight:700;">485</td><td class="good">60.0%</td><td class="good">£16.53</td><td>0</td><td>1.44%</td></tr>
     <tr><td class="left concept-name" title="Dan_Workshop_EN_EMEA_PAC_Video_TOF_RawFootage_hookone-ai-news_6102025">RawFootage_hookone-ai-news_6102025</td><td>£5,661</td><td>604</td><td>£9.37</td><td style="font-weight:700;">410</td><td class="good">67.9%</td><td class="good">£13.81</td><td>0</td><td>1.23%</td></tr>
     <tr><td class="left concept-name" title="Dan_Workshop_EN_EMEA_PAC_Video_TOF_MountainofValue_Founder-Panic_Shiny Object Syndrome_28012026">MountainofValue_Founder-Panic_Shiny Object Sy</td><td>£3,420</td><td>334</td><td>£10.24</td><td style="font-weight:700;">238</td><td class="good">71.3%</td><td class="good">£14.37</td><td>0</td><td>1.91%</td></tr>
@@ -822,120 +1209,6 @@ footer{padding:28px 0;text-align:center;font-size:0.6rem;color:var(--text3);}
 <!-- ════════════════════════════════════════════════════════════════════════ -->
 <!-- PAGE: INSIGHTS -->
 <!-- ════════════════════════════════════════════════════════════════════════ -->
-<div class="page" id="page-insights">
-  <div class="page-title">Ask Skippy</div>
-  <div class="page-subtitle">Pre-computed insights from live Meta API data · Updated daily at 7am</div>
-
-  <div class="section">
-    <div class="section-label">Quick Insights — Click to expand</div>
-    <div class="insights-list">
-
-    <div class="insight-item" onclick="toggleInsight(this)">
-      <div class="insight-question">
-        <span class="insight-emoji">📊</span>
-        <span class="insight-text">Best MQL concepts this week vs last week</span>
-        <svg class="insight-chevron" viewBox="0 0 20 20" width="16" height="16"><path d="M6 8l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      </div>
-      <div class="insight-answer"><div class="insight-answer-inner">EMEA: 56.4% MQL rate (was 58.5% last week, ↓2.1pp)<br>APAC: 3.0% MQL rate (was 6.9% last week, ↓3.9pp)<br>AMS-GBP: 15.1% MQL rate (was 52.0% last week, ↓36.9pp)<br>  bookacall: 88% MQL rate, 74 MQLs, £30.18 CPMQL<br>  UnfinishedBridges: 85% MQL rate, 22 MQLs, £12.85 CPMQL<br>  Assets Doing the Work: 68% MQL rate, 57 MQLs, £14.30 CPMQL<br>  95% Tax: 63% MQL rate, 49 MQLs, £17.67 CPMQL<br>  LBP 2: 62% MQL rate, 23 MQLs, £22.66 CPMQL</div></div>
-    </div>
-
-    <div class="insight-item" onclick="toggleInsight(this)">
-      <div class="insight-question">
-        <span class="insight-emoji">🔥</span>
-        <span class="insight-text">Ads spending over £50 with zero MQLs</span>
-        <svg class="insight-chevron" viewBox="0 0 20 20" width="16" height="16"><path d="M6 8l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      </div>
-      <div class="insight-answer"><div class="insight-answer-inner"><br>EMEA:<br>  Business-Brand-Splitscreen_3min: £438 spent, 0 leads, 0 MQLs<br>  Instagram post: One simple way to quickl: £150 spent, 0 leads, 0 MQLs<br>  Organic: £148 spent, 0 leads, 0 MQLs<br>  Organic_Direct messaging.mp4: £118 spent, 0 leads, 0 MQLs<br>  Organic_766-dent.mp4: £104 spent, 0 leads, 0 MQLs<br><br>APAC:<br>  LBP 1_Better-Time_Business Freedom_04032: A$2917 spent, 167 leads, 0 MQLs<br>  LBP 1_Freedom-Sacrifice_Business Freedom: A$1739 spent, 132 leads, 0 MQLs<br>  LBP 2_Lifestyle-Formula_Business Freedom: A$331 spent, 29 leads, 0 MQLs<br>  MountainofValue_Scaling-Workload_2702202: A$266 spent, 5 leads, 0 MQLs<br>  95% Tax_Brand-Fan_27022026: A$167 spent, 1 leads, 0 MQLs<br><br>AMS-GBP:<br>  LBP 1_Better-Time_Business Freedom_04032: £213 spent, 36 leads, 0 MQLs<br>  Organic: £145 spent, 0 leads, 0 MQLs<br>  Organic_Prototype business idea.mp4: £140 spent, 0 leads, 0 MQLs<br>  UnfinishedBridges_Simple-Rule_27022026: £133 spent, 0 leads, 0 MQLs<br>  LBP 2_Lifestyle-Formula_Business Freedom: £100 spent, 9 leads, 0 MQLs</div></div>
-    </div>
-
-    <div class="insight-item" onclick="toggleInsight(this)">
-      <div class="insight-question">
-        <span class="insight-emoji">🔄</span>
-        <span class="insight-text">What did Fritz pause — should any come back?</span>
-        <svg class="insight-chevron" viewBox="0 0 20 20" width="16" height="16"><path d="M6 8l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      </div>
-      <div class="insight-answer"><div class="insight-answer-inner">Recent Fritz pauses scored against MQL data:<br><br>❌ NarrowPath — Opportunity Yes: 55 MQLs, 74% rate, £16.73 CPMQL — should NOT have been paused<br>❌ Assets Audit — bookacall: 10 MQLs, 167% rate, £11.36 CPMQL — should NOT have been paused<br>❌ Topher Discovery: 8 MQLs, 89% rate, £23.81 CPMQL — should NOT have been paused<br>❌ Glen Discovery — bookacall: 9 MQLs, 180% rate, £21.24 CPMQL — should NOT have been paused<br>✅ NarrowPath ChatGPT: 81 leads, 20% MQL rate — correct pause<br><br>Recommendation: Reactivate the top 4. All had CPMQL under £25 and MQL rates above 70%.</div></div>
-    </div>
-
-    <div class="insight-item" onclick="toggleInsight(this)">
-      <div class="insight-question">
-        <span class="insight-emoji">🥊</span>
-        <span class="insight-text">Glen vs Dan in APAC — who's winning?</span>
-        <svg class="insight-chevron" viewBox="0 0 20 20" width="16" height="16"><path d="M6 8l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      </div>
-      <div class="insight-answer"><div class="insight-answer-inner">APAC last week (Mar 3-9):<br><br>Glen: A$1,625 spend → 45 leads → 23 MQLs (51% rate) → A$71/MQL<br>Dan: A$9,452 spend → 519 leads → 8 MQLs (1.5% rate) → A$1,182/MQL<br><br>Dan costs 17× more per MQL than Glen in APAC.<br>Dan gets 85% of APAC budget but produces 26% of MQLs.<br>Dan&#x27;s landing pages convert fine (24.6% LPV→Lead). The problem is post-registration qualification — his APAC leads don&#x27;t become MQLs.<br><br>If APAC budget was 50/50: estimated ~35 MQLs/week (vs current 31), at roughly half the cost.</div></div>
-    </div>
-
-    <div class="insight-item" onclick="toggleInsight(this)">
-      <div class="insight-question">
-        <span class="insight-emoji">💸</span>
-        <span class="insight-text">Biggest spenders with below-average MQL rate</span>
-        <svg class="insight-chevron" viewBox="0 0 20 20" width="16" height="16"><path d="M6 8l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      </div>
-      <div class="insight-answer"><div class="insight-answer-inner">EMEA average MQL rate: 63%<br>Top spenders below average:<br>  RawFootage_hookone-bananas_6102025: £8017 spent, 60.0% MQL rate (vs 63% avg)<br>  NarrowPath_ChatGPT-Prompt_Shiny Object S: £3631 spent, 43.9% MQL rate (vs 63% avg)<br>  Environment Dictates Performance_Environ: £1055 spent, 56.7% MQL rate (vs 63% avg)<br>  LBP 1_Better-Time_Business Freedom_04032: £1038 spent, 33.7% MQL rate (vs 63% avg)<br>  Founder Led Growth_Cliched-Influencer_Be: £904 spent, 62.7% MQL rate (vs 63% avg)</div></div>
-    </div>
-
-    <div class="insight-item" onclick="toggleInsight(this)">
-      <div class="insight-question">
-        <span class="insight-emoji">✂️</span>
-        <span class="insight-text">If I cut 20% of budget, where do I cut?</span>
-        <svg class="insight-chevron" viewBox="0 0 20 20" width="16" height="16"><path d="M6 8l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      </div>
-      <div class="insight-answer"><div class="insight-answer-inner">Current weekly spend: ~£18,841 (all regions combined)<br>20% cut = ~£3,768<br><br>Cut 1: Dan APAC — A$9,452/week producing 8 MQLs at A$1,182 each. Cut to A$3,000. Saves A$6,452 (~£3,200).<br>Cut 2: LBP campaigns (EMEA) — £9,146/week, 15-19% MQL rate, £67-77 CPMQL. Cheap leads, expensive MQLs. Pause or halve.<br>Cut 3: Long-tail EMEA ads spending £50-200 with 0 MQLs. Dozens of them. Kill anything with &gt;£100 spend and no MQLs.<br><br>Total savings: ~£4,500-5,000/week. MQL output barely changes because you&#x27;re cutting the least efficient spend.</div></div>
-    </div>
-
-    <div class="insight-item" onclick="toggleInsight(this)">
-      <div class="insight-question">
-        <span class="insight-emoji">📞</span>
-        <span class="insight-text">Which creative angles produce meetings?</span>
-        <svg class="insight-chevron" viewBox="0 0 20 20" width="16" height="16"><path d="M6 8l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      </div>
-      <div class="insight-answer"><div class="insight-answer-inner">Ads that actually produce booked meetings:<br><br>  MountainofValue_Founder-Panic_Shiny Obje (EMEA): 38 meetings, 845 MQLs, £14719<br>  bookacall_personalbrandpower-singlevideo (EMEA): 25 meetings, 16 MQLs, £1037<br>  MountainofValue_Manual-Delivery_Time for (APAC): 12 meetings, 7 MQLs, A$4575<br>  Environment Dictates Performance_Environ (EMEA): 9 meetings, 58 MQLs, £1046<br>  bookacall_turnclarityintogrowth-singleim (EMEA): 9 meetings, 6 MQLs, £135<br>  NarrowPath_7-Things_Shiny Object Syndrom (APAC): 8 meetings, 9 MQLs, A$4920<br>  bookacall_thegrowthblueprintbrain-single (EMEA): 8 meetings, 6 MQLs, £97<br>  Selling Time For Money_90-Days_Time for  (EMEA): 7 meetings, 100 MQLs, £1505<br><br>Pattern: BOF (bottom of funnel) and bookacall campaigns drive meetings. TOF drives volume but meetings lag.</div></div>
-    </div>
-
-    <div class="insight-item" onclick="toggleInsight(this)">
-      <div class="insight-question">
-        <span class="insight-emoji">📉</span>
-        <span class="insight-text">MQL rate trends by region — anything declining?</span>
-        <svg class="insight-chevron" viewBox="0 0 20 20" width="16" height="16"><path d="M6 8l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      </div>
-      <div class="insight-answer"><div class="insight-answer-inner"><br>EMEA MQL rate (last 4 weeks):<br>  02-11: 67.4%<br>  02-18: 71.0%<br>  02-25: 58.5%<br>  03-04: 56.4%<br>  ⚠ DECLINING: down 11pp over 4 weeks<br><br>APAC MQL rate (last 4 weeks):<br>  02-11: 5.8%<br>  02-18: 19.9%<br>  02-25: 6.9%<br>  03-04: 3.0%<br>  → Stable (-3pp)<br><br>AMS-GBP MQL rate (last 4 weeks):<br>  02-11: 6.2%<br>  02-18: 78.3%<br>  02-25: 52.0%<br>  03-04: 15.1%<br>  → Stable (+9pp)</div></div>
-    </div>
-
-    <div class="insight-item" onclick="toggleInsight(this)">
-      <div class="insight-question">
-        <span class="insight-emoji">🩸</span>
-        <span class="insight-text">Silent bleeders: rising CPL + falling MQL rate</span>
-        <svg class="insight-chevron" viewBox="0 0 20 20" width="16" height="16"><path d="M6 8l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      </div>
-      <div class="insight-answer"><div class="insight-answer-inner">Ads where you&#x27;re paying MORE per lead but getting FEWER qualified ones:<br><br>✅ EMEA: No silent bleeder pattern this week<br>✅ APAC: No silent bleeder pattern this week<br>✅ AMS-GBP: No silent bleeder pattern this week</div></div>
-    </div>
-
-    <div class="insight-item" onclick="toggleInsight(this)">
-      <div class="insight-question">
-        <span class="insight-emoji">📋</span>
-        <span class="insight-text">Fritz's Monday morning playbook</span>
-        <svg class="insight-chevron" viewBox="0 0 20 20" width="16" height="16"><path d="M6 8l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-      </div>
-      <div class="insight-answer"><div class="insight-answer-inner">Three things Fritz should do Monday morning:<br><br>1. REACTIVATE: 95% Tax Brand Research (£7.62 CPMQL, 86% MQL rate) and Assets Audit bookacall (£11.36 CPMQL, 167% MQL rate). Both paused last week. Both outperform most active ads.<br><br>2. INVESTIGATE: LBP campaigns launched Mar 4 — cheap leads (£8-10 CPL) but MQL rate is 15-19%. If this doesn&#x27;t improve by end of week, they&#x27;re volume traps diluting the portfolio.<br><br>3. SHIFT APAC BUDGET: Move A$3,000/week from Dan APAC to Glen APAC. Glen&#x27;s 51% MQL rate vs Dan&#x27;s 1.5% means every dollar moved roughly doubles MQL output in that region.</div></div>
-    </div>
-
-    </div>
-  </div>
-
-  <div class="section" style="margin-top:40px;">
-    <div class="section-label">Ask a custom question</div>
-    <div class="card" style="padding:24px;">
-      <p style="font-size:0.78rem;color:var(--text2);margin-bottom:16px;">Type any question about your Meta Ads data. This sends a message to Skippy on Telegram — you'll get a reply in the Acquisition group.</p>
-      <div style="display:flex;gap:10px;">
-        <input type="text" id="custom-question" placeholder="e.g. Which EMEA ads have frequency above 3?" style="flex:1;padding:12px 16px;border:1px solid var(--border);border-radius:8px;font-size:0.82rem;font-family:inherit;outline:none;background:var(--bg);" onkeydown="if(event.key==='Enter')askQuestion()">
-        <button onclick="askQuestion()" style="padding:12px 24px;background:var(--text);color:white;border:none;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:inherit;">Ask</button>
-      </div>
-      <div id="custom-answer" style="display:none;margin-top:16px;padding:16px;background:var(--elevated);border-radius:8px;font-size:0.78rem;font-family:'JetBrains Mono',monospace;white-space:pre-wrap;line-height:1.7;color:var(--text2);"></div>
-    </div>
-  </div>
-</div>
-
 <footer>Dent Acquisition Intelligence — Generated by Skippy — Meta Marketing API — Read-only mode</footer>
 
 </div>
@@ -970,6 +1243,43 @@ function askQuestion() {
   box.textContent = 'Sending to Skippy... You\'ll get a reply in the Acquisition Telegram group shortly.';
   document.getElementById('custom-question').value = '';
 }
+
+function showFunnel(key, btn) {
+  document.querySelectorAll('.funnel-view').forEach(f => f.style.display = 'none');
+  document.getElementById('funnel-' + key).style.display = 'block';
+  btn.parentElement.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+var insightIdx = 0;
+var insightTotal = 10;
+function slideInsight(dir) {
+  insightIdx = Math.max(0, Math.min(insightTotal - 1, insightIdx + dir));
+  var track = document.getElementById('insight-slider');
+  var card = track.children[insightIdx];
+  card.scrollIntoView({behavior:'smooth',block:'nearest',inline:'start'});
+  updateDots();
+}
+function updateDots() {
+  var dots = document.getElementById('insight-dots');
+  dots.innerHTML = '';
+  for(var i=0;i<insightTotal;i++){
+    var d = document.createElement('div');
+    d.style.cssText = 'width:8px;height:8px;border-radius:50%;background:'+(i===insightIdx?'var(--text)':'var(--border)')+';transition:background 0.2s;cursor:pointer;';
+    d.onclick = (function(idx){return function(){insightIdx=idx;slideInsight(0);}})(i);
+    dots.appendChild(d);
+  }
+}
+setTimeout(updateDots, 100);
+
+function toggleCreative(adId) {
+  var panel = document.getElementById('creative-' + adId);
+  if (panel) {
+    panel.classList.toggle('open');
+  }
+}
+
+function toggleCreative(id){var p=document.getElementById('creative-'+id);if(p)p.classList.toggle('open');}
 </script>
 </body>
 </html>
