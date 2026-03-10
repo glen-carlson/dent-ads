@@ -458,6 +458,100 @@
         .test-btn:active {
             background: var(--neutral-700);
         }
+        
+        /* Exercise Help Button */
+        .current-exercise {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-4);
+        }
+        
+        .help-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--neutral-800);
+            border: 2px solid var(--neutral-600);
+            color: var(--accent);
+            font-size: var(--text-xl);
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .help-btn:active {
+            background: var(--neutral-700);
+            border-color: var(--accent);
+        }
+        
+        /* Exercise Help Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-6);
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--neutral-800);
+            border: 1px solid var(--neutral-700);
+            border-radius: var(--space-4);
+            padding: var(--space-8);
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: var(--space-4);
+            right: var(--space-4);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: transparent;
+            border: none;
+            color: var(--neutral-400);
+            font-size: var(--text-2xl);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+        
+        .modal-close:active {
+            color: var(--neutral-0);
+        }
+        
+        .modal-content h3 {
+            font-size: var(--text-xl);
+            margin-bottom: var(--space-4);
+            padding-right: var(--space-12);
+            color: var(--neutral-0);
+        }
+        
+        .modal-content p {
+            font-size: var(--text-base);
+            line-height: 1.6;
+            color: var(--neutral-300);
+        }
     </style>
 </head>
 <body>
@@ -508,11 +602,21 @@
         
         <div class="current-exercise">
             <h2 id="currentExercise">Get Ready</h2>
+            <button class="help-btn" onclick="showExerciseHelp()" id="helpBtn">?</button>
         </div>
         
         <div class="workout-controls">
             <button class="control-btn" onclick="pauseWorkout()" id="pauseBtn">Pause</button>
             <button class="control-btn" onclick="endWorkout()">End</button>
+        </div>
+    </div>
+    
+    <!-- Exercise Help Modal -->
+    <div id="exerciseModal" class="modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()">×</button>
+            <h3 id="modalExerciseName"></h3>
+            <p id="modalExerciseDesc"></p>
         </div>
     </div>
 
@@ -1041,6 +1145,69 @@
                 wakeLock.release();
                 wakeLock = null;
             }
+        }
+        
+        // Exercise Descriptions
+        const exerciseDescriptions = {
+            "Get Ready": "Preparation countdown before workout begins.",
+            "Switch": "Quick transition between exercises. Move to next position.",
+            
+            // Mobility A
+            "Toes & Shoulders": "On all fours, tuck toes under and sit back on heels. Reach arms forward and press chest toward ground.",
+            "Cat / Cow / Wrist Twist": "Cat/Cow: Alternate arching and rounding spine on all fours. Wrist Twist: Rotate wrists in circles between reps.",
+            "Forward Hang": "Dead hang from bar with arms straight. Let shoulders sink, breathe deep.",
+            "All 4 Elbow Twist (L+R)": "On all fours, place one hand behind head. Rotate elbow down toward opposite arm, then up toward ceiling.",
+            "Best Stretch Ever (L)": "Deep lunge position. Same-side hand on ground inside front foot, opposite arm reaches up and back. Rotate torso.",
+            "Best Stretch Ever (R)": "Deep lunge position. Same-side hand on ground inside front foot, opposite arm reaches up and back. Rotate torso.",
+            "Couch Stretch + Band Arms (L)": "Rear knee on ground, shin against wall. Front foot flat. Hold resistance band overhead, pull apart.",
+            "Couch Stretch + Band Arms (R)": "Rear knee on ground, shin against wall. Front foot flat. Hold resistance band overhead, pull apart.",
+            "ATG Lunge (L) + Band Arms": "Deep lunge, rear knee touching ground. Torso upright. Hold band overhead, pull apart for shoulder activation.",
+            "ATG Lunge (R) + Band Arms": "Deep lunge, rear knee touching ground. Torso upright. Hold band overhead, pull apart for shoulder activation.",
+            
+            // Mobility B
+            "Horse Stance": "Wide squat stance, feet parallel or slightly out. Squat down, keep chest up, knees track over toes.",
+            "Good Mornings": "Standing, hands behind head. Hinge at hips, push butt back, chest forward. Keep back flat.",
+            "Standing Pancake": "Feet wide, fold forward from hips. Reach hands toward ground between feet. Keep legs straight.",
+            "Deep Squat Hold": "Squat as deep as you can, heels down. Hold bottom position. Keep chest up.",
+            "Deep Squat Twist (L+R)": "In deep squat, rotate torso left and right. Reach one arm up and back, open chest.",
+            "Lizard Lunge (L)": "Deep lunge, front foot wide. Drop rear knee. Place both hands inside front foot. Sink hips down.",
+            "Lizard Lunge (R)": "Deep lunge, front foot wide. Drop rear knee. Place both hands inside front foot. Sink hips down.",
+            "Seated Straddle + Forward Fold": "Sit with legs wide in a V. Fold forward from hips, reach hands forward between legs.",
+            "Butterfly Sit + Forward Fold": "Sit with soles of feet together, knees out. Fold forward, bringing chest toward feet.",
+            "90/90 Hip Stretch (L)": "Sit with front leg bent 90° in front, rear leg bent 90° behind. Lean forward over front leg.",
+            "90/90 Hip Stretch (R)": "Sit with front leg bent 90° in front, rear leg bent 90° behind. Lean forward over front leg.",
+            "Frog Stretch": "On all fours, knees wide apart. Sink hips back and down. Forearms on ground.",
+            "Pancake Sit + Side Reaches": "Sit with legs wide in a V. Reach one arm overhead and lean toward opposite foot. Alternate sides.",
+            
+            // Mobility C
+            "Dead Hang": "Hang from bar, arms straight, shoulders relaxed. Let body weight stretch shoulders and lats.",
+            "Active Hang (Scapula Pulls)": "Hang from bar. Pull shoulder blades down and together without bending elbows. Release and repeat.",
+            "One-Arm Hang Assist (L)": "Hang from bar with left hand, right hand lightly assists on bar or wrist for support.",
+            "One-Arm Hang Assist (R)": "Hang from bar with right hand, left hand lightly assists on bar or wrist for support.",
+            "Lat Stretch on Bar (L)": "Hold bar with left hand, step away and lean back. Let body weight stretch left lat and shoulder.",
+            "Lat Stretch on Bar (R)": "Hold bar with right hand, step away and lean back. Let body weight stretch right lat and shoulder.",
+            "Couch Stretch (L)": "Rear knee on ground, shin against wall or couch. Front foot flat, knee bent 90°. Chest upright.",
+            "Couch Stretch (R)": "Rear knee on ground, shin against wall or couch. Front foot flat, knee bent 90°. Chest upright.",
+            "Couch Stretch Lean Back (L)": "In couch stretch position, slowly lean torso backward. Feel stretch in front of hip and thigh.",
+            "Couch Stretch Lean Back (R)": "In couch stretch position, slowly lean torso backward. Feel stretch in front of hip and thigh.",
+            "Table Top Hold": "Sit on ground, hands behind you, knees bent, feet flat. Lift hips up to create table shape with body.",
+            "Table Top Rocks": "In table top position, rock hips forward and back. Maintain lifted hip position throughout.",
+            "Cross-Legged Sit + Torso Rotations": "Sit cross-legged. Place one hand behind you, other hand on opposite knee. Rotate torso. Alternate sides.",
+            "Archer Shoulder Openers": "Kneeling or standing. Both arms extended forward. Keep one arm forward, pull other arm straight back while rotating torso. Alternate sides."
+        };
+        
+        // Exercise Help Modal
+        function showExerciseHelp() {
+            const exerciseName = document.getElementById('currentExercise').textContent;
+            const description = exerciseDescriptions[exerciseName] || "No description available.";
+            
+            document.getElementById('modalExerciseName').textContent = exerciseName;
+            document.getElementById('modalExerciseDesc').textContent = description;
+            document.getElementById('exerciseModal').classList.add('active');
+        }
+        
+        function closeModal() {
+            document.getElementById('exerciseModal').classList.remove('active');
         }
         
         // Settings
