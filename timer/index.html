@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Timer">
+    <title>Fitness Timer</title>
+    <style>
+        :root {
+            /* Tinted Neutrals (warm) — OKLCH with hex fallbacks */
+            --neutral-900: oklch(12% 0.005 60);
+            --neutral-900: #1d1d1a;
+            --neutral-800: oklch(18% 0.008 60);
+            --neutral-800: #2c2b27;
+            --neutral-700: oklch(25% 0.01 60);
+            --neutral-700: #3f3e39;
+            --neutral-600: oklch(35% 0.01 60);
+            --neutral-600: #585751;
+            --neutral-500: oklch(45% 0.01 60);
+            --neutral-500: #72716b;
+            --neutral-400: oklch(58% 0.01 60);
+            --neutral-400: #94938d;
+            --neutral-300: oklch(70% 0.01 60);
+            --neutral-300: #b3b2ad;
+            --neutral-200: oklch(82% 0.008 60);
+            --neutral-200: #d1d0cc;
+            --neutral-100: oklch(92% 0.005 60);
+            --neutral-100: #e8e7e4;
+            --neutral-0: oklch(98% 0.005 60);
+            --neutral-0: #faf9f7;
+            
+            /* Accent (desaturated blue for dark mode) */
+            --accent: oklch(60% 0.18 250);
+            --accent: #5b8fc9;
+            --accent-hover: oklch(55% 0.16 250);
+            --accent-hover: #4a7ab3;
+            --accent-danger: oklch(58% 0.22 25);
+            --accent-danger: #c9645b;
+            
+            /* Typography Scale (1.333 — perfect fourth) */
+            --text-xs: 0.75rem;
+            --text-sm: 0.875rem;
+            --text-base: 1rem;
+            --text-lg: 1.333rem;
+            --text-xl: 1.777rem;
+            --text-2xl: 2.369rem;
+            --text-3xl: 3.157rem;
+            --text-timer: 7.478rem;
+            
+            /* Spacing Scale (4pt base) */
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-12: 3rem;
+            --space-16: 4rem;
+            --space-24: 6rem;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--neutral-900);
+            color: var(--neutral-0);
+            overflow-x: hidden;
+            font-size: var(--text-base);
+            line-height: 1.5;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+        }
+        
+        /* Library Screen */
+        .screen {
+            display: none;
+            min-height: 100vh;
+            padding: var(--space-6);
+            padding-bottom: var(--space-12);
+        }
+        
+        .screen.active {
+            display: block;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-8);
+            padding-top: var(--space-4);
+        }
+        
+        .header h1 {
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+        
+        .settings-btn {
+            background: transparent;
+            border: none;
+            color: var(--neutral-400);
+            font-size: var(--text-2xl);
+            cursor: pointer;
+            padding: var(--space-2);
+        }
+        
+        .workout-card {
+            background: var(--neutral-800);
+            border: 1px solid var(--neutral-700);
+            border-radius: var(--space-3);
+            padding: var(--space-6);
+            margin-bottom: var(--space-4);
+            cursor: pointer;
+        }
+        
+        .workout-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--space-3);
+        }
+        
+        .workout-card-info {
+            flex: 1;
+        }
+        
+        .workout-card h3 {
+            font-size: var(--text-xl);
+            font-weight: 700;
+            margin-bottom: var(--space-2);
+            letter-spacing: -0.01em;
+        }
+        
+        .workout-card .meta {
+            color: var(--neutral-400);
+            font-size: var(--text-sm);
+        }
+        
+        .play-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: none;
+            color: var(--neutral-0);
+            font-size: var(--text-2xl);
+            cursor: pointer;
+            flex-shrink: 0;
+            margin-left: var(--space-4);
+        }
+        
+        .play-btn:active {
+            transform: scale(0.95);
+            background: var(--accent-hover);
+        }
+        
+        /* Edit Screen */
+        .edit-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: var(--space-6);
+        }
+        
+        .back-btn {
+            background: transparent;
+            border: none;
+            color: var(--accent);
+            font-size: var(--text-2xl);
+            cursor: pointer;
+            padding: var(--space-2);
+        }
+        
+        .workout-name {
+            background: transparent;
+            border: none;
+            color: var(--neutral-0);
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            width: 100%;
+            margin-bottom: var(--space-6);
+            text-align: center;
+        }
+        
+        .primary-cta {
+            width: 100%;
+            padding: var(--space-6);
+            background: var(--accent);
+            border: none;
+            color: var(--neutral-0);
+            font-size: var(--text-xl);
+            font-weight: 700;
+            border-radius: var(--space-3);
+            cursor: pointer;
+            margin-bottom: var(--space-8);
+        }
+        
+        .primary-cta:active {
+            transform: scale(0.98);
+            background: var(--accent-hover);
+        }
+        
+        .exercise-list {
+            margin-bottom: var(--space-8);
+        }
+        
+        .exercise-item {
+            background: var(--neutral-800);
+            border: 1px solid var(--neutral-700);
+            border-radius: var(--space-2);
+            padding: var(--space-4);
+            margin-bottom: var(--space-2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .exercise-info {
+            flex: 1;
+        }
+        
+        .exercise-name {
+            font-size: var(--text-base);
+            margin-bottom: var(--space-1);
+        }
+        
+        .exercise-duration {
+            color: var(--neutral-400);
+            font-size: var(--text-sm);
+        }
+        
+        .exercise-controls {
+            display: flex;
+            gap: var(--space-2);
+        }
+        
+        .icon-btn {
+            background: transparent;
+            border: none;
+            color: var(--neutral-400);
+            font-size: var(--text-lg);
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+        }
+        
+        .icon-btn:active {
+            color: var(--neutral-0);
+        }
+        
+        .repeat-selector {
+            display: flex;
+            gap: var(--space-3);
+            margin-bottom: var(--space-6);
+        }
+        
+        .repeat-btn {
+            flex: 1;
+            padding: var(--space-3);
+            background: var(--neutral-800);
+            border: 1px solid var(--neutral-700);
+            color: var(--neutral-400);
+            border-radius: var(--space-2);
+            font-size: var(--text-sm);
+            cursor: pointer;
+        }
+        
+        .repeat-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--neutral-0);
+        }
+        
+        .total-time {
+            text-align: center;
+            font-size: var(--text-lg);
+            color: var(--neutral-400);
+            margin-bottom: var(--space-8);
+        }
+        
+        .total-time span {
+            color: var(--neutral-0);
+            font-weight: 700;
+        }
+        
+        .delete-btn {
+            width: 100%;
+            padding: var(--space-3);
+            background: transparent;
+            border: 1px solid var(--accent-danger);
+            color: var(--accent-danger);
+            font-size: var(--text-sm);
+            border-radius: var(--space-2);
+            cursor: pointer;
+        }
+        
+        .delete-btn:active {
+            background: var(--accent-danger);
+            color: var(--neutral-0);
+        }
+        
+        /* Workout Screen */
+        .workout-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding-top: 30vh;
+            padding-bottom: var(--space-12);
+            padding-left: var(--space-6);
+            padding-right: var(--space-6);
+            position: relative;
+        }
+        
+        .progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: var(--neutral-800);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            transition: width 0.3s ease-out;
+        }
+        
+        .next-exercise {
+            text-align: center;
+            color: var(--neutral-400);
+            font-size: var(--text-lg);
+            margin-bottom: var(--space-6);
+            font-weight: 500;
+        }
+        
+        .timer {
+            font-size: var(--text-timer);
+            font-weight: 700;
+            margin-bottom: var(--space-6);
+            font-variant-numeric: tabular-nums;
+            letter-spacing: -0.02em;
+        }
+        
+        .current-exercise {
+            text-align: center;
+            margin-bottom: var(--space-12);
+        }
+        
+        .current-exercise h2 {
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+        
+        .workout-controls {
+            display: flex;
+            gap: var(--space-6);
+        }
+        
+        .control-btn {
+            width: 96px;
+            height: 96px;
+            border-radius: 50%;
+            background: var(--neutral-800);
+            border: 1px solid var(--neutral-700);
+            color: var(--neutral-0);
+            font-size: var(--text-sm);
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .control-btn:active {
+            transform: scale(0.95);
+            background: var(--neutral-700);
+        }
+        
+        /* Settings Screen */
+        .settings-item {
+            background: var(--neutral-800);
+            border: 1px solid var(--neutral-700);
+            border-radius: var(--space-2);
+            padding: var(--space-4);
+            margin-bottom: var(--space-3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .settings-item label {
+            font-size: var(--text-base);
+        }
+        
+        .settings-item input[type="number"] {
+            background: var(--neutral-900);
+            border: 1px solid var(--neutral-700);
+            color: var(--neutral-0);
+            padding: var(--space-2);
+            border-radius: var(--space-2);
+            width: 80px;
+            text-align: center;
+            font-size: var(--text-base);
+        }
+        
+        .toggle {
+            width: 50px;
+            height: 30px;
+            background: var(--neutral-700);
+            border-radius: 15px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .toggle.active {
+            background: var(--accent);
+        }
+        
+        .toggle::after {
+            content: '';
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--neutral-0);
+            top: 2px;
+            left: 2px;
+            transition: left 0.3s;
+        }
+        
+        .toggle.active::after {
+            left: 22px;
+        }
+        
+        .test-btn {
+            padding: var(--space-2) var(--space-4);
+            background: var(--neutral-800);
+            border: 1px solid var(--neutral-700);
+            color: var(--neutral-0);
+            font-size: var(--text-sm);
+            border-radius: var(--space-2);
+            cursor: pointer;
+        }
+        
+        .test-btn:active {
+            background: var(--neutral-700);
+        }
+    </style>
+</head>
+<body>
+    <!-- Library Screen -->
+    <div id="library" class="screen active">
+        <div class="header">
+            <h1>Workouts</h1>
+            <button class="settings-btn" onclick="showSettings()">⚙️</button>
+        </div>
+        <div id="workoutList"></div>
+    </div>
+
+    <!-- Edit Screen -->
+    <div id="edit" class="screen">
+        <div class="edit-header">
+            <button class="back-btn" onclick="showLibrary()">←</button>
+            <div style="width: 40px;"></div>
+        </div>
+        
+        <input type="text" class="workout-name" id="workoutName" placeholder="Workout Name">
+        
+        <button class="primary-cta" onclick="startWorkout()">▶ Start Workout</button>
+        
+        <div id="exerciseList" class="exercise-list"></div>
+        
+        <div class="repeat-selector">
+            <button class="repeat-btn" onclick="setRepeat(1)" data-repeat="1">1 Set</button>
+            <button class="repeat-btn" onclick="setRepeat(2)" data-repeat="2">2 Sets</button>
+            <button class="repeat-btn" onclick="setRepeat(3)" data-repeat="3">3 Sets</button>
+        </div>
+        
+        <div class="total-time">
+            Total: <span id="totalTime">0:00</span>
+        </div>
+        
+        <button class="delete-btn" onclick="deleteCurrentWorkout()">Delete Workout</button>
+    </div>
+
+    <!-- Workout Screen -->
+    <div id="workout" class="screen workout-screen">
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+        
+        <div class="next-exercise" id="nextExercise">Next: Warm-up</div>
+        
+        <div class="timer" id="timer">5</div>
+        
+        <div class="current-exercise">
+            <h2 id="currentExercise">Get Ready</h2>
+        </div>
+        
+        <div class="workout-controls">
+            <button class="control-btn" onclick="pauseWorkout()" id="pauseBtn">Pause</button>
+            <button class="control-btn" onclick="endWorkout()">End</button>
+        </div>
+    </div>
+
+    <!-- Settings Screen -->
+    <div id="settings" class="screen">
+        <div class="header">
+            <button class="back-btn" onclick="showLibrary()">←</button>
+            <h1>Settings</h1>
+            <div style="width: 40px;"></div>
+        </div>
+        
+        <div class="settings-item">
+            <label>Default Interval (seconds)</label>
+            <input type="number" id="defaultInterval" value="10" min="0" max="60" onchange="saveSettings()">
+        </div>
+        
+        <div class="settings-item">
+            <label>Sound</label>
+            <div style="display: flex; gap: var(--space-3); align-items: center;">
+                <div class="toggle active" id="soundToggle" onclick="toggleSound()"></div>
+                <button class="test-btn" id="testSoundBtn">Test</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        let workouts = [];
+        let currentWorkout = null;
+        let currentWorkoutIndex = -1;
+        let workoutTimer = null;
+        let timeRemaining = 0;
+        let currentStepIndex = 0;
+        let isPaused = false;
+        let wakeLock = null;
+        
+        // Settings
+        let settings = {
+            defaultInterval: 10,
+            sound: true
+        };
+        
+        // Audio context for chime
+        let audioContext = null;
+        
+        // Initialize
+        function init() {
+            loadData();
+            if (workouts.length === 0) {
+                loadDefaultWorkouts();
+            }
+            renderWorkoutList();
+            loadSettings();
+            
+            // Reset to library if browser cached workout screen state
+            if (document.getElementById('workout').classList.contains('active')) {
+                showScreen('library');
+            }
+            
+            // Wire up test sound button  
+            const testBtn = document.getElementById('testSoundBtn');
+            if (testBtn) {
+                testBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    testBtn.textContent = 'Testing...';
+                    playChime();
+                    setTimeout(() => {
+                        testBtn.textContent = 'Test';
+                    }, 1000);
+                });
+            }
+        }
+        
+        function loadDefaultWorkouts() {
+            workouts = [
+                {
+                    name: "Pancake Flow",
+                    exercises: [
+                        { name: "Horse Stance", duration: 60 },
+                        { name: "Good Mornings", duration: 30 },
+                        { name: "Standing Pancake", duration: 45 }
+                    ],
+                    repeat: 2
+                },
+                {
+                    name: "Mobility A",
+                    exercises: [
+                        { name: "Toes & Shoulders", duration: 120 },
+                        { name: "Switch", duration: 10 },
+                        { name: "Cat / Cow / Wrist Twist", duration: 120 },
+                        { name: "Switch", duration: 10 },
+                        { name: "Forward Hang", duration: 120 },
+                        { name: "Switch", duration: 10 },
+                        { name: "All 4 Elbow Twist (L+R)", duration: 120 },
+                        { name: "Switch", duration: 10 },
+                        { name: "Best Stretch Ever (L)", duration: 60 },
+                        { name: "Switch", duration: 10 },
+                        { name: "Best Stretch Ever (R)", duration: 60 },
+                        { name: "Switch", duration: 10 },
+                        { name: "Couch Stretch + Band Arms (L)", duration: 60 },
+                        { name: "Switch", duration: 10 },
+                        { name: "Couch Stretch + Band Arms (R)", duration: 60 },
+                        { name: "Switch", duration: 10 },
+                        { name: "ATG Lunge (L) + Band Arms", duration: 120 },
+                        { name: "Switch", duration: 10 },
+                        { name: "ATG Lunge (R) + Band Arms", duration: 120 },
+                        { name: "Switch", duration: 10 }
+                    ],
+                    repeat: 1
+                }
+            ];
+            saveData();
+        }
+        
+        function loadData() {
+            const data = localStorage.getItem('fitnessTimerData');
+            if (data) {
+                workouts = JSON.parse(data);
+            }
+        }
+        
+        function saveData() {
+            localStorage.setItem('fitnessTimerData', JSON.stringify(workouts));
+        }
+        
+        function loadSettings() {
+            const data = localStorage.getItem('fitnessTimerSettings');
+            if (data) {
+                settings = JSON.parse(data);
+                document.getElementById('defaultInterval').value = settings.defaultInterval;
+                document.getElementById('soundToggle').classList.toggle('active', settings.sound);
+            }
+        }
+        
+        function saveSettings() {
+            settings.defaultInterval = parseInt(document.getElementById('defaultInterval').value);
+            localStorage.setItem('fitnessTimerSettings', JSON.stringify(settings));
+        }
+        
+        // Navigation
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+        
+        function showLibrary() {
+            showScreen('library');
+            renderWorkoutList();
+        }
+        
+        function showSettings() {
+            showScreen('settings');
+        }
+        
+        // Library
+        function renderWorkoutList() {
+            const list = document.getElementById('workoutList');
+            list.innerHTML = workouts.map((w, i) => {
+                const totalDuration = calculateTotalDuration(w);
+                const minutes = Math.floor(totalDuration / 60);
+                const seconds = totalDuration % 60;
+                return `
+                    <div class="workout-card">
+                        <div class="workout-card-header">
+                            <div class="workout-card-info" onclick="editWorkout(${i})">
+                                <h3>${w.name}</h3>
+                                <div class="meta">${w.exercises.length} exercises • ${minutes}:${seconds.toString().padStart(2, '0')} • ${w.repeat} set${w.repeat > 1 ? 's' : ''}</div>
+                            </div>
+                            <button class="play-btn" onclick="event.stopPropagation(); quickPlay(${i})">▶</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function calculateTotalDuration(workout) {
+            let total = 0;
+            for (let r = 0; r < workout.repeat; r++) {
+                workout.exercises.forEach((ex, idx) => {
+                    total += ex.duration;
+                    // CRITICAL FIX: Don't add interval after "Switch" exercises
+                    const isSwitch = ex.name.toLowerCase().includes('switch');
+                    const isLast = idx === workout.exercises.length - 1;
+                    if (!isSwitch && !isLast) {
+                        total += settings.defaultInterval;
+                    }
+                });
+                if (r < workout.repeat - 1) {
+                    total += settings.defaultInterval;
+                }
+            }
+            return total;
+        }
+        
+        function quickPlay(index) {
+            currentWorkoutIndex = index;
+            currentWorkout = workouts[index];
+            saveWorkout();
+            startWorkout();
+        }
+        
+        // Edit
+        function editWorkout(index) {
+            currentWorkoutIndex = index;
+            currentWorkout = workouts[index];
+            document.getElementById('workoutName').value = currentWorkout.name;
+            renderExerciseList();
+            updateRepeatButtons();
+            updateTotalTime();
+            showScreen('edit');
+        }
+        
+        function renderExerciseList() {
+            const list = document.getElementById('exerciseList');
+            list.innerHTML = currentWorkout.exercises.map((ex, i) => {
+                const mins = Math.floor(ex.duration / 60);
+                const secs = ex.duration % 60;
+                return `
+                    <div class="exercise-item">
+                        <div class="exercise-info">
+                            <div class="exercise-name">${ex.name}</div>
+                            <div class="exercise-duration">${mins}:${secs.toString().padStart(2, '0')}</div>
+                        </div>
+                        <div class="exercise-controls">
+                            ${i > 0 ? '<button class="icon-btn" onclick="moveExercise(' + i + ', -1)">↑</button>' : ''}
+                            ${i < currentWorkout.exercises.length - 1 ? '<button class="icon-btn" onclick="moveExercise(' + i + ', 1)">↓</button>' : ''}
+                            <button class="icon-btn" onclick="deleteExercise(' + i + ')">🗑</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function deleteExercise(index) {
+            currentWorkout.exercises.splice(index, 1);
+            saveWorkout();
+            renderExerciseList();
+            updateTotalTime();
+        }
+        
+        function moveExercise(index, direction) {
+            const newIndex = index + direction;
+            if (newIndex < 0 || newIndex >= currentWorkout.exercises.length) return;
+            
+            const temp = currentWorkout.exercises[index];
+            currentWorkout.exercises[index] = currentWorkout.exercises[newIndex];
+            currentWorkout.exercises[newIndex] = temp;
+            
+            saveWorkout();
+            renderExerciseList();
+        }
+        
+        function setRepeat(count) {
+            currentWorkout.repeat = count;
+            saveWorkout();
+            updateRepeatButtons();
+            updateTotalTime();
+        }
+        
+        function updateRepeatButtons() {
+            document.querySelectorAll('.repeat-btn').forEach(btn => {
+                const repeat = parseInt(btn.dataset.repeat);
+                btn.classList.toggle('active', repeat === currentWorkout.repeat);
+            });
+        }
+        
+        function updateTotalTime() {
+            const total = calculateTotalDuration(currentWorkout);
+            const mins = Math.floor(total / 60);
+            const secs = total % 60;
+            document.getElementById('totalTime').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        function saveWorkout() {
+            currentWorkout.name = document.getElementById('workoutName').value;
+            workouts[currentWorkoutIndex] = currentWorkout;
+            saveData();
+        }
+        
+        function deleteCurrentWorkout() {
+            if (confirm('Delete this workout?')) {
+                workouts.splice(currentWorkoutIndex, 1);
+                saveData();
+                showLibrary();
+            }
+        }
+        
+        // Workout execution
+        function startWorkout() {
+            if (currentWorkout) saveWorkout();
+            
+            // Initialize audio context
+            try {
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                const buffer = audioContext.createBuffer(1, 1, 22050);
+                const source = audioContext.createBufferSource();
+                source.buffer = buffer;
+                source.connect(audioContext.destination);
+                source.start(0);
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+            } catch (e) {
+                console.error('Audio init failed:', e);
+            }
+            
+            // Build workout sequence with conditional intervals
+            const sequence = [];
+            for (let r = 0; r < currentWorkout.repeat; r++) {
+                currentWorkout.exercises.forEach((ex, idx) => {
+                    sequence.push({ ...ex, type: 'exercise' });
+                    
+                    // CRITICAL FIX: Only add interval if NOT a "Switch" exercise AND not last
+                    const isSwitch = ex.name.toLowerCase().includes('switch');
+                    const isLast = idx === currentWorkout.exercises.length - 1;
+                    
+                    if (!isSwitch && !isLast) {
+                        sequence.push({ 
+                            name: 'Rest', 
+                            duration: settings.defaultInterval,
+                            type: 'interval'
+                        });
+                    }
+                });
+                if (r < currentWorkout.repeat - 1) {
+                    sequence.push({ 
+                        name: 'Rest', 
+                        duration: settings.defaultInterval,
+                        type: 'interval'
+                    });
+                }
+            }
+            
+            // Add prep countdown
+            sequence.unshift({ name: 'Get Ready', duration: 5, type: 'prep' });
+            
+            currentStepIndex = 0;
+            isPaused = false;
+            
+            showScreen('workout');
+            requestWakeLock();
+            runWorkoutStep(sequence);
+        }
+        
+        function runWorkoutStep(sequence) {
+            if (currentStepIndex >= sequence.length) {
+                endWorkout();
+                return;
+            }
+            
+            const step = sequence[currentStepIndex];
+            timeRemaining = step.duration;
+            
+            document.getElementById('currentExercise').textContent = step.name;
+            document.getElementById('pauseBtn').textContent = 'Pause';
+            
+            // Show next exercise
+            if (currentStepIndex < sequence.length - 1) {
+                document.getElementById('nextExercise').textContent = 'Next: ' + sequence[currentStepIndex + 1].name;
+            } else {
+                document.getElementById('nextExercise').textContent = 'Last exercise!';
+            }
+            
+            updateTimerDisplay();
+            updateProgress(sequence);
+            
+            workoutTimer = setInterval(() => {
+                if (isPaused) return;
+                
+                timeRemaining--;
+                updateTimerDisplay();
+                updateProgress(sequence);
+                
+                if (timeRemaining <= 0) {
+                    clearInterval(workoutTimer);
+                    playChime();
+                    currentStepIndex++;
+                    setTimeout(() => runWorkoutStep(sequence), 500);
+                }
+            }, 1000);
+        }
+        
+        function updateTimerDisplay() {
+            const mins = Math.floor(timeRemaining / 60);
+            const secs = timeRemaining % 60;
+            document.getElementById('timer').textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        function updateProgress(sequence) {
+            const totalSteps = sequence.reduce((sum, s) => sum + s.duration, 0);
+            const elapsedSteps = sequence.slice(0, currentStepIndex).reduce((sum, s) => sum + s.duration, 0);
+            const currentElapsed = sequence[currentStepIndex].duration - timeRemaining;
+            const progress = ((elapsedSteps + currentElapsed) / totalSteps) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+        
+        function pauseWorkout() {
+            isPaused = !isPaused;
+            document.getElementById('pauseBtn').textContent = isPaused ? 'Resume' : 'Pause';
+        }
+        
+        function endWorkout() {
+            if (workoutTimer) clearInterval(workoutTimer);
+            releaseWakeLock();
+            showLibrary();
+        }
+        
+        // Audio
+        function playChime() {
+            if (!settings.sound) return;
+            if (!audioContext) return;
+            
+            try {
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+                
+                // First beep (800Hz)
+                const osc1 = audioContext.createOscillator();
+                const gain1 = audioContext.createGain();
+                
+                osc1.connect(gain1);
+                gain1.connect(audioContext.destination);
+                
+                osc1.frequency.value = 800;
+                osc1.type = 'sine';
+                
+                const now = audioContext.currentTime;
+                gain1.gain.setValueAtTime(0.5, now);
+                gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+                
+                osc1.start(now);
+                osc1.stop(now + 0.12);
+                
+                // Second beep (1000Hz)
+                const osc2 = audioContext.createOscillator();
+                const gain2 = audioContext.createGain();
+                
+                osc2.connect(gain2);
+                gain2.connect(audioContext.destination);
+                
+                osc2.frequency.value = 1000;
+                osc2.type = 'sine';
+                
+                const startTime2 = now + 0.15;
+                gain2.gain.setValueAtTime(0.5, startTime2);
+                gain2.gain.exponentialRampToValueAtTime(0.01, startTime2 + 0.12);
+                
+                osc2.start(startTime2);
+                osc2.stop(startTime2 + 0.12);
+            } catch (e) {
+                console.error('Chime error:', e);
+            }
+        }
+        
+        // Wake Lock
+        async function requestWakeLock() {
+            try {
+                if ('wakeLock' in navigator) {
+                    wakeLock = await navigator.wakeLock.request('screen');
+                }
+            } catch (e) {
+                console.log('Wake lock not available');
+            }
+        }
+        
+        function releaseWakeLock() {
+            if (wakeLock) {
+                wakeLock.release();
+                wakeLock = null;
+            }
+        }
+        
+        // Settings
+        function toggleSound() {
+            settings.sound = !settings.sound;
+            document.getElementById('soundToggle').classList.toggle('active', settings.sound);
+            saveSettings();
+        }
+        
+        // Start
+        init();
+    </script>
+</body>
+</html>
