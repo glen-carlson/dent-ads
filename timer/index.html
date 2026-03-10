@@ -640,6 +640,11 @@
                 <button class="test-btn" id="testSoundBtn">Test</button>
             </div>
         </div>
+        
+        <div class="settings-item" style="margin-top: var(--space-8);">
+            <label style="color: var(--accent-danger);">Reset Workouts</label>
+            <button class="delete-btn" onclick="resetToDefaults()" style="width: 100%; margin-top: var(--space-3);">Reset to Default Routines</button>
+        </div>
     </div>
 
     <script>
@@ -1215,6 +1220,17 @@
             settings.sound = !settings.sound;
             document.getElementById('soundToggle').classList.toggle('active', settings.sound);
             saveSettings();
+        }
+        
+        function resetToDefaults() {
+            if (!confirm('This will delete all custom workouts and restore Mobility A, B, and C. Continue?')) {
+                return;
+            }
+            localStorage.removeItem('fitnessTimerData');
+            workouts = [];
+            loadDefaultWorkouts();
+            renderWorkoutList();
+            showLibrary();
         }
         
         // Start
