@@ -310,7 +310,6 @@
         
         /* Workout Screen */
         .workout-screen {
-            display: flex;
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
@@ -319,6 +318,10 @@
             padding-left: var(--space-6);
             padding-right: var(--space-6);
             position: relative;
+        }
+        
+        .workout-screen.active {
+            display: flex;
         }
         
         .progress-bar {
