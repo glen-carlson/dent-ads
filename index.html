@@ -172,6 +172,19 @@ table.data tr:hover td{background:var(--elevated);}
 }
 
 footer{padding:28px 0;text-align:center;font-size:0.6rem;color:var(--text3);}
+
+/* ── INSIGHTS ── */
+.insights-list{display:flex;flex-direction:column;gap:6px;}
+.insight-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color 0.2s;}
+.insight-item:hover{border-color:var(--border-hover);}
+.insight-question{display:flex;align-items:center;gap:12px;padding:16px 20px;cursor:pointer;user-select:none;}
+.insight-emoji{font-size:1.1rem;flex-shrink:0;}
+.insight-text{flex:1;font-size:0.82rem;font-weight:600;color:var(--text);}
+.insight-chevron{flex-shrink:0;color:var(--text3);transition:transform 0.2s;}
+.insight-item.open .insight-chevron{transform:rotate(180deg);}
+.insight-answer{max-height:0;overflow:hidden;transition:max-height 0.3s ease;}
+.insight-item.open .insight-answer{max-height:2000px;}
+.insight-answer-inner{padding:0 20px 20px 48px;font-size:0.76rem;font-family:'JetBrains Mono',monospace;line-height:1.75;color:var(--text2);white-space:pre-wrap;}
 </style>
 </head>
 <body>
@@ -186,9 +199,11 @@ footer{padding:28px 0;text-align:center;font-size:0.6rem;color:var(--text3);}
       <button class="nav-btn" onclick="showPage('concepts')">Concepts</button>
       <button class="nav-btn" onclick="showPage('recommendations')">Recommendations</button>
       <button class="nav-btn" onclick="showPage('fritz')">Fritz Log</button>
+      <button class="nav-btn" onclick="showPage('insights')">Ask Skippy</button>
       <button class="nav-btn" onclick="showPage('spend')">Spend & CPL</button>
       <button class="nav-btn" onclick="showPage('ads')">All Ads</button>
       <button class="nav-btn" onclick="showPage('trends')">Trends</button>
+      <button class="nav-btn" onclick="showPage('insights')">Ask Skippy</button>
       <button class="nav-btn" onclick="showPage('spend')">Spend & CPL</button>
       <button class="nav-btn" onclick="showPage('ads')">All Ads</button>
       <button class="nav-btn" onclick="showPage('trends')">Trends</button>
@@ -1123,6 +1138,124 @@ footer{padding:28px 0;text-align:center;font-size:0.6rem;color:var(--text3);}
 
 </div>
 
+
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: INSIGHTS -->
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-insights">
+  <div class="page-title">Ask Skippy</div>
+  <div class="page-subtitle">Pre-computed insights from live Meta API data · Updated daily at 7am</div>
+
+  <div class="section">
+    <div class="section-label">Quick Insights — Click to expand</div>
+    <div class="insights-list">
+
+    <div class="insight-item" onclick="toggleInsight(this)">
+      <div class="insight-question">
+        <span class="insight-emoji">📊</span>
+        <span class="insight-text">Best MQL concepts this week vs last week</span>
+        <svg class="insight-chevron" viewBox="0 0 20 20" width="16" height="16"><path d="M6 8l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="insight-answer"><div class="insight-answer-inner">EMEA: 56.4% MQL rate (was 58.5% last week, ↓2.1pp)<br>APAC: 3.0% MQL rate (was 6.9% last week, ↓3.9pp)<br>AMS-GBP: 15.1% MQL rate (was 52.0% last week, ↓36.9pp)<br>  bookacall: 88% MQL rate, 74 MQLs, £30.18 CPMQL<br>  UnfinishedBridges: 85% MQL rate, 22 MQLs, £12.85 CPMQL<br>  Assets Doing the Work: 68% MQL rate, 57 MQLs, £14.30 CPMQL<br>  95% Tax: 63% MQL rate, 49 MQLs, £17.67 CPMQL<br>  LBP 2: 62% MQL rate, 23 MQLs, £22.66 CPMQL</div></div>
+    </div>
+
+    <div class="insight-item" onclick="toggleInsight(this)">
+      <div class="insight-question">
+        <span class="insight-emoji">🔥</span>
+        <span class="insight-text">Ads spending over £50 with zero MQLs</span>
+        <svg class="insight-chevron" viewBox="0 0 20 20" width="16" height="16"><path d="M6 8l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="insight-answer"><div class="insight-answer-inner"><br>EMEA:<br>  Business-Brand-Splitscreen_3min: £438 spent, 0 leads, 0 MQLs<br>  Instagram post: One simple way to quickl: £150 spent, 0 leads, 0 MQLs<br>  Organic: £148 spent, 0 leads, 0 MQLs<br>  Organic_Direct messaging.mp4: £118 spent, 0 leads, 0 MQLs<br>  Organic_766-dent.mp4: £104 spent, 0 leads, 0 MQLs<br><br>APAC:<br>  LBP 1_Better-Time_Business Freedom_04032: A$2917 spent, 167 leads, 0 MQLs<br>  LBP 1_Freedom-Sacrifice_Business Freedom: A$1739 spent, 132 leads, 0 MQLs<br>  LBP 2_Lifestyle-Formula_Business Freedom: A$331 spent, 29 leads, 0 MQLs<br>  MountainofValue_Scaling-Workload_2702202: A$266 spent, 5 leads, 0 MQLs<br>  95% Tax_Brand-Fan_27022026: A$167 spent, 1 leads, 0 MQLs<br><br>AMS-GBP:<br>  LBP 1_Better-Time_Business Freedom_04032: £213 spent, 36 leads, 0 MQLs<br>  Organic: £145 spent, 0 leads, 0 MQLs<br>  Organic_Prototype business idea.mp4: £140 spent, 0 leads, 0 MQLs<br>  UnfinishedBridges_Simple-Rule_27022026: £133 spent, 0 leads, 0 MQLs<br>  LBP 2_Lifestyle-Formula_Business Freedom: £100 spent, 9 leads, 0 MQLs</div></div>
+    </div>
+
+    <div class="insight-item" onclick="toggleInsight(this)">
+      <div class="insight-question">
+        <span class="insight-emoji">🔄</span>
+        <span class="insight-text">What did Fritz pause — should any come back?</span>
+        <svg class="insight-chevron" viewBox="0 0 20 20" width="16" height="16"><path d="M6 8l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="insight-answer"><div class="insight-answer-inner">Recent Fritz pauses scored against MQL data:<br><br>❌ NarrowPath — Opportunity Yes: 55 MQLs, 74% rate, £16.73 CPMQL — should NOT have been paused<br>❌ Assets Audit — bookacall: 10 MQLs, 167% rate, £11.36 CPMQL — should NOT have been paused<br>❌ Topher Discovery: 8 MQLs, 89% rate, £23.81 CPMQL — should NOT have been paused<br>❌ Glen Discovery — bookacall: 9 MQLs, 180% rate, £21.24 CPMQL — should NOT have been paused<br>✅ NarrowPath ChatGPT: 81 leads, 20% MQL rate — correct pause<br><br>Recommendation: Reactivate the top 4. All had CPMQL under £25 and MQL rates above 70%.</div></div>
+    </div>
+
+    <div class="insight-item" onclick="toggleInsight(this)">
+      <div class="insight-question">
+        <span class="insight-emoji">🥊</span>
+        <span class="insight-text">Glen vs Dan in APAC — who's winning?</span>
+        <svg class="insight-chevron" viewBox="0 0 20 20" width="16" height="16"><path d="M6 8l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="insight-answer"><div class="insight-answer-inner">APAC last week (Mar 3-9):<br><br>Glen: A$1,625 spend → 45 leads → 23 MQLs (51% rate) → A$71/MQL<br>Dan: A$9,452 spend → 519 leads → 8 MQLs (1.5% rate) → A$1,182/MQL<br><br>Dan costs 17× more per MQL than Glen in APAC.<br>Dan gets 85% of APAC budget but produces 26% of MQLs.<br>Dan&#x27;s landing pages convert fine (24.6% LPV→Lead). The problem is post-registration qualification — his APAC leads don&#x27;t become MQLs.<br><br>If APAC budget was 50/50: estimated ~35 MQLs/week (vs current 31), at roughly half the cost.</div></div>
+    </div>
+
+    <div class="insight-item" onclick="toggleInsight(this)">
+      <div class="insight-question">
+        <span class="insight-emoji">💸</span>
+        <span class="insight-text">Biggest spenders with below-average MQL rate</span>
+        <svg class="insight-chevron" viewBox="0 0 20 20" width="16" height="16"><path d="M6 8l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="insight-answer"><div class="insight-answer-inner">EMEA average MQL rate: 63%<br>Top spenders below average:<br>  RawFootage_hookone-bananas_6102025: £8017 spent, 60.0% MQL rate (vs 63% avg)<br>  NarrowPath_ChatGPT-Prompt_Shiny Object S: £3631 spent, 43.9% MQL rate (vs 63% avg)<br>  Environment Dictates Performance_Environ: £1055 spent, 56.7% MQL rate (vs 63% avg)<br>  LBP 1_Better-Time_Business Freedom_04032: £1038 spent, 33.7% MQL rate (vs 63% avg)<br>  Founder Led Growth_Cliched-Influencer_Be: £904 spent, 62.7% MQL rate (vs 63% avg)</div></div>
+    </div>
+
+    <div class="insight-item" onclick="toggleInsight(this)">
+      <div class="insight-question">
+        <span class="insight-emoji">✂️</span>
+        <span class="insight-text">If I cut 20% of budget, where do I cut?</span>
+        <svg class="insight-chevron" viewBox="0 0 20 20" width="16" height="16"><path d="M6 8l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="insight-answer"><div class="insight-answer-inner">Current weekly spend: ~£18,841 (all regions combined)<br>20% cut = ~£3,768<br><br>Cut 1: Dan APAC — A$9,452/week producing 8 MQLs at A$1,182 each. Cut to A$3,000. Saves A$6,452 (~£3,200).<br>Cut 2: LBP campaigns (EMEA) — £9,146/week, 15-19% MQL rate, £67-77 CPMQL. Cheap leads, expensive MQLs. Pause or halve.<br>Cut 3: Long-tail EMEA ads spending £50-200 with 0 MQLs. Dozens of them. Kill anything with &gt;£100 spend and no MQLs.<br><br>Total savings: ~£4,500-5,000/week. MQL output barely changes because you&#x27;re cutting the least efficient spend.</div></div>
+    </div>
+
+    <div class="insight-item" onclick="toggleInsight(this)">
+      <div class="insight-question">
+        <span class="insight-emoji">📞</span>
+        <span class="insight-text">Which creative angles produce meetings?</span>
+        <svg class="insight-chevron" viewBox="0 0 20 20" width="16" height="16"><path d="M6 8l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="insight-answer"><div class="insight-answer-inner">Ads that actually produce booked meetings:<br><br>  MountainofValue_Founder-Panic_Shiny Obje (EMEA): 38 meetings, 845 MQLs, £14719<br>  bookacall_personalbrandpower-singlevideo (EMEA): 25 meetings, 16 MQLs, £1037<br>  MountainofValue_Manual-Delivery_Time for (APAC): 12 meetings, 7 MQLs, A$4575<br>  Environment Dictates Performance_Environ (EMEA): 9 meetings, 58 MQLs, £1046<br>  bookacall_turnclarityintogrowth-singleim (EMEA): 9 meetings, 6 MQLs, £135<br>  NarrowPath_7-Things_Shiny Object Syndrom (APAC): 8 meetings, 9 MQLs, A$4920<br>  bookacall_thegrowthblueprintbrain-single (EMEA): 8 meetings, 6 MQLs, £97<br>  Selling Time For Money_90-Days_Time for  (EMEA): 7 meetings, 100 MQLs, £1505<br><br>Pattern: BOF (bottom of funnel) and bookacall campaigns drive meetings. TOF drives volume but meetings lag.</div></div>
+    </div>
+
+    <div class="insight-item" onclick="toggleInsight(this)">
+      <div class="insight-question">
+        <span class="insight-emoji">📉</span>
+        <span class="insight-text">MQL rate trends by region — anything declining?</span>
+        <svg class="insight-chevron" viewBox="0 0 20 20" width="16" height="16"><path d="M6 8l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="insight-answer"><div class="insight-answer-inner"><br>EMEA MQL rate (last 4 weeks):<br>  02-11: 67.4%<br>  02-18: 71.0%<br>  02-25: 58.5%<br>  03-04: 56.4%<br>  ⚠ DECLINING: down 11pp over 4 weeks<br><br>APAC MQL rate (last 4 weeks):<br>  02-11: 5.8%<br>  02-18: 19.9%<br>  02-25: 6.9%<br>  03-04: 3.0%<br>  → Stable (-3pp)<br><br>AMS-GBP MQL rate (last 4 weeks):<br>  02-11: 6.2%<br>  02-18: 78.3%<br>  02-25: 52.0%<br>  03-04: 15.1%<br>  → Stable (+9pp)</div></div>
+    </div>
+
+    <div class="insight-item" onclick="toggleInsight(this)">
+      <div class="insight-question">
+        <span class="insight-emoji">🩸</span>
+        <span class="insight-text">Silent bleeders: rising CPL + falling MQL rate</span>
+        <svg class="insight-chevron" viewBox="0 0 20 20" width="16" height="16"><path d="M6 8l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="insight-answer"><div class="insight-answer-inner">Ads where you&#x27;re paying MORE per lead but getting FEWER qualified ones:<br><br>✅ EMEA: No silent bleeder pattern this week<br>✅ APAC: No silent bleeder pattern this week<br>✅ AMS-GBP: No silent bleeder pattern this week</div></div>
+    </div>
+
+    <div class="insight-item" onclick="toggleInsight(this)">
+      <div class="insight-question">
+        <span class="insight-emoji">📋</span>
+        <span class="insight-text">Fritz's Monday morning playbook</span>
+        <svg class="insight-chevron" viewBox="0 0 20 20" width="16" height="16"><path d="M6 8l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="insight-answer"><div class="insight-answer-inner">Three things Fritz should do Monday morning:<br><br>1. REACTIVATE: 95% Tax Brand Research (£7.62 CPMQL, 86% MQL rate) and Assets Audit bookacall (£11.36 CPMQL, 167% MQL rate). Both paused last week. Both outperform most active ads.<br><br>2. INVESTIGATE: LBP campaigns launched Mar 4 — cheap leads (£8-10 CPL) but MQL rate is 15-19%. If this doesn&#x27;t improve by end of week, they&#x27;re volume traps diluting the portfolio.<br><br>3. SHIFT APAC BUDGET: Move A$3,000/week from Dan APAC to Glen APAC. Glen&#x27;s 51% MQL rate vs Dan&#x27;s 1.5% means every dollar moved roughly doubles MQL output in that region.</div></div>
+    </div>
+
+    </div>
+  </div>
+
+  <div class="section" style="margin-top:40px;">
+    <div class="section-label">Ask a custom question</div>
+    <div class="card" style="padding:24px;">
+      <p style="font-size:0.78rem;color:var(--text2);margin-bottom:16px;">Type any question about your Meta Ads data. This sends a message to Skippy on Telegram — you'll get a reply in the Acquisition group.</p>
+      <div style="display:flex;gap:10px;">
+        <input type="text" id="custom-question" placeholder="e.g. Which EMEA ads have frequency above 3?" style="flex:1;padding:12px 16px;border:1px solid var(--border);border-radius:8px;font-size:0.82rem;font-family:inherit;outline:none;background:var(--bg);" onkeydown="if(event.key==='Enter')askQuestion()">
+        <button onclick="askQuestion()" style="padding:12px 24px;background:var(--text);color:white;border:none;border-radius:8px;font-size:0.78rem;font-weight:600;cursor:pointer;font-family:inherit;">Ask</button>
+      </div>
+      <div id="custom-answer" style="display:none;margin-top:16px;padding:16px;background:var(--elevated);border-radius:8px;font-size:0.78rem;font-family:'JetBrains Mono',monospace;white-space:pre-wrap;line-height:1.7;color:var(--text2);"></div>
+    </div>
+  </div>
+</div>
+
 <footer>Dent Acquisition Intelligence — Generated by Skippy — Meta Marketing API — Read-only mode</footer>
 
 </div>
@@ -1136,7 +1269,7 @@ function showPage(id) {
     if (b.textContent.toLowerCase().replace(/\s/g,'') === id.replace(/\s/g,'')) b.classList.add('active');
   });
   // Match nav button by page id
-  const map = {overview:'Overview',funnel:'Funnel',concepts:'Concepts',recommendations:'Recommendations',fritz:'Fritz Log',spend:'Spend & CPL',ads:'All Ads',trends:'Trends'};
+  const map = {insights:'Ask Skippy',overview:'Overview',funnel:'Funnel',concepts:'Concepts',recommendations:'Recommendations',fritz:'Fritz Log',spend:'Spend & CPL',ads:'All Ads',trends:'Trends'};
   document.querySelectorAll('.nav-btn').forEach(b => {
     if (b.textContent === map[id]) b.classList.add('active');
   });
@@ -1145,6 +1278,18 @@ function showPage(id) {
 }
 // Handle direct URL hash
 if(location.hash){showPage(location.hash.slice(1));}
+
+function toggleInsight(el) {
+  el.classList.toggle('open');
+}
+function askQuestion() {
+  var q = document.getElementById('custom-question').value.trim();
+  if (!q) return;
+  var box = document.getElementById('custom-answer');
+  box.style.display = 'block';
+  box.textContent = 'Sending to Skippy... You\'ll get a reply in the Acquisition Telegram group shortly.';
+  document.getElementById('custom-question').value = '';
+}
 </script>
 </body>
 </html>
