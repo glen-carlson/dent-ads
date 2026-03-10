@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dent Acquisition Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: oklch(96% 0.004 250);
+  --surface: oklch(100% 0.002 250);
+  --elevated: oklch(94% 0.005 250);
+  --border: oklch(88% 0.005 250);
+  --border-hover: oklch(78% 0.008 250);
+  --text: oklch(18% 0.01 250);
+  --text2: oklch(38% 0.008 250);
+  --text3: oklch(52% 0.006 250);
+  --glen: oklch(50% 0.22 160);
+  --glen-light: oklch(94% 0.04 160);
+  --dan: oklch(52% 0.22 280);
+  --dan-light: oklch(94% 0.04 280);
+  --green: oklch(50% 0.2 150);
+  --green-light: oklch(94% 0.05 150);
+  --amber: oklch(60% 0.2 60);
+  --amber-light: oklch(95% 0.05 60);
+  --red: oklch(52% 0.22 28);
+  --red-light: oklch(95% 0.04 28);
+  --blue: oklch(52% 0.18 250);
+  --purple: oklch(52% 0.18 300);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.55;}
+.mono{font-family:'JetBrains Mono',monospace;}
+.container{max-width:1300px;margin:0 auto;padding:0 28px;}
+
+/* ── NAV ── */
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28px;position:sticky;top:0;z-index:100;}
+.topbar-inner{max-width:1300px;margin:0 auto;display:flex;align-items:center;gap:32px;height:56px;}
+.topbar-brand{font-size:0.85rem;font-weight:800;letter-spacing:-0.02em;color:var(--text);white-space:nowrap;}
+.topbar-nav{display:flex;gap:4px;}
+.nav-btn{
+  background:none;border:none;padding:8px 16px;font-size:0.75rem;font-weight:600;
+  color:var(--text3);cursor:pointer;border-radius:6px;transition:all 0.15s;
+  font-family:inherit;white-space:nowrap;
+}
+.nav-btn:hover{background:var(--elevated);color:var(--text);}
+.nav-btn.active{background:var(--elevated);color:var(--text);font-weight:700;}
+.topbar-date{margin-left:auto;font-size:0.65rem;color:var(--text3);font-weight:500;}
+
+/* ── PAGES ── */
+.page{display:none;padding:36px 0 60px;}
+.page.active{display:block;}
+.page-title{font-size:1.5rem;font-weight:800;letter-spacing:-0.03em;margin-bottom:4px;}
+.page-subtitle{font-size:0.78rem;color:var(--text3);margin-bottom:36px;}
+
+/* ── SECTION ── */
+.section{margin-bottom:40px;}
+.section-label{font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--text3);margin-bottom:16px;}
+.section-desc{font-size:0.82rem;color:var(--text2);max-width:720px;margin-bottom:24px;line-height:1.7;}
+
+/* ── CARDS ── */
+.card-grid{display:grid;gap:14px;}
+.card-grid.cols-3{grid-template-columns:repeat(3,1fr);}
+.card-grid.cols-4{grid-template-columns:repeat(4,1fr);}
+.card-grid.cols-2{grid-template-columns:repeat(2,1fr);}
+.card{
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:24px;transition:all 0.2s;
+}
+.card:hover{border-color:var(--border-hover);}
+.card.clickable{cursor:pointer;}
+.card.clickable:hover{box-shadow:0 2px 12px oklch(0% 0 0 / 0.06);transform:translateY(-1px);}
+.card .hero{font-size:2.2rem;font-weight:800;letter-spacing:-0.04em;line-height:1;}
+.card .hero-label{font-size:0.62rem;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-top:6px;}
+.card h3{font-size:0.88rem;font-weight:700;margin-bottom:6px;}
+.card p{font-size:0.78rem;color:var(--text2);line-height:1.65;}
+.card .big-num{font-size:1.4rem;font-weight:800;letter-spacing:-0.03em;margin:6px 0;}
+
+.stat-row{display:grid;grid-template-columns:1fr 1fr;gap:12px 20px;margin-top:16px;}
+.stat-val{font-size:1.05rem;font-weight:700;letter-spacing:-0.01em;}
+.stat-lbl{font-size:0.6rem;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;}
+.delta{font-size:0.68rem;font-weight:600;margin-left:5px;}
+.delta.up{color:var(--green);}
+.delta.down{color:var(--red);}
+.delta.down-good{color:var(--green);}
+.delta.up-bad{color:var(--red);}
+
+.health-bar{width:100%;height:4px;border-radius:2px;background:var(--elevated);margin-top:12px;overflow:hidden;}
+.health-bar-fill{height:100%;border-radius:2px;}
+
+.warning-box{margin-top:14px;padding:8px 12px;background:var(--amber-light);border-radius:6px;font-size:0.7rem;color:var(--amber);font-weight:500;}
+
+.drill-hint{display:flex;align-items:center;gap:6px;margin-top:14px;font-size:0.65rem;color:var(--text3);font-weight:500;}
+.drill-hint svg{width:14px;height:14px;fill:var(--text3);}
+
+/* ── TABLE ── */
+.table-wrap{overflow-x:auto;}
+table.data{width:100%;border-collapse:separate;border-spacing:0;}
+table.data th{
+  font-size:0.58rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;
+  color:var(--text3);text-align:right;padding:10px 14px;border-bottom:2px solid var(--border);
+  background:var(--bg);
+}
+table.data th.left{text-align:left;}
+table.data td{
+  padding:11px 14px;font-size:0.78rem;border-bottom:1px solid var(--border);
+  text-align:right;font-family:'JetBrains Mono',monospace;font-weight:500;font-size:0.76rem;
+}
+table.data td.left{text-align:left;font-family:'Plus Jakarta Sans',system-ui;}
+table.data tr:hover td{background:var(--elevated);}
+.good{color:var(--green);}
+.ok{color:var(--amber);}
+.bad{color:var(--red);}
+
+.presenter-glen{color:var(--glen);font-weight:700;}
+.presenter-dan{color:var(--dan);font-weight:700;}
+.concept-name{font-weight:600;}
+.mql-bar{display:inline-block;height:5px;border-radius:3px;vertical-align:middle;margin-right:8px;}
+
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;}
+.badge.green{background:var(--green-light);color:var(--green);}
+.badge.amber{background:var(--amber-light);color:var(--amber);}
+.badge.red{background:var(--red-light);color:var(--red);}
+.badge.blue{background:oklch(94% 0.03 250);color:var(--blue);}
+.badge.purple{background:oklch(94% 0.03 300);color:var(--purple);}
+
+.divider-row td{background:var(--elevated)!important;padding:6px 14px;font-size:0.62rem;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;font-family:'Plus Jakarta Sans',system-ui;text-align:left!important;}
+
+/* ── THESIS ── */
+.rule-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid var(--border);}
+.rule-label{font-size:0.75rem;color:var(--text2);font-weight:500;}
+.rule-value{font-size:0.78rem;font-weight:700;font-family:'JetBrains Mono',monospace;}
+.rule-fritz{color:var(--red);text-decoration:line-through;opacity:0.6;margin-right:10px;}
+.rule-rec{color:var(--green);}
+.rule-arrow{color:var(--text3);font-size:0.7rem;margin:0 4px;}
+
+/* ── RECS ── */
+.rec-item{
+  background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  padding:16px 20px;display:grid;grid-template-columns:80px 1fr auto;gap:16px;
+  align-items:center;margin-bottom:8px;transition:border-color 0.2s;
+}
+.rec-item:hover{border-color:var(--border-hover);}
+.rec-type{font-size:0.58rem;font-weight:800;text-transform:uppercase;letter-spacing:0.1em;}
+.rec-type.reactivate{color:var(--green);}
+.rec-type.pause{color:var(--red);}
+.rec-type.watch{color:var(--amber);}
+.rec-ad{font-size:0.76rem;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.rec-metrics{display:flex;gap:18px;white-space:nowrap;}
+.rec-val{font-size:0.76rem;font-weight:700;font-family:'JetBrains Mono',monospace;}
+.rec-lbl{font-size:0.55rem;color:var(--text3);text-transform:uppercase;letter-spacing:0.04em;}
+
+.fritz-verdict{font-size:0.62rem;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;}
+.fritz-verdict.wrong{color:var(--red);}
+.fritz-verdict.right{color:var(--green);}
+.fritz-verdict.neutral{color:var(--text3);}
+
+/* ── CALLOUT ── */
+.callout{background:var(--red-light);border:1px solid oklch(88% 0.04 25);border-radius:10px;padding:24px;margin-top:20px;}
+.callout h3{font-size:0.88rem;font-weight:700;color:var(--red);margin-bottom:6px;}
+.callout p{font-size:0.78rem;color:var(--text2);line-height:1.65;}
+
+.insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .card-grid.cols-3,.card-grid.cols-4{grid-template-columns:1fr;}
+  .card-grid.cols-2,.insight-grid{grid-template-columns:1fr;}
+  .rec-item{grid-template-columns:1fr;gap:8px;}
+  .topbar-nav{overflow-x:auto;}
+}
+
+footer{padding:28px 0;text-align:center;font-size:0.6rem;color:var(--text3);}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAVIGATION ═══ -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-brand">Dent Acquisition</div>
+    <div class="topbar-nav">
+      <button class="nav-btn active" onclick="showPage('overview')">Overview</button>
+      <button class="nav-btn" onclick="showPage('funnel')">Funnel</button>
+      <button class="nav-btn" onclick="showPage('concepts')">Concepts</button>
+      <button class="nav-btn" onclick="showPage('recommendations')">Recommendations</button>
+      <button class="nav-btn" onclick="showPage('fritz')">Fritz Log</button>
+    </div>
+    <div class="topbar-date">Tue 10 Mar 2026</div>
+  </div>
+</div>
+
+<div class="container">
+
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: OVERVIEW -->
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<div class="page active" id="page-overview">
+  <div class="page-title">Acquisition Overview</div>
+  <div class="page-subtitle">Last 7 days · MQL-optimised view</div>
+
+  <!-- Region Health -->
+  <div class="section">
+    <div class="section-label">Region Health</div>
+    <div class="card-grid cols-3">
+
+      <div class="card clickable" onclick="showPage('funnel')" style="border-left:3px solid var(--green);">
+        <div class="section-label" style="margin-bottom:12px;">EMEA</div>
+        <div class="hero" style="color:var(--green);">£19.45</div>
+        <div class="hero-label">Cost per MQL</div>
+        <div class="stat-row">
+          <div><div class="stat-val">341<span class="delta down">↓18%</span></div><div class="stat-lbl">MQLs</div></div>
+          <div><div class="stat-val">70<span class="delta up">↑204%</span></div><div class="stat-lbl">Meetings</div></div>
+          <div><div class="stat-val">713</div><div class="stat-lbl">Leads</div></div>
+          <div><div class="stat-val">48%</div><div class="stat-lbl">MQL Rate</div></div>
+          <div><div class="stat-val">£6,633<span class="delta down-good">↓28%</span></div><div class="stat-lbl">Spend</div></div>
+          <div><div class="stat-val">£9.30</div><div class="stat-lbl">CPL</div></div>
+        </div>
+        <div class="health-bar"><div class="health-bar-fill" style="width:82%;background:var(--green);"></div></div>
+        <div class="drill-hint"><svg viewBox="0 0 20 20"><path d="M7 4l6 6-6 6" stroke="currentColor" fill="none" stroke-width="2"/></svg> Tap for funnel breakdown</div>
+      </div>
+
+      <div class="card clickable" onclick="showPage('funnel')" style="border-left:3px solid var(--amber);">
+        <div class="section-label" style="margin-bottom:12px;">AMS</div>
+        <div class="hero" style="color:var(--amber);">£59.10</div>
+        <div class="hero-label">Cost per MQL</div>
+        <div class="stat-row">
+          <div><div class="stat-val">43<span class="delta down">↓55%</span></div><div class="stat-lbl">MQLs</div></div>
+          <div><div class="stat-val">2<span class="delta down">↓33%</span></div><div class="stat-lbl">Meetings</div></div>
+          <div><div class="stat-val">211</div><div class="stat-lbl">Leads</div></div>
+          <div><div class="stat-val">20%</div><div class="stat-lbl">MQL Rate</div></div>
+          <div><div class="stat-val">£2,541<span class="delta down-good">↓39%</span></div><div class="stat-lbl">Spend</div></div>
+          <div><div class="stat-val">£12.04</div><div class="stat-lbl">CPL</div></div>
+        </div>
+        <div class="health-bar"><div class="health-bar-fill" style="width:45%;background:var(--amber);"></div></div>
+        <div class="drill-hint"><svg viewBox="0 0 20 20"><path d="M7 4l6 6-6 6" stroke="currentColor" fill="none" stroke-width="2"/></svg> Tap for funnel breakdown</div>
+      </div>
+
+      <div class="card clickable" onclick="showPage('funnel')" style="border-left:3px solid var(--text3);">
+        <div class="section-label" style="margin-bottom:12px;">APAC</div>
+        <div class="hero" style="color:var(--text3);">A$357</div>
+        <div class="hero-label">Cost per MQL</div>
+        <div class="stat-row">
+          <div><div class="stat-val">31<span class="delta up">↑48%</span></div><div class="stat-lbl">MQLs</div></div>
+          <div><div class="stat-val">26<span class="delta up">↑767%</span></div><div class="stat-lbl">Meetings</div></div>
+          <div><div class="stat-val">564</div><div class="stat-lbl">Leads</div></div>
+          <div><div class="stat-val">5%</div><div class="stat-lbl">MQL Rate</div></div>
+          <div><div class="stat-val">A$11,077<span class="delta up-bad">↑22%</span></div><div class="stat-lbl">Spend</div></div>
+          <div><div class="stat-val">A$19.64</div><div class="stat-lbl">CPL</div></div>
+        </div>
+        <div class="health-bar"><div class="health-bar-fill" style="width:12%;background:var(--red);"></div></div>
+        <div class="warning-box">⚠ MQL rate: 5% vs 48% in EMEA. Pixel fires but leads rarely qualify. Investigate: different scoring rules, timezone delays, or audience quality.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Key Numbers -->
+  <div class="section">
+    <div class="section-label">The Glen vs Dan Story (APAC, last week)</div>
+    <div class="card-grid cols-4">
+      <div class="card clickable" onclick="showPage('funnel')" style="border-top:3px solid var(--glen);">
+        <div class="hero" style="color:var(--glen);">A$71</div>
+        <div class="hero-label">Glen CPMQL</div>
+        <div style="font-size:0.72rem;color:var(--text2);margin-top:8px;">23 MQLs · 45 leads · 51% rate</div>
+      </div>
+      <div class="card clickable" onclick="showPage('funnel')" style="border-top:3px solid var(--dan);">
+        <div class="hero" style="color:var(--red);">A$1,182</div>
+        <div class="hero-label">Dan CPMQL</div>
+        <div style="font-size:0.72rem;color:var(--text2);margin-top:8px;">8 MQLs · 519 leads · 2% rate</div>
+      </div>
+      <div class="card clickable" onclick="showPage('funnel')">
+        <div class="hero" style="color:var(--red);">17×</div>
+        <div class="hero-label">Dan costs 17× more per MQL</div>
+        <div style="font-size:0.72rem;color:var(--text2);margin-top:8px;">Same region, same week</div>
+      </div>
+      <div class="card clickable" onclick="showPage('funnel')">
+        <div class="hero">85%</div>
+        <div class="hero-label">APAC budget → Dan</div>
+        <div style="font-size:0.72rem;color:var(--text2);margin-top:8px;">A$9,452 Dan vs A$1,625 Glen</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Recs -->
+  <div class="section">
+    <div class="section-label">Top Recommendations</div>
+    <div class="card-grid cols-2">
+      <div class="card clickable" onclick="showPage('recommendations')" style="border-left:3px solid var(--green);">
+        <h3>5 Paused Ads to Reactivate</h3>
+        <p>High-MQL ads Fritz paused during creative rotation. Best: 95% Tax at £7.62 CPMQL, 86% MQL rate.</p>
+        <div class="drill-hint"><svg viewBox="0 0 20 20"><path d="M7 4l6 6-6 6" stroke="currentColor" fill="none" stroke-width="2"/></svg> View recommendations</div>
+      </div>
+      <div class="card clickable" onclick="showPage('concepts')" style="border-left:3px solid var(--red);">
+        <h3>LBP Campaigns: Volume Trap</h3>
+        <p>LBP 1 at 15% MQL rate, £77 CPMQL. Looks great on CPL (£8-10). Terrible on MQL. Watch closely.</p>
+        <div class="drill-hint"><svg viewBox="0 0 20 20"><path d="M7 4l6 6-6 6" stroke="currentColor" fill="none" stroke-width="2"/></svg> View concept ranking</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: FUNNEL -->
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-funnel">
+  <div class="page-title">Funnel Performance</div>
+  <div class="page-subtitle">Glen vs Dan · All regions · 8 weeks</div>
+
+  <!-- Insights FIRST -->
+  <div class="section">
+    <div class="section-label">Insights</div>
+    <div class="insight-grid">
+      <div class="card" style="border-left:3px solid var(--glen);"><h3>Glen APAC: Small but Mighty</h3><div class="big-num" style="color:var(--glen);">51% MQL Rate</div><p>212 MQLs from 411 leads over 8 weeks. A$71 per MQL last week. When Glen was the only APAC presence (January), it had the best funnel economics in the business.</p></div>
+      <div class="card" style="border-left:3px solid var(--red);"><h3>Dan APAC: Volume, No Quality</h3><div class="big-num" style="color:var(--red);">1.5% MQL Rate</div><p>2,739 leads but only 42 MQLs. A$9,452/week producing 8 MQLs. Landing page converts fine (25%), but leads don't qualify. The audience targeting isn't right for APAC.</p></div>
+      <div class="card" style="border-left:3px solid var(--dan);"><h3>Dan EMEA: The Engine</h3><div class="big-num" style="color:var(--green);">60% MQL Rate</div><p>3,399 MQLs, 262 meetings, 46-66% weekly MQL rate. Dan's content resonates in EMEA. This is where the investment should stay.</p></div>
+      <div class="card" style="border-left:3px solid var(--amber);"><h3>Budget Allocation</h3><div class="big-num" style="color:var(--amber);">85% → Dan APAC</div><p>If the APAC ratio flipped to 50/50, MQL output would improve dramatically. Glen's A$1,625 produced 23 MQLs. Dan's A$9,452 produced 8.</p></div>
+    </div>
+    <div class="callout"><h3>The Uncomfortable Number</h3><p>Dan's APAC cost per MQL is <strong>17× higher than Glen's</strong>. The blended APAC CPMQL of A$357 is almost entirely Dan. Without Dan APAC, APAC would be the most efficient region.</p></div>
+  </div>
+
+  <!-- APAC -->
+  <div class="section">
+    <div class="section-label">APAC — Glen vs Dan</div>
+    <div class="section-desc">Glen dominated APAC until Feb 3. Dan scaled from A$55/week to A$9,452. Volume exploded, MQL conversion collapsed.</div>
+    <div class="table-wrap">
+    <table class="data">
+      <thead><tr><th class="left">Week</th><th class="left">Presenter</th><th>Spend</th><th>Clicks</th><th>LPV</th><th>Leads</th><th>LPV→Lead</th><th>MQLs</th><th>MQL Rate</th><th>Meetings</th></tr></thead>
+      <tbody>
+        <tr><td class="left">Jan 13</td><td class="left presenter-glen">Glen</td><td>A$3,870</td><td>357</td><td>289</td><td>72</td><td class="good">24.9%</td><td>50</td><td class="good">69%</td><td>10</td></tr>
+        <tr><td class="left">Jan 20</td><td class="left presenter-glen">Glen</td><td>A$2,604</td><td>307</td><td>284</td><td>94</td><td class="good">33.1%</td><td>56</td><td class="good">60%</td><td>6</td></tr>
+        <tr><td class="left">Jan 27</td><td class="left presenter-glen">Glen</td><td>A$2,123</td><td>236</td><td>214</td><td>56</td><td class="good">26.2%</td><td>44</td><td class="good">79%</td><td>4</td></tr>
+        <tr class="divider-row"><td colspan="10">← Dan scales into APAC →</td></tr>
+        <tr><td class="left">Feb 3</td><td class="left presenter-glen">Glen</td><td>A$1,217</td><td>127</td><td>103</td><td>21</td><td class="ok">20.4%</td><td>14</td><td class="good">67%</td><td>2</td></tr>
+        <tr><td class="left"></td><td class="left presenter-dan">Dan</td><td>A$1,114</td><td>299</td><td>280</td><td>84</td><td class="good">30.0%</td><td>3</td><td class="bad">4%</td><td>0</td></tr>
+        <tr><td class="left">Feb 10</td><td class="left presenter-glen">Glen</td><td>A$179</td><td>19</td><td>12</td><td>2</td><td class="ok">16.7%</td><td>1</td><td class="ok">50%</td><td>0</td></tr>
+        <tr><td class="left"></td><td class="left presenter-dan">Dan</td><td>A$6,211</td><td>1,695</td><td>1,546</td><td>510</td><td class="good">33.0%</td><td>14</td><td class="bad">3%</td><td>3</td></tr>
+        <tr><td class="left">Feb 17</td><td class="left presenter-glen">Glen</td><td>A$694</td><td>74</td><td>55</td><td>14</td><td class="good">25.5%</td><td>11</td><td class="good">79%</td><td>0</td></tr>
+        <tr><td class="left"></td><td class="left presenter-dan">Dan</td><td>A$4,482</td><td>993</td><td>906</td><td>237</td><td class="ok">26.2%</td><td>10</td><td class="bad">4%</td><td>17</td></tr>
+        <tr><td class="left">Feb 24</td><td class="left presenter-glen">Glen</td><td>A$1,778</td><td>126</td><td>100</td><td>29</td><td class="good">29.0%</td><td>13</td><td class="good">45%</td><td>3</td></tr>
+        <tr><td class="left"></td><td class="left presenter-dan">Dan</td><td>A$7,079</td><td>1,705</td><td>1,532</td><td>389</td><td class="ok">25.4%</td><td>7</td><td class="bad">2%</td><td>0</td></tr>
+        <tr><td class="left">Mar 3</td><td class="left presenter-glen">Glen</td><td>A$1,625</td><td>198</td><td>154</td><td>45</td><td class="good">29.2%</td><td>23</td><td class="good">51%</td><td>0</td></tr>
+        <tr><td class="left"></td><td class="left presenter-dan">Dan</td><td>A$9,452</td><td>2,505</td><td>2,106</td><td>519</td><td class="ok">24.6%</td><td>8</td><td class="bad">2%</td><td>26</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <!-- EMEA -->
+  <div class="section">
+    <div class="section-label">EMEA — Dan Dominated</div>
+    <div class="section-desc">Dan's MQL rate in EMEA is healthy — 46-66% over 8 weeks. This is his market. 3,399 MQLs, 262 meetings.</div>
+    <div class="table-wrap">
+    <table class="data">
+      <thead><tr><th class="left">Week</th><th class="left">Presenter</th><th>Spend</th><th>LPV</th><th>Leads</th><th>LPV→Lead</th><th>MQLs</th><th>MQL Rate</th><th>Meetings</th></tr></thead>
+      <tbody>
+        <tr><td class="left">Jan 13</td><td class="left presenter-dan">Dan</td><td>£5,663</td><td>2,060</td><td>625</td><td class="good">30.3%</td><td>345</td><td class="good">55%</td><td>31</td></tr>
+        <tr><td class="left">Jan 20</td><td class="left presenter-dan">Dan</td><td>£5,905</td><td>1,859</td><td>575</td><td class="good">30.9%</td><td>364</td><td class="good">63%</td><td>29</td></tr>
+        <tr><td class="left">Jan 27</td><td class="left presenter-dan">Dan</td><td>£10,123</td><td>3,092</td><td>885</td><td class="good">28.6%</td><td>587</td><td class="good">66%</td><td>17</td></tr>
+        <tr><td class="left">Feb 3</td><td class="left presenter-dan">Dan</td><td>£7,466</td><td>2,636</td><td>707</td><td class="ok">26.8%</td><td>459</td><td class="good">65%</td><td>24</td></tr>
+        <tr><td class="left">Feb 10</td><td class="left presenter-dan">Dan</td><td>£11,851</td><td>3,923</td><td>996</td><td class="ok">25.4%</td><td>656</td><td class="good">66%</td><td>16</td></tr>
+        <tr><td class="left">Feb 17</td><td class="left presenter-dan">Dan</td><td>£6,103</td><td>2,146</td><td>522</td><td class="ok">24.3%</td><td>289</td><td class="good">55%</td><td>63</td></tr>
+        <tr><td class="left">Feb 24</td><td class="left presenter-dan">Dan</td><td>£7,998</td><td>2,855</td><td>663</td><td class="ok">23.2%</td><td>375</td><td class="good">57%</td><td>18</td></tr>
+        <tr><td class="left">Mar 3</td><td class="left presenter-dan">Dan</td><td>£6,283</td><td>2,541</td><td>700</td><td class="good">27.5%</td><td>324</td><td class="ok">46%</td><td>64</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div style="font-size:0.72rem;color:var(--text3);margin-top:8px;">Glen EMEA: £485 total over 8 weeks, 9 leads, 18 MQLs, 9 meetings — too small to trend.</div>
+  </div>
+
+  <!-- AMS -->
+  <div class="section">
+    <div class="section-label">AMS — Dan + Topher</div>
+    <div class="table-wrap">
+    <table class="data">
+      <thead><tr><th class="left">Week</th><th>Spend</th><th>LPV</th><th>Leads</th><th>LPV→Lead</th><th>MQLs</th><th>MQL Rate</th><th>Meetings</th></tr></thead>
+      <tbody>
+        <tr><td class="left">Feb 3</td><td>£826</td><td>339</td><td>113</td><td class="good">33.3%</td><td>3</td><td class="bad">3%</td><td>0</td></tr>
+        <tr><td class="left">Feb 10</td><td>£4,546</td><td>1,724</td><td>610</td><td class="good">35.4%</td><td>19</td><td class="bad">3%</td><td>1</td></tr>
+        <tr><td class="left">Feb 17</td><td>£608</td><td>265</td><td>91</td><td class="good">34.3%</td><td>9</td><td class="bad">10%</td><td>22</td></tr>
+        <tr><td class="left">Feb 24</td><td>£724</td><td>255</td><td>5</td><td class="bad">2.0%</td><td>2</td><td class="ok">40%</td><td>0</td></tr>
+        <tr><td class="left">Mar 3</td><td>£834</td><td>352</td><td>102</td><td class="good">29.0%</td><td>0</td><td class="bad">0%</td><td>1</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: CONCEPTS -->
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-concepts">
+  <div class="page-title">Creative Concepts</div>
+  <div class="page-subtitle">Ranked by MQL efficiency · EMEA · 30 days</div>
+
+  <div class="section">
+    <div class="section-desc">Sorted by MQL rate — the metric that matters. Green bars show what proportion of leads actually qualify. Concepts at the top generate qualified buyers. Concepts at the bottom generate form fills.</div>
+    <div class="table-wrap">
+    <table class="data">
+      <thead><tr><th class="left"></th><th class="left">Concept</th><th>MQL Rate</th><th>CPMQL</th><th>MQLs</th><th>Meetings</th><th>Spend</th><th>Leads</th><th class="left">Status</th></tr></thead>
+      <tbody>
+        <tr><td class="left"><span class="mql-bar" style="width:55px;background:var(--green);"></span></td><td class="left concept-name">bookacall</td><td class="good">88%</td><td>£30.18</td><td style="font-weight:700;">74</td><td class="good" style="font-weight:700;">72</td><td>£2,233</td><td>84</td><td class="left"><span class="badge red">Mostly paused</span></td></tr>
+        <tr><td class="left"><span class="mql-bar" style="width:43px;background:var(--green);"></span></td><td class="left concept-name">Assets Doing the Work</td><td class="good">68%</td><td class="good">£14.30</td><td style="font-weight:700;">57</td><td>6</td><td>£815</td><td>84</td><td class="left"><span class="badge green">Active</span></td></tr>
+        <tr><td class="left"><span class="mql-bar" style="width:39px;background:var(--green);"></span></td><td class="left concept-name">Founder Led Growth</td><td class="good">61%</td><td>£22.57</td><td style="font-weight:700;">78</td><td>11</td><td>£1,761</td><td>127</td><td class="left"><span class="badge amber">Mixed</span></td></tr>
+        <tr><td class="left"><span class="mql-bar" style="width:38px;background:var(--green);"></span></td><td class="left concept-name">95% Tax</td><td class="good">60%</td><td>£23.53</td><td>50</td><td>4</td><td>£1,177</td><td>83</td><td class="left"><span class="badge red">Mostly paused</span></td></tr>
+        <tr><td class="left"><span class="mql-bar" style="width:37px;background:var(--green);"></span></td><td class="left concept-name">LiveWorkshopBAU</td><td>58%</td><td>£82.97</td><td>35</td><td>3</td><td>£2,904</td><td>60</td><td class="left"><span class="badge red">Mostly paused</span></td></tr>
+        <tr><td class="left"><span class="mql-bar" style="width:36px;background:var(--green);"></span></td><td class="left concept-name">workshop</td><td>57%</td><td>£51.57</td><td>71</td><td>6</td><td>£3,662</td><td>124</td><td class="left"><span class="badge amber">Mixed</span></td></tr>
+        <tr><td class="left"><span class="mql-bar" style="width:34px;background:var(--green);"></span></td><td class="left concept-name">Environment Dictates</td><td class="good">53%</td><td class="good">£16.55</td><td style="font-weight:700;">114</td><td class="good" style="font-weight:700;">14</td><td>£1,887</td><td>214</td><td class="left"><span class="badge green">Active</span></td></tr>
+        <tr><td class="left"><span class="mql-bar" style="width:32px;background:var(--amber);"></span></td><td class="left concept-name">Selling Time For Money</td><td class="good">51%</td><td>£23.66</td><td style="font-weight:700;">107</td><td>10</td><td>£2,532</td><td>209</td><td class="left"><span class="badge amber">Mixed</span></td></tr>
+        <tr><td class="left"><span class="mql-bar" style="width:28px;background:var(--amber);"></span></td><td class="left concept-name">Escape FounderBottleneck</td><td>44%</td><td>£30.03</td><td style="font-weight:700;">110</td><td>0</td><td>£3,303</td><td>250</td><td class="left"><span class="badge blue">AMS only</span></td></tr>
+        <tr><td class="left"><span class="mql-bar" style="width:22px;background:var(--amber);"></span></td><td class="left concept-name">MountainofValue</td><td>34%</td><td>£32.14</td><td class="good" style="font-weight:700;">968</td><td class="good" style="font-weight:700;">84</td><td>£31,116</td><td>2,833</td><td class="left"><span class="badge amber">Mixed</span></td></tr>
+        <tr><td class="left"><span class="mql-bar" style="width:20px;background:var(--red);"></span></td><td class="left concept-name">UnfinishedBridges</td><td class="bad">31%</td><td class="bad">£86.56</td><td>31</td><td>4</td><td>£2,683</td><td>101</td><td class="left"><span class="badge red">Mostly paused</span></td></tr>
+        <tr><td class="left"><span class="mql-bar" style="width:13px;background:var(--red);"></span></td><td class="left concept-name">NarrowPath</td><td class="bad">20%</td><td class="bad">£65.61</td><td style="font-weight:700;">239</td><td>32</td><td>£15,681</td><td>1,176</td><td class="left"><span class="badge amber">Mixed</span></td></tr>
+        <tr><td class="left"><span class="mql-bar" style="width:12px;background:var(--red);"></span></td><td class="left concept-name">LBP 2</td><td class="bad">19%</td><td class="bad">£67.90</td><td>23</td><td>1</td><td>£1,562</td><td>119</td><td class="left"><span class="badge purple">New (Mar 4)</span></td></tr>
+        <tr><td class="left"><span class="mql-bar" style="width:10px;background:var(--red);"></span></td><td class="left concept-name">LBP 1</td><td class="bad">15%</td><td class="bad">£77.38</td><td>98</td><td>1</td><td>£7,584</td><td>672</td><td class="left"><span class="badge purple">New (Mar 4)</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: RECOMMENDATIONS -->
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-recommendations">
+  <div class="page-title">Recommendations</div>
+  <div class="page-subtitle">MQL-optimised decision framework · EMEA</div>
+
+  <!-- Thesis -->
+  <div class="section">
+    <div class="section-label">Decision Framework — Fritz's Rules vs MQL-Optimised</div>
+    <div class="card-grid cols-2">
+      <div class="card">
+        <h3>When to Pause</h3>
+        <p style="margin-bottom:14px;">Shift from cost-per-lead to cost-per-qualified-lead.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:8px;">
+          <div style="padding:12px 16px;background:var(--red-light);border-radius:8px 0 0 0;"><div style="font-size:0.6rem;color:var(--red);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Fritz today</div><div style="font-size:0.76rem;color:var(--text2);line-height:1.7;">Pause when <strong>CPL > £13</strong><br>Kill at <strong>£10-25 spend</strong>, zero leads<br>Flag at <strong>2× average CPL</strong></div></div>
+          <div style="padding:12px 16px;background:var(--green-light);border-radius:0 8px 0 0;"><div style="font-size:0.6rem;color:var(--green);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">MQL-optimised</div><div style="font-size:0.76rem;color:var(--text2);line-height:1.7;">Pause when <strong>CPMQL > £40 for 7 days</strong><br>Kill at <strong>£25 spend</strong>, zero MQLs<br>Flag at <strong>2× average CPMQL</strong></div></div>
+          <div style="padding:12px 16px;background:oklch(97% 0.01 25);border-radius:0 0 0 8px;border-top:1px solid var(--border);"><div style="font-size:0.72rem;color:var(--text2);">Measures: <strong>cheapest leads</strong></div></div>
+          <div style="padding:12px 16px;background:oklch(97% 0.01 150);border-radius:0 0 8px 0;border-top:1px solid var(--border);"><div style="font-size:0.72rem;color:var(--text2);">Measures: <strong>cheapest qualified leads</strong></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>When to Scale</h3>
+        <p style="margin-bottom:14px;">Scale what generates meetings, not what generates form fills.</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:8px;">
+          <div style="padding:12px 16px;background:var(--red-light);border-radius:8px 0 0 0;"><div style="font-size:0.6rem;color:var(--red);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Fritz today</div><div style="font-size:0.76rem;color:var(--text2);line-height:1.7;">Scale ads with <strong>low CPL</strong><br>Rotate creative <strong>every 2-4 weeks</strong><br>Meetings: <strong>not tracked</strong></div></div>
+          <div style="padding:12px 16px;background:var(--green-light);border-radius:0 8px 0 0;"><div style="font-size:0.6rem;color:var(--green);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">MQL-optimised</div><div style="font-size:0.76rem;color:var(--text2);line-height:1.7;">Scale when <strong>CPMQL < £15 + MQL rate > 40%</strong><br>Rotate when <strong>MQL rate drops below 30%</strong><br>Target: <strong>cost per meeting < £100</strong></div></div>
+          <div style="padding:12px 16px;background:oklch(97% 0.01 25);border-radius:0 0 0 8px;border-top:1px solid var(--border);"><div style="font-size:0.72rem;color:var(--text2);">Optimises for: <strong>lead volume</strong></div></div>
+          <div style="padding:12px 16px;background:oklch(97% 0.01 150);border-radius:0 0 8px 0;border-top:1px solid var(--border);"><div style="font-size:0.72rem;color:var(--text2);">Optimises for: <strong>booked meetings</strong></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Specific Recs -->
+  <div class="section">
+    <div class="section-label">Specific Actions</div>
+
+    <div class="rec-item" style="border-left:3px solid var(--green);"><div class="rec-type reactivate">Reactivate</div><div class="rec-ad">95% Tax — Brand Research · £7.62 CPMQL · 86% MQL rate</div><div class="rec-metrics"><div><div class="rec-val" style="color:var(--green);">£7.62</div><div class="rec-lbl">CPMQL</div></div><div><div class="rec-val">86%</div><div class="rec-lbl">MQL Rate</div></div><div><div class="rec-val">6</div><div class="rec-lbl">MQLs</div></div></div></div>
+
+    <div class="rec-item" style="border-left:3px solid var(--green);"><div class="rec-type reactivate">Reactivate</div><div class="rec-ad">UnfinishedBridges — Busy Effective · £9.88 CPMQL · 84% MQL rate · 1 meeting</div><div class="rec-metrics"><div><div class="rec-val" style="color:var(--green);">£9.88</div><div class="rec-lbl">CPMQL</div></div><div><div class="rec-val">84%</div><div class="rec-lbl">MQL Rate</div></div><div><div class="rec-val">16</div><div class="rec-lbl">MQLs</div></div></div></div>
+
+    <div class="rec-item" style="border-left:3px solid var(--green);"><div class="rec-type reactivate">Reactivate</div><div class="rec-ad">Assets Audit — bookacall · £11.36 CPMQL · 167% MQL rate · 3 meetings</div><div class="rec-metrics"><div><div class="rec-val" style="color:var(--green);">£11.36</div><div class="rec-lbl">CPMQL</div></div><div><div class="rec-val">167%</div><div class="rec-lbl">MQL Rate</div></div><div><div class="rec-val">10</div><div class="rec-lbl">MQLs</div></div></div></div>
+
+    <div class="rec-item" style="border-left:3px solid var(--green);"><div class="rec-type reactivate">Reactivate</div><div class="rec-ad">Assets Doing the Work · £12.23 CPMQL · 86% MQL rate</div><div class="rec-metrics"><div><div class="rec-val" style="color:var(--green);">£12.23</div><div class="rec-lbl">CPMQL</div></div><div><div class="rec-val">86%</div><div class="rec-lbl">MQL Rate</div></div><div><div class="rec-val">6</div><div class="rec-lbl">MQLs</div></div></div></div>
+
+    <div class="rec-item" style="border-left:3px solid var(--green);"><div class="rec-type reactivate">Reactivate</div><div class="rec-ad">NarrowPath — Opportunity Yes · £16.73 CPMQL · 74% MQL rate · 2 meetings</div><div class="rec-metrics"><div><div class="rec-val" style="color:var(--green);">£16.73</div><div class="rec-lbl">CPMQL</div></div><div><div class="rec-val">74%</div><div class="rec-lbl">MQL Rate</div></div><div><div class="rec-val">55</div><div class="rec-lbl">MQLs</div></div></div></div>
+
+    <div class="rec-item" style="border-left:3px solid var(--red);"><div class="rec-type pause">Watch</div><div class="rec-ad">LBP 1 — Better Time · £29.27 CPMQL · 34% MQL rate · 0 meetings — cheap leads, low quality</div><div class="rec-metrics"><div><div class="rec-val" style="color:var(--red);">£29.27</div><div class="rec-lbl">CPMQL</div></div><div><div class="rec-val bad">34%</div><div class="rec-lbl">MQL Rate</div></div><div><div class="rec-val">32</div><div class="rec-lbl">MQLs</div></div></div></div>
+
+    <div class="rec-item" style="border-left:3px solid var(--red);"><div class="rec-type pause">Watch</div><div class="rec-ad">LBP 1 — Freedom Sacrifice · £48.04 CPMQL · 18% MQL rate</div><div class="rec-metrics"><div><div class="rec-val" style="color:var(--red);">£48.04</div><div class="rec-lbl">CPMQL</div></div><div><div class="rec-val bad">18%</div><div class="rec-lbl">MQL Rate</div></div><div><div class="rec-val">6</div><div class="rec-lbl">MQLs</div></div></div></div>
+
+    <div class="rec-item" style="border-left:3px solid var(--amber);"><div class="rec-type watch">Investigate</div><div class="rec-ad">NarrowPath — high volume (239 MQLs) but £65.61 CPMQL. 20% MQL rate drags efficiency.</div><div class="rec-metrics"><div><div class="rec-val" style="color:var(--amber);">£65.61</div><div class="rec-lbl">CPMQL</div></div><div><div class="rec-val">20%</div><div class="rec-lbl">MQL Rate</div></div><div><div class="rec-val">239</div><div class="rec-lbl">MQLs</div></div></div></div>
+  </div>
+
+  <!-- Opportunity -->
+  <div class="section">
+    <div class="section-label">Opportunity Cost</div>
+    <div class="card-grid cols-2">
+      <div class="card"><h3>Current EMEA CPMQL</h3><div class="big-num" style="color:var(--amber);">£18.86</div><p>1,450 MQLs from £27,344 spend (7d active)</p></div>
+      <div class="card"><h3>Top-20 CPMQL Achievable</h3><div class="big-num" style="color:var(--green);">£13.06</div><p>Same spend → 2,094 MQLs · <strong>+644 more MQLs per week</strong></p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: FRITZ LOG -->
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-fritz">
+  <div class="page-title">Fritz Activity Log</div>
+  <div class="page-subtitle">Recent pauses scored against MQL data · EMEA · March</div>
+
+  <div class="section">
+    <div class="section-desc">Each pause decision scored: did the paused ad have good MQL metrics? <span style="color:var(--red);font-weight:600;">Wrong call</span> = paused an MQL-efficient ad. <span style="color:var(--green);font-weight:600;">Right call</span> = paused a low-quality ad.</div>
+
+    <div class="rec-item"><div style="font-size:0.7rem;color:var(--text3);font-family:'JetBrains Mono',monospace;font-weight:600;width:60px;">Mar 9</div><div class="rec-ad">NarrowPath — Opportunity Yes · 55 MQLs · 74% rate · 2 meetings</div><div class="fritz-verdict wrong">Wrong — £16.73 CPMQL</div></div>
+    <div class="rec-item"><div style="font-size:0.7rem;color:var(--text3);font-family:'JetBrains Mono',monospace;font-weight:600;width:60px;">Mar 9</div><div class="rec-ad">Assets Audit — bookacall · 10 MQLs · 167% rate · 3 meetings</div><div class="fritz-verdict wrong">Wrong — £11.36 CPMQL</div></div>
+    <div class="rec-item"><div style="font-size:0.7rem;color:var(--text3);font-family:'JetBrains Mono',monospace;font-weight:600;width:60px;">Mar 9</div><div class="rec-ad">Topher Discovery · 8 MQLs · 89% rate · 4 meetings</div><div class="fritz-verdict wrong">Wrong — £23.81 CPMQL</div></div>
+    <div class="rec-item"><div style="font-size:0.7rem;color:var(--text3);font-family:'JetBrains Mono',monospace;font-weight:600;width:60px;">Mar 9</div><div class="rec-ad">Glen Discovery — bookacall · 9 MQLs · 180% rate · 3 meetings</div><div class="fritz-verdict wrong">Wrong — £21.24 CPMQL</div></div>
+    <div class="rec-item"><div style="font-size:0.7rem;color:var(--text3);font-family:'JetBrains Mono',monospace;font-weight:600;width:60px;">Mar 2</div><div class="rec-ad">MountainofValue — Manual Delivery · 13 MQLs · good rate</div><div class="fritz-verdict neutral">Debatable — concept rotation</div></div>
+    <div class="rec-item"><div style="font-size:0.7rem;color:var(--text3);font-family:'JetBrains Mono',monospace;font-weight:600;width:60px;">Feb 27</div><div class="rec-ad">Founder Led Growth · 20 MQLs · 67% rate · 1 meeting</div><div class="fritz-verdict wrong">Wrong — £17.59 CPMQL</div></div>
+    <div class="rec-item"><div style="font-size:0.7rem;color:var(--text3);font-family:'JetBrains Mono',monospace;font-weight:600;width:60px;">Feb 24</div><div class="rec-ad">NarrowPath ChatGPT · 81 leads · 20% MQL rate</div><div class="fritz-verdict right">Right — high volume, low quality</div></div>
+    <div class="rec-item"><div style="font-size:0.7rem;color:var(--text3);font-family:'JetBrains Mono',monospace;font-weight:600;width:60px;">Feb 24</div><div class="rec-ad">Selling Time For Money · 56 leads · 51% MQL rate · 10 meetings</div><div class="fritz-verdict wrong">Wrong — £23.66 CPMQL</div></div>
+  </div>
+</div>
+
+<footer>Dent Acquisition Intelligence — Generated by Skippy — Meta Marketing API — Read-only mode</footer>
+
+</div>
+
+<script>
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    if (b.textContent.toLowerCase().replace(/\s/g,'') === id.replace(/\s/g,'')) b.classList.add('active');
+  });
+  // Match nav button by page id
+  const map = {overview:'Overview',funnel:'Funnel',concepts:'Concepts',recommendations:'Recommendations',fritz:'Fritz Log'};
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    if (b.textContent === map[id]) b.classList.add('active');
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+  history.replaceState(null,'','#'+id);
+}
+// Handle direct URL hash
+if(location.hash){showPage(location.hash.slice(1));}
+</script>
+</body>
+</html>
