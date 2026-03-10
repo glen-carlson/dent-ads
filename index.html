@@ -219,6 +219,7 @@ footer{padding:28px 0;text-align:center;font-size:0.6rem;color:var(--text3);}
       <button class="nav-btn" onclick="showPage('concepts')">Concepts</button>
       <button class="nav-btn" onclick="showPage('recommendations')">Insights</button>
       <button class="nav-btn" onclick="showPage('fritz')">Thesis</button>
+      <button class="nav-btn" onclick="showPage('fritzconv')">Fritz</button>
       <button class="nav-btn" onclick="showPage('spend')">Spend & CPL</button>
       <button class="nav-btn" onclick="showPage('ads')">All Ads</button>
       <button class="nav-btn" onclick="showPage('trends')">Trends</button>
@@ -870,6 +871,268 @@ footer{padding:28px 0;text-align:center;font-size:0.6rem;color:var(--text3);}
 </div>
 
 <!-- ════════════════════════════════════════════════════════════════════════ -->
+<!-- PAGE: FRITZ CONVERSATIONS -->
+<!-- ════════════════════════════════════════════════════════════════════════ -->
+<div class="page" id="page-fritzconv">
+  <div class="page-title">Fritz Conversations</div>
+  <div class="page-subtitle">Slide through each decision · Full context for discussion</div>
+
+  <!-- Carousel Controls -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin:16px 0;">
+    <button onclick="fritzSlide(-1)" style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 20px;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:inherit;color:var(--text);">← Previous</button>
+    <span id="fritz-slide-counter" style="font-size:0.75rem;font-weight:600;color:var(--text3);">1 / 3</span>
+    <button onclick="fritzSlide(1)" style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 20px;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:inherit;color:var(--text);">Next →</button>
+  </div>
+
+  <!-- SLIDE 1: NarrowPath Opportunity -->
+  <div class="fritz-slide" id="fritz-slide-1">
+    <div class="card" style="border-top:3px solid var(--amber);padding:28px;">
+
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:20px;">
+        <span style="background:var(--red-light);color:var(--red);font-size:0.6rem;font-weight:700;padding:4px 10px;border-radius:4px;text-transform:uppercase;">PAUSED</span>
+        <span style="background:var(--amber-light);color:var(--amber);font-size:0.6rem;font-weight:700;padding:4px 10px;border-radius:4px;text-transform:uppercase;">High MQL Rate</span>
+        <span style="font-size:0.65rem;color:var(--text3);margin-left:auto;">Ad ID: 120238916945360641</span>
+      </div>
+
+      <div style="font-size:1rem;font-weight:800;color:var(--text);margin-bottom:4px;">NarrowPath · Opportunity Yes · Shiny Object Syndrome</div>
+      <div style="font-size:0.7rem;color:var(--text3);margin-bottom:24px;">Dan_Workshop_EN_EMEA_PAC_Video_TOF · Created Feb 4, 2026</div>
+
+      <!-- Two column layout: Ad Creative | Performance Data -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;">
+
+        <!-- Left: Ad Creative -->
+        <div style="background:var(--elevated);border-radius:10px;padding:20px;">
+          <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:12px;">Ad Creative</div>
+
+          <div style="font-size:0.68rem;font-weight:700;color:var(--dan);margin-bottom:8px;">Headline: FREE 60+min Workshop</div>
+          <div style="font-size:0.65rem;font-weight:600;color:var(--text2);margin-bottom:12px;">Description: 2026 Growth Playbook · CTA: Sign Up</div>
+
+          <div style="font-size:0.68rem;color:var(--text);line-height:1.65;border-left:3px solid var(--dan);padding-left:14px;margin-bottom:14px;">
+            The best way to keep your business stuck at 6 figures?<br><br>
+            Say "yes" to every opportunity.<br><br>
+            Because every new idea comes with a hidden cost: your attention.<br><br>
+            And when you're constantly switching priorities, there's no way you can scale your revenue.<br><br>
+            New ideas might FEEL like motion, but they actively take away from your focus and our leverage.<br><br>
+            The founders who scale to 7 figures and beyond follow a narrow path: a small number of priorities executed in the right order.<br><br>
+            If you want that kind of clarity for 2026, join me at the upcoming Key Person of Influence workshop.<br><br>
+            Click the link to secure your place.
+          </div>
+
+          <div style="font-size:0.6rem;color:var(--text3);">
+            Landing page: become.keypersonofinfluence.com/emea<br>
+            Video: Narrow Path [Hook 2] 9x16<br>
+            JTBD: Shiny Object Syndrome
+          </div>
+        </div>
+
+        <!-- Right: Performance Data -->
+        <div>
+          <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:12px;">Performance (60-day window)</div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
+            <div style="background:var(--green-light);border-radius:8px;padding:14px;text-align:center;">
+              <div style="font-size:1.4rem;font-weight:800;color:var(--green);">74%</div>
+              <div style="font-size:0.6rem;font-weight:600;color:var(--green);">MQL Rate</div>
+            </div>
+            <div style="background:var(--green-light);border-radius:8px;padding:14px;text-align:center;">
+              <div style="font-size:1.4rem;font-weight:800;color:var(--green);">84</div>
+              <div style="font-size:0.6rem;font-weight:600;color:var(--green);">MQLs</div>
+            </div>
+            <div style="background:var(--elevated);border-radius:8px;padding:14px;text-align:center;">
+              <div style="font-size:1.4rem;font-weight:800;color:var(--text);">£11.38</div>
+              <div style="font-size:0.6rem;font-weight:600;color:var(--text3);">Cost Per Lead</div>
+            </div>
+            <div style="background:var(--elevated);border-radius:8px;padding:14px;text-align:center;">
+              <div style="font-size:1.4rem;font-weight:800;color:var(--text);">£15.45</div>
+              <div style="font-size:0.6rem;font-weight:600;color:var(--text3);">Cost Per MQL</div>
+            </div>
+          </div>
+
+          <div style="font-size:0.68rem;color:var(--text2);line-height:1.7;">
+            <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);"><span>Spend</span><span class="mono">£1,297</span></div>
+            <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);"><span>Impressions</span><span class="mono">67,748</span></div>
+            <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);"><span>Clicks</span><span class="mono">1,103</span></div>
+            <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);"><span>Landing Page Views</span><span class="mono">533</span></div>
+            <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);"><span>Leads</span><span class="mono">114</span></div>
+            <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);"><span>MQLs</span><span class="mono" style="color:var(--green);font-weight:700;">84</span></div>
+            <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);"><span>Meetings</span><span class="mono">0</span></div>
+            <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);"><span>CTR</span><span class="mono">1.63%</span></div>
+            <div style="display:flex;justify-content:space-between;padding:4px 0;"><span>Frequency</span><span class="mono">1.30</span></div>
+          </div>
+
+          <div style="margin-top:14px;font-size:0.6rem;color:var(--text3);">
+            Campaign: ASC_TOF_EMEA (~481 leads/wk · ✅ exits learning phase)<br>
+            Ad Set: TOF_EMEA_BROAD_MLTP · Ages 25-54
+          </div>
+        </div>
+      </div>
+
+      <!-- The Question -->
+      <div style="background:var(--amber-light);border:1px solid var(--amber);border-radius:10px;padding:20px;">
+        <div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--amber);margin-bottom:8px;">💬 Question for Fritz</div>
+        <div style="font-size:0.78rem;color:var(--text);line-height:1.7;">
+          This ad delivered 84 MQLs at a 74% qualification rate and £15.45 per MQL — one of the strongest performers in EMEA. It ran inside the ASC campaign which gets ~481 leads/week, well above the 50-event learning threshold. The CPL of £11.38 is below the EMEA average.<br><br>
+          <strong>What drove the decision to pause it?</strong> Was there a frequency spike, a daily CPL increase that the 60-day average masks, creative fatigue signals, or a scheduled rotation? And if you were to un-pause it today, what would you expect to happen?
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 2: MountainofValue Doing More -->
+  <div class="fritz-slide" id="fritz-slide-2" style="display:none;">
+    <div class="card" style="border-top:3px solid var(--amber);padding:28px;">
+
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:20px;">
+        <span style="background:var(--red-light);color:var(--red);font-size:0.6rem;font-weight:700;padding:4px 10px;border-radius:4px;text-transform:uppercase;">PAUSED</span>
+        <span style="background:var(--amber-light);color:var(--amber);font-size:0.6rem;font-weight:700;padding:4px 10px;border-radius:4px;text-transform:uppercase;">High MQL Rate</span>
+        <span style="font-size:0.65rem;color:var(--text3);margin-left:auto;">Ad ID: 120238599337520641</span>
+      </div>
+
+      <div style="font-size:1rem;font-weight:800;color:var(--text);margin-bottom:4px;">Mountain of Value · Doing More · Busy Trap</div>
+      <div style="font-size:0.7rem;color:var(--text3);margin-bottom:24px;">Dan_Workshop_EN_EMEA_PAC_Video_TOF · EMEA</div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;">
+
+        <div style="background:var(--elevated);border-radius:10px;padding:20px;">
+          <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:12px;">Ad Creative</div>
+          <div style="font-size:0.68rem;font-weight:700;color:var(--dan);margin-bottom:8px;">Headline: FREE 60min Workshop</div>
+          <div style="font-size:0.68rem;color:var(--text);line-height:1.65;border-left:3px solid var(--dan);padding-left:14px;">
+            If your business only grows when you work more, you don't have a business…<br><br>
+            You have a high-paid job.<br><br>
+            Most founders think the next level comes from doing more: More clients, more content, more hires, more hours.<br><br>
+            But if you're already doing six figures, your biggest advantage isn't what you're building next.<br><br>
+            It's the value you've already built, and haven't extracted yet.<br><br>
+            Right now, your best ideas, frameworks, and experience are trapped inside delivery. Inside your calendar. Inside you.<br><br>
+            That's why growth is slow, and more effort doesn't seem to move the dial.<br><br>
+            The solution isn't working more, it's turning your expertise into leverage, so products and systems drive revenue without adding more pressure to your week.<br><br>
+            If you're ready to stop scaling through effort and start scaling through leverage, I'll show you exactly how.<br><br>
+            Click the link to learn more.
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:12px;">Performance (60-day window)</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
+            <div style="background:var(--green-light);border-radius:8px;padding:14px;text-align:center;">
+              <div style="font-size:1.4rem;font-weight:800;color:var(--green);">78%</div>
+              <div style="font-size:0.6rem;font-weight:600;color:var(--green);">MQL Rate</div>
+            </div>
+            <div style="background:var(--green-light);border-radius:8px;padding:14px;text-align:center;">
+              <div style="font-size:1.4rem;font-weight:800;color:var(--green);">50</div>
+              <div style="font-size:0.6rem;font-weight:600;color:var(--green);">MQLs</div>
+            </div>
+            <div style="background:var(--green-light);border-radius:8px;padding:14px;text-align:center;">
+              <div style="font-size:1.4rem;font-weight:800;color:var(--green);">£6.80</div>
+              <div style="font-size:0.6rem;font-weight:600;color:var(--green);">Cost Per Lead</div>
+            </div>
+            <div style="background:var(--elevated);border-radius:8px;padding:14px;text-align:center;">
+              <div style="font-size:1.4rem;font-weight:800;color:var(--text);">£8.68</div>
+              <div style="font-size:0.6rem;font-weight:600;color:var(--text3);">Cost Per MQL</div>
+            </div>
+          </div>
+          <div style="font-size:0.68rem;color:var(--text2);line-height:1.7;">
+            <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);"><span>Spend</span><span class="mono">£434</span></div>
+            <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);"><span>Leads</span><span class="mono">64</span></div>
+            <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);"><span>MQLs</span><span class="mono" style="color:var(--green);font-weight:700;">50</span></div>
+            <div style="display:flex;justify-content:space-between;padding:4px 0;"><span>Frequency</span><span class="mono">—</span></div>
+          </div>
+          <div style="margin-top:14px;font-size:0.6rem;color:var(--text3);">
+            Campaign: ASC_TOF_EMEA (~481 leads/wk · ✅ exits learning phase)
+          </div>
+        </div>
+      </div>
+
+      <div style="background:var(--amber-light);border:1px solid var(--amber);border-radius:10px;padding:20px;">
+        <div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--amber);margin-bottom:8px;">💬 Question for Fritz</div>
+        <div style="font-size:0.78rem;color:var(--text);line-height:1.7;">
+          This is one of the cheapest MQLs in the entire account — £8.68 per qualified lead with a 78% qualification rate. Low CPL AND high quality. The campaign it sits in has massive volume (481 leads/week), so learning phase isn't a concern.<br><br>
+          <strong>What would need to be true for this ad to be turned back on?</strong> Is there a reason it was paused that the aggregate data doesn't show — like a daily spend spike, audience overlap with another ad set, or a deliberate strategy to rest creatives?
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3: Liqid Investments -->
+  <div class="fritz-slide" id="fritz-slide-3" style="display:none;">
+    <div class="card" style="border-top:3px solid var(--amber);padding:28px;">
+
+      <div style="display:flex;gap:8px;align-items:center;margin-bottom:20px;">
+        <span style="background:var(--red-light);color:var(--red);font-size:0.6rem;font-weight:700;padding:4px 10px;border-radius:4px;text-transform:uppercase;">PAUSED</span>
+        <span style="background:var(--green-light);color:var(--green);font-size:0.6rem;font-weight:700;padding:4px 10px;border-radius:4px;text-transform:uppercase;">105% MQL Rate</span>
+        <span style="font-size:0.65rem;color:var(--text3);margin-left:auto;">Ad ID: 120231497728850641</span>
+      </div>
+
+      <div style="font-size:1rem;font-weight:800;color:var(--text);margin-bottom:4px;">Liqid Investments · Hook One · Trading Time</div>
+      <div style="font-size:0.7rem;color:var(--text3);margin-bottom:24px;">Dan_Workshop_EN_EMEA_PAC_Video_TOF · EMEA</div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px;">
+
+        <div style="background:var(--elevated);border-radius:10px;padding:20px;">
+          <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:12px;">Ad Creative</div>
+          <div style="font-size:0.68rem;font-weight:700;color:var(--dan);margin-bottom:8px;">Headline: Be Known, Not Busy</div>
+          <div style="font-size:0.68rem;color:var(--text);line-height:1.65;border-left:3px solid var(--dan);padding-left:14px;">
+            Remember why you started your business? It wasn't to become a glorified employee with extra stress.<br><br>
+            Yet here you are, trapped in the time-for-money orbit. Your purpose drifting aimlessly, and miles away from mission control.<br><br>
+            Your expertise is worth millions, yet you're selling it by the hour like a commodity.<br><br>
+            Our free workshop breaks the cycle and shows you how to:<br>
+            • Stop selling time and start selling outcomes<br>
+            • Build systems that work while you sleep<br>
+            • Scale your impact without scaling your hours<br>
+            • Command authority and position yourself beyond the competition<br>
+            • Become a Key Person of Influence<br><br>
+            The experts who make history don't spend their time serving every last client. They build missions that matter.<br><br>
+            Register now.
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--text3);margin-bottom:12px;">Performance (60-day window)</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
+            <div style="background:var(--green-light);border-radius:8px;padding:14px;text-align:center;">
+              <div style="font-size:1.4rem;font-weight:800;color:var(--green);">105%</div>
+              <div style="font-size:0.6rem;font-weight:600;color:var(--green);">MQL Rate*</div>
+            </div>
+            <div style="background:var(--green-light);border-radius:8px;padding:14px;text-align:center;">
+              <div style="font-size:1.4rem;font-weight:800;color:var(--green);">21</div>
+              <div style="font-size:0.6rem;font-weight:600;color:var(--green);">MQLs</div>
+            </div>
+            <div style="background:var(--green-light);border-radius:8px;padding:14px;text-align:center;">
+              <div style="font-size:1.4rem;font-weight:800;color:var(--green);">£8.70</div>
+              <div style="font-size:0.6rem;font-weight:600;color:var(--green);">Cost Per Lead</div>
+            </div>
+            <div style="background:var(--green-light);border-radius:8px;padding:14px;text-align:center;">
+              <div style="font-size:1.4rem;font-weight:800;color:var(--green);">£8.24</div>
+              <div style="font-size:0.6rem;font-weight:600;color:var(--green);">Cost Per MQL</div>
+            </div>
+          </div>
+          <div style="font-size:0.68rem;color:var(--text2);line-height:1.7;">
+            <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);"><span>Spend</span><span class="mono">£173</span></div>
+            <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);"><span>Leads</span><span class="mono">20</span></div>
+            <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--border);"><span>MQLs</span><span class="mono" style="color:var(--green);font-weight:700;">21</span></div>
+          </div>
+          <div style="margin-top:10px;font-size:0.58rem;color:var(--text3);font-style:italic;">
+            * MQL rate >100% means some MQLs attributed to this ad came from leads originally captured by other ads in the same campaign (cross-ad attribution).
+          </div>
+          <div style="margin-top:10px;font-size:0.6rem;color:var(--text3);">
+            Campaign: ASC_TOF_EMEA (~481 leads/wk · ✅ exits learning phase)
+          </div>
+        </div>
+      </div>
+
+      <div style="background:var(--amber-light);border:1px solid var(--amber);border-radius:10px;padding:20px;">
+        <div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--amber);margin-bottom:8px;">💬 Question for Fritz</div>
+        <div style="font-size:0.78rem;color:var(--text);line-height:1.7;">
+          This ad has more MQLs than leads — which means people who saw this ad but registered through a different ad still qualified at a high rate. That's a signal the creative is doing something right at the awareness level even when it's not the final click.<br><br>
+          £8.24 per MQL is the cheapest in the account. The "Be Known, Not Busy" headline is different from the standard "FREE 60min Workshop" — was that intentional testing?<br><br>
+          <strong>Given the performance, what was the rationale for pausing?</strong> If it was creative fatigue, at what frequency or time threshold do you typically make that call?
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════════ -->
 <!-- PAGE: SPEND & CPL -->
 <!-- ════════════════════════════════════════════════════════════════════════ -->
 <div class="page" id="page-spend">
@@ -1280,6 +1543,18 @@ function toggleCreative(adId) {
 }
 
 function toggleCreative(id){var p=document.getElementById('creative-'+id);if(p)p.classList.toggle('open');}
+
+/* Fritz Conversations Carousel */
+var fritzCurrentSlide = 1;
+var fritzTotalSlides = 3;
+function fritzSlide(dir) {
+  document.getElementById('fritz-slide-' + fritzCurrentSlide).style.display = 'none';
+  fritzCurrentSlide += dir;
+  if (fritzCurrentSlide < 1) fritzCurrentSlide = fritzTotalSlides;
+  if (fritzCurrentSlide > fritzTotalSlides) fritzCurrentSlide = 1;
+  document.getElementById('fritz-slide-' + fritzCurrentSlide).style.display = 'block';
+  document.getElementById('fritz-slide-counter').textContent = fritzCurrentSlide + ' / ' + fritzTotalSlides;
+}
 </script>
 </body>
 </html>
