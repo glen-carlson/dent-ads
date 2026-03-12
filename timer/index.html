@@ -341,10 +341,11 @@
         
         .next-exercise {
             text-align: center;
-            color: var(--neutral-300);
-            font-size: var(--text-2xl);
-            margin-bottom: var(--space-6);
-            font-weight: 600;
+            color: var(--neutral-400);
+            font-size: var(--text-xl);
+            margin-top: var(--space-4);
+            margin-bottom: var(--space-8);
+            font-weight: 500;
         }
         
         .timer {
@@ -357,11 +358,11 @@
         
         .current-exercise {
             text-align: center;
-            margin-bottom: var(--space-12);
+            margin-bottom: var(--space-6);
         }
         
         .current-exercise h2 {
-            font-size: var(--text-2xl);
+            font-size: var(--text-3xl);
             font-weight: 700;
             letter-spacing: -0.01em;
         }
@@ -372,13 +373,13 @@
         }
         
         .control-btn {
-            width: 96px;
-            height: 96px;
+            width: 76px;
+            height: 76px;
             border-radius: 50%;
             background: var(--neutral-800);
             border: 1px solid var(--neutral-700);
             color: var(--neutral-0);
-            font-size: var(--text-sm);
+            font-size: var(--text-xs);
             font-weight: 600;
             cursor: pointer;
         }
@@ -596,18 +597,20 @@
             <div class="progress-fill" id="progressBar"></div>
         </div>
         
-        <div class="next-exercise" id="nextExercise">Next: Warm-up</div>
-        
-        <div class="timer" id="timer">5</div>
-        
         <div class="current-exercise">
             <h2 id="currentExercise">Get Ready</h2>
             <button class="help-btn" onclick="showExerciseHelp()" id="helpBtn">?</button>
         </div>
         
+        <div class="timer" id="timer">5</div>
+        
+        <div class="next-exercise" id="nextExercise">Next: Warm-up</div>
+        
         <div class="workout-controls">
+            <button class="control-btn" onclick="skipBack()">Back</button>
             <button class="control-btn" onclick="pauseWorkout()" id="pauseBtn">Pause</button>
             <button class="control-btn" onclick="endWorkout()">End</button>
+            <button class="control-btn" onclick="skipForward()">Skip</button>
         </div>
     </div>
     
@@ -655,6 +658,7 @@
         let workoutTimer = null;
         let timeRemaining = 0;
         let currentStepIndex = 0;
+        let currentSequence = [];
         let isPaused = false;
         let wakeLock = null;
         
@@ -752,7 +756,7 @@
                     repeat: 1
                 },
                 {
-                    name: "Mobility D",
+                    name: "The Big Five",
                     exercises: [
                         { name: "Horse Stance", duration: 60 },
                         { name: "Switch", duration: 10 },
@@ -1006,6 +1010,7 @@
             currentStepIndex = 0;
             isPaused = false;
             
+            currentSequence = sequence;
             showScreen('workout');
             requestWakeLock();
             runWorkoutStep(sequence);
@@ -1068,6 +1073,35 @@
             const currentElapsed = sequence[currentStepIndex].duration - timeRemaining;
             const progress = ((elapsedSteps + currentElapsed) / totalSteps) * 100;
             document.getElementById('progressBar').style.width = progress + '%';
+        }
+        
+        function skipForward() {
+            clearInterval(workoutTimer);
+            currentStepIndex++;
+            // Skip past any Switch entries too
+            while (currentStepIndex < currentSequence.length && currentSequence[currentStepIndex].name.toLowerCase().includes('switch')) {
+                currentStepIndex++;
+            }
+            if (currentStepIndex >= currentSequence.length) {
+                endWorkout();
+            } else {
+                runWorkoutStep(currentSequence);
+            }
+        }
+        
+        function skipBack() {
+            clearInterval(workoutTimer);
+            // Go back to start of current exercise (reset timer)
+            // If we're at the very start of the current step, go to previous exercise
+            const step = currentSequence[currentStepIndex];
+            if (timeRemaining >= step.duration - 2 && currentStepIndex > 0) {
+                // We just started this one, go to previous real exercise
+                currentStepIndex--;
+                while (currentStepIndex > 0 && currentSequence[currentStepIndex].name.toLowerCase().includes('switch')) {
+                    currentStepIndex--;
+                }
+            }
+            runWorkoutStep(currentSequence);
         }
         
         function pauseWorkout() {
