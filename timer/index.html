@@ -669,10 +669,7 @@
         
         // Initialize
         function init() {
-            loadData();
-            if (workouts.length === 0) {
-                loadDefaultWorkouts();
-            }
+            loadDefaultWorkouts();
             renderWorkoutList();
             loadSettings();
             
