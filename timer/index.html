@@ -341,10 +341,10 @@
         
         .next-exercise {
             text-align: center;
-            color: var(--neutral-400);
-            font-size: var(--text-lg);
+            color: var(--neutral-300);
+            font-size: var(--text-2xl);
             margin-bottom: var(--space-6);
-            font-weight: 500;
+            font-weight: 600;
         }
         
         .timer {
@@ -871,18 +871,9 @@
         function calculateTotalDuration(workout) {
             let total = 0;
             for (let r = 0; r < workout.repeat; r++) {
-                workout.exercises.forEach((ex, idx) => {
+                workout.exercises.forEach((ex) => {
                     total += ex.duration;
-                    // CRITICAL FIX: Don't add interval after "Switch" exercises
-                    const isSwitch = ex.name.toLowerCase().includes('switch');
-                    const isLast = idx === workout.exercises.length - 1;
-                    if (!isSwitch && !isLast) {
-                        total += settings.defaultInterval;
-                    }
                 });
-                if (r < workout.repeat - 1) {
-                    total += settings.defaultInterval;
-                }
             }
             return total;
         }
@@ -1001,31 +992,12 @@
                 console.error('Audio init failed:', e);
             }
             
-            // Build workout sequence with conditional intervals
+            // Build workout sequence — no auto-inserted intervals, Switch exercises handle transitions
             const sequence = [];
             for (let r = 0; r < currentWorkout.repeat; r++) {
-                currentWorkout.exercises.forEach((ex, idx) => {
-                    sequence.push({ ...ex, type: 'exercise' });
-                    
-                    // CRITICAL FIX: Only add interval if NOT a "Switch" exercise AND not last
-                    const isSwitch = ex.name.toLowerCase().includes('switch');
-                    const isLast = idx === currentWorkout.exercises.length - 1;
-                    
-                    if (!isSwitch && !isLast) {
-                        sequence.push({ 
-                            name: 'Rest', 
-                            duration: settings.defaultInterval,
-                            type: 'interval'
-                        });
-                    }
+                currentWorkout.exercises.forEach((ex) => {
+                    sequence.push({ ...ex, type: ex.name.toLowerCase().includes('switch') ? 'interval' : 'exercise' });
                 });
-                if (r < currentWorkout.repeat - 1) {
-                    sequence.push({ 
-                        name: 'Rest', 
-                        duration: settings.defaultInterval,
-                        type: 'interval'
-                    });
-                }
             }
             
             // Add prep countdown
@@ -1051,9 +1023,16 @@
             document.getElementById('currentExercise').textContent = step.name;
             document.getElementById('pauseBtn').textContent = 'Pause';
             
-            // Show next exercise
-            if (currentStepIndex < sequence.length - 1) {
-                document.getElementById('nextExercise').textContent = 'Next: ' + sequence[currentStepIndex + 1].name;
+            // Show next real exercise (skip past Switch entries)
+            let nextReal = null;
+            for (let i = currentStepIndex + 1; i < sequence.length; i++) {
+                if (!sequence[i].name.toLowerCase().includes('switch')) {
+                    nextReal = sequence[i].name;
+                    break;
+                }
+            }
+            if (nextReal) {
+                document.getElementById('nextExercise').textContent = 'Next: ' + nextReal;
             } else {
                 document.getElementById('nextExercise').textContent = 'Last exercise!';
             }
